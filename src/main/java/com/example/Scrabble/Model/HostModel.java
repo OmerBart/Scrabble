@@ -26,26 +26,6 @@ public class HostModel {
         // create a server for the game
         Random r = new Random();
         gameServer = new MyServer(6000 + r.nextInt(1000), new BookScrabbleHandler());
-
-        // host new server for guests
-        // this.stop = false;
-        // try {
-        //     ServerSocket hostSocket = new ServerSocket(6000 + r.nextInt(1000));
-        //     hostSocket.setSoTimeout(1000);
-        //     while (!stop) {
-        //         try {
-        //             Socket client = hostSocket.accept();
-        //             ch.handleClient(client.getInputStream(), client.getOutputStream());
-        //             ch.close();
-        //             client.close();
-        //         } catch (SocketTimeoutException e) {
-        //             System.out.println(e.getMessage());
-        //         }
-        //     }
-        //     hostSocket.close();
-        // } catch (IOException e) {
-        //     System.out.println("IOException in HostModel" + e.getMessage());
-        // }
     }
 
     public void connectServer() {
@@ -56,20 +36,19 @@ public class HostModel {
         gameServer.close();
     }
 
-    public void handleClient(Socket client) {
-        try {
-            gameServer.getCh().handleClient(client.getInputStream(), client.getOutputStream());
-        } catch (IOException e) {
-            System.out.println("IOException in handleClient" + e.getMessage());
-        } finally {
-            try {
-                client.close();
-            } catch (IOException e) {
-                System.out.println("IOException in handleClient" + e.getMessage());
-            }
-        }
-
-    }
+    // public void handleClient(Socket client) {
+    //     try {
+    //         gameServer.getCh().handleClient(client.getInputStream(), client.getOutputStream());
+    //     } catch (IOException e) {
+    //         System.out.println("IOException in handleClient" + e.getMessage());
+    //     } finally {
+    //         try {
+    //             client.close();
+    //         } catch (IOException e) {
+    //             System.out.println("IOException in handleClient" + e.getMessage());
+    //         }
+    //     }
+    // }
 
     public void BookActions(String query) {
         try {
@@ -85,7 +64,7 @@ public class HostModel {
             out.close();
             server.close();
         } catch (IOException e) {
-            System.out.println("IOException in runGame");
+            System.out.println("IOException in BookActions: "+e.getMessage());
         }
     }
 

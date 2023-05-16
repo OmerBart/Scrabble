@@ -5,7 +5,7 @@ import com.example.Scrabble.Model.HostModel;
 
 // import java.util.Random;
 
-public class TestMain {
+public class TestHostModel {
 
     public static void main(String[] args) {
         HostModel h = new HostModel("Hadar");
