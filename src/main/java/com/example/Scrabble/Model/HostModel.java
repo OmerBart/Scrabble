@@ -12,47 +12,51 @@ import java.net.SocketTimeoutException;
 import java.util.Random;
 import java.util.Scanner;
 
-public class HostModel{
+public class HostModel {
     MyServer gameServer;
     String Hostname;
+    
+    ClientHandler ch;
     boolean stop;
 
-    ClientHandler ch;
-
-
-    public HostModel(String name){
+    public HostModel(String name) {
+        // set the name of the host
         this.Hostname = name;
-        this.stop = false;
-        Random r=new Random();
-        gameServer = new MyServer(6000+r.nextInt(1000), new BookScrabbleHandler());
-//        try {
-//            ServerSocket hostSocket = new ServerSocket(6000 + r.nextInt(1000));
-//            hostSocket.setSoTimeout(1000);
-//            while(!stop) {
-//                try{
-//                    Socket client = hostSocket.accept();
-//                    ch.handleClient(client.getInputStream(), client.getOutputStream());
-//                    ch.close();
-//                    client.close();
-//                }catch(SocketTimeoutException e) {}
-//            }
-//            hostSocket.close();
-//        } catch (IOException e) {
-//            System.out.println("IOException in HostModel" + e.getMessage());
-//        }
 
+        // create a server for the game
+        Random r = new Random();
+        gameServer = new MyServer(6000 + r.nextInt(1000), new BookScrabbleHandler());
 
-
+        // host new server for guests
+        // this.stop = false;
+        // try {
+        //     ServerSocket hostSocket = new ServerSocket(6000 + r.nextInt(1000));
+        //     hostSocket.setSoTimeout(1000);
+        //     while (!stop) {
+        //         try {
+        //             Socket client = hostSocket.accept();
+        //             ch.handleClient(client.getInputStream(), client.getOutputStream());
+        //             ch.close();
+        //             client.close();
+        //         } catch (SocketTimeoutException e) {
+        //             System.out.println(e.getMessage());
+        //         }
+        //     }
+        //     hostSocket.close();
+        // } catch (IOException e) {
+        //     System.out.println("IOException in HostModel" + e.getMessage());
+        // }
     }
 
-    public  void connectServer(){
+    public void connectServer() {
         gameServer.start(); // runs in the background
     }
 
-    public void closeServer(){
+    public void closeServer() {
         gameServer.close();
     }
-    public void handleClient(Socket client){
+
+    public void handleClient(Socket client) {
         try {
             gameServer.getCh().handleClient(client.getInputStream(), client.getOutputStream());
         } catch (IOException e) {
@@ -66,15 +70,17 @@ public class HostModel{
         }
 
     }
-    public  void BookActions(String query) {
+
+    public void BookActions(String query) {
         try {
-            Socket server=new Socket("localhost", this.gameServer.getPort());
-            PrintWriter out=new PrintWriter(server.getOutputStream());
-            Scanner in=new Scanner(server.getInputStream());
+            System.out.println("Connecting to localhost on port " + this.gameServer.getPort());
+            Socket server = new Socket("localhost", this.gameServer.getPort());
+            PrintWriter out = new PrintWriter(server.getOutputStream());
+            Scanner in = new Scanner(server.getInputStream());
             out.println(query);
             out.flush();
-            String res=in.next();
-            System.out.println(Hostname +" your results are: "+ res);
+            String res = in.next();
+            System.out.println(Hostname + " your results are: " + res);
             in.close();
             out.close();
             server.close();
@@ -82,13 +88,5 @@ public class HostModel{
             System.out.println("IOException in runGame");
         }
     }
-
-
-
-
-
-
-
-
 
 }

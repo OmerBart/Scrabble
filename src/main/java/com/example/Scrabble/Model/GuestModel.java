@@ -2,25 +2,17 @@ package com.example.Scrabble.Model;
 
 public class GuestModel {
     private String name;
-    private String serverAddress;
-    private int serverPort;
+    private HostModel myHost;
 
-    public void setGuestModel(String serverAddress, int serverPort) {
-        this.serverAddress = serverAddress;
-        this.serverPort = serverPort;
+    public GuestModel(String name, HostModel host){
+        this.name = name;
+        this.myHost = host;
     }
 
     public void sendRequestToHost(String query){
-        //send query to host
+        myHost.BookActions(query);
     }
 
-
-    public GuestModel() {
-        name = "Guest";
-    }
-    public GuestModel(String name) {
-        this.name = name;
-    }
     public String getName() {
         return name;
     }
