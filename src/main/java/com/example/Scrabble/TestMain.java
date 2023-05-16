@@ -11,7 +11,7 @@ public class TestMain {
         Random r=new Random();
         int port=6000+r.nextInt(1000);
         h.connectServer();
-        h.runGame("Q,s1.txt,s2.txt,19393");
+        h.BookActions("Q,s1.txt,s2.txt,59393");
 
 
 

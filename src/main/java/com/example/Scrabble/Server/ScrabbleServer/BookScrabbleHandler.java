@@ -27,6 +27,7 @@ public class BookScrabbleHandler implements ClientHandler {
             }
 
 
+
         } catch (IOException e){
             e.printStackTrace();
         }
