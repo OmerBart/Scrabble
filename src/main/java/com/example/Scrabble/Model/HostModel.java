@@ -11,6 +11,11 @@ import java.util.Scanner;
 
 public class HostModel implements Model{
     MyServer s;
+    String name;
+    public HostModel(){
+        this.name="waka";
+    }
+
     public static void connectServer(){
         boolean ok=true;
         Random r=new Random();
@@ -18,14 +23,16 @@ public class HostModel implements Model{
         MyServer s=new MyServer(port, new BookScrabbleHandler());
         s.start(); // runs in the background
     }
-    public static void runGame(int port,String query) {
+    public  void runGame(int port,String query) {
         try {
+            connectServer();
             Socket server=new Socket("localhost",port);
             PrintWriter out=new PrintWriter(server.getOutputStream());
             Scanner in=new Scanner(server.getInputStream());
             out.println(query);
             out.flush();
             String res=in.next();
+            System.out.println("########- " + res);
             in.close();
             out.close();
             server.close();
@@ -40,12 +47,12 @@ public class HostModel implements Model{
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override
     public void setName(String name) {
-
+        this.name=name;
     }
 
     @Override

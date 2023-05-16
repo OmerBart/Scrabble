@@ -1,6 +1,8 @@
 package com.example.Scrabble.Server.ScrabbleServer;
 
 
+import com.example.Scrabble.Server.CacheManager.Dictionary;
+
 import java.util.LinkedHashMap;
 
 public class DictionaryManager {

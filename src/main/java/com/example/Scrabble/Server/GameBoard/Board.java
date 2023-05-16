@@ -1,5 +1,5 @@
 package com.example.Scrabble.Server.GameBoard;
-import test.Tile.Bag;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -734,7 +734,7 @@ public class Board {
             //System.out.println("WHAT");
         // System.out.println(totalScore);
         //int count = 0;
-        Bag b = Tile.Bag.getBag();
+        Tile.Bag b = Tile.Bag.getBag();
         for (Tile x : word.getTiles()) {
             if (x != null)
                 boardState[word.getRow() + row][word.getCol() + column] = x;
