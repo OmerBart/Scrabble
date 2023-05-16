@@ -1,4 +1,4 @@
-package test;
+package com.example.Scrabble.Server.CacheManager;
 
 
 import java.io.File;
