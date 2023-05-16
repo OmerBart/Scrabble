@@ -50,7 +50,7 @@ public class HostModel {
     //     }
     // }
 
-    public void BookActions(String query) {
+    private void BookActions(String query) {
         try {
             System.out.println("Connecting to localhost on port " + this.gameServer.getPort());
             Socket server = new Socket("localhost", this.gameServer.getPort());
