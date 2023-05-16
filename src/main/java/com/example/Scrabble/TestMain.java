@@ -7,10 +7,12 @@ import java.util.Random;
 public class TestMain {
 
     public static void main(String[] args) {
-        HostModel h = new HostModel();
+        HostModel h = new HostModel("Hadar");
         Random r=new Random();
         int port=6000+r.nextInt(1000);
-        h.runGame(port,"Q");
+        h.connectServer();
+        h.runGame("Q,s1.txt,s2.txt,19393");
+
 
 
     }

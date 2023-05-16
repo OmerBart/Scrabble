@@ -42,6 +42,21 @@ public class MyServer {
     public void close(){
         stop = true;
     }
+    public int getPort() {
+        return port;
+    }
+
+    public ClientHandler getCh() {
+        return ch;
+    }
+
+    public boolean isStop() {
+        return stop;
+    }
+
+    public void setStop(boolean stop) {
+        this.stop = stop;
+    }
 
 
 }
