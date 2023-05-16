@@ -1,4 +1,4 @@
-package test;
+package com.example.Scrabble.Server.GameBoard;
 import test.Tile.Bag;
 import java.util.ArrayList;
 import java.util.Arrays;

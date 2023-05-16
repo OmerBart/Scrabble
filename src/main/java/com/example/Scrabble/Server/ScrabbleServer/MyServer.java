@@ -1,4 +1,4 @@
-package test;
+package com.example.Scrabble.Server.ScrabbleServer;
 
 
 import java.io.IOException;
