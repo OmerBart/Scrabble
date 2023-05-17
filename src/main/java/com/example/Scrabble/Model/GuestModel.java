@@ -11,6 +11,8 @@ public class GuestModel {
 
     public void sendRequestToHost(String query){
         myHost.BookActions(query);
+
+
     }
 
     public String getName() {
