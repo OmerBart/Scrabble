@@ -37,6 +37,9 @@ public class TestMain {
                 guest3.getTile();
                 guest4.getTile();
             }
+
+
+
             System.out.println(GM.printPlayers());
             host.stopGame();
 
