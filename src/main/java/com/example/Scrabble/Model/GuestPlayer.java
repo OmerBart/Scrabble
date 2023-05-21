@@ -83,9 +83,8 @@ public class GuestPlayer implements Player {
             out.flush();
 
             // Receive the response from the server
-            String response = in.nextLine();
-
-            return response;
+            String res = in.nextLine();
+            return res;
         } catch (IOException e) {
             throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
         }

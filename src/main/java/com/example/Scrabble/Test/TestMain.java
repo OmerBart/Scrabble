@@ -19,10 +19,10 @@ public class TestMain {
             GuestPlayer guest4 = new GuestPlayer("TheGuest4", 5);
             GameManager GM = GameManager.get();
 
-            guest.setHost("localhost",host.getHostgameServer().getPort());
-            guest2.setHost("localhost",host.getHostgameServer().getPort());
-            guest3.setHost("localhost",host.getHostgameServer().getPort());
-            guest4.setHost("localhost",host.getHostgameServer().getPort());
+            guest.setServerAddress("localhost",host.getHostgameServer().getPort());
+            guest2.setServerAddress("localhost",host.getHostgameServer().getPort());
+            guest3.setServerAddress("localhost",host.getHostgameServer().getPort());
+            guest4.setServerAddress("localhost",host.getHostgameServer().getPort());
             System.out.println("trying to join game...." + guest.joinGame());
             System.out.println("trying to join game...." + guest2.joinGame());
             System.out.println("trying to join game...." + guest3.joinGame());
@@ -42,6 +42,10 @@ public class TestMain {
 
             System.out.println(GM.printPlayers());
             host.stopGame();
+            guest.disconnectFromServer();
+            guest2.disconnectFromServer();
+            guest3.disconnectFromServer();
+            guest4.disconnectFromServer();
 
             System.out.println("Done!");
 
