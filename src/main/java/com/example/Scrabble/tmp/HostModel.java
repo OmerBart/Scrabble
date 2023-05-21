@@ -1,5 +1,6 @@
-package com.example.Scrabble.Model;
+package com.example.Scrabble.tmp;
 
+import com.example.Scrabble.Model.PlayerHandler;
 import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
 import com.example.Scrabble.ScrabbleServer.ClientHandler;
 import com.example.Scrabble.ScrabbleServer.MyServer;
@@ -25,7 +26,7 @@ public class HostModel {
         // create a server for the game
         Random r = new Random();
         gameServer = new MyServer(6000 + r.nextInt(1000), new BookScrabbleHandler());
-        hostServer = new MyServer(6000 + r.nextInt(1000), new ModelHandler());
+        hostServer = new MyServer(6000 + r.nextInt(1000), new PlayerHandler());
         // host new server for guests
         // this.stop = false;
         // try {
@@ -75,37 +76,33 @@ public class HostModel {
         try {
             System.out.println("Connecting to port " + this.hostServer.getPort());
             Socket server = new Socket("localhost", this.hostServer.getPort());
-            PrintWriter out = new PrintWriter(server.getOutputStream());
-            Scanner in = new Scanner(server.getInputStream());
-            out.println(query);
-            out.flush();
-            String res = in.next();
-            System.out.println(Hostname + " your results are: " + res);
-            in.close();
-            out.close();
-            server.close();
+            askServer(query, server);
 
         } catch (IOException e) {
             System.out.println("IOException in runGame");
         }
     }
 
-    public void BookActions(String query) {
+    public void dictionaryRequest(String query) {
         try {
             System.out.println("Connecting to port " + this.gameServer.getPort());
-            Socket server = new Socket("localhost", this.gameServer.getPort());
-            PrintWriter out = new PrintWriter(server.getOutputStream());
-            Scanner in = new Scanner(server.getInputStream());
-            out.println(query);
-            out.flush();
-            String res = in.next();
-            System.out.println(Hostname + " your results are: " + res);
-            in.close();
-            out.close();
-            server.close();
+            Socket serverSocket = new Socket("localhost", this.gameServer.getPort());
+            askServer(query, serverSocket);
         } catch (IOException e) {
             System.out.println("IOException in runGame");
         }
+    }
+
+    private void askServer(String query, Socket serverSocket) throws IOException {
+        PrintWriter out = new PrintWriter(serverSocket.getOutputStream());
+        Scanner in = new Scanner(serverSocket.getInputStream());
+        out.println(query);
+        out.flush();
+        String res = in.next();
+        //System.out.println(Hostname + " your results are: " + res);
+        in.close();
+        out.close();
+        serverSocket.close();
     }
 
 }

@@ -1,4 +1,4 @@
-package com.example.Scrabble.Model;
+package com.example.Scrabble.tmp;
 
 public class GuestModel {
     private String name;
@@ -10,9 +10,7 @@ public class GuestModel {
     }
 
     public void sendRequestToHost(String query){
-        myHost.BookActions(query);
-
-
+        myHost.dictionaryRequest(query);
     }
 
     public String getName() {

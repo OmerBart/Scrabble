@@ -1,5 +1,8 @@
 package com.example.Scrabble.Model;
 
+import com.example.Scrabble.tmp.GuestModel;
+import com.example.Scrabble.tmp.HostModel;
+
 public class ModelFacade {
     public HostModel hostModel;
 
