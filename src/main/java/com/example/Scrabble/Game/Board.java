@@ -1,5 +1,8 @@
 package com.example.Scrabble.Game;
 
+import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
+import com.example.Scrabble.ScrabbleServer.MyServer;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -56,7 +59,7 @@ public class Board {
             w.printWord();
         }
     }
-    public void printBoard() {
+    public String getPrintableBoard() {
         StringBuilder s = new StringBuilder();
         for(Tile[] t : boardState){
 
@@ -68,7 +71,7 @@ public class Board {
             }
             s.append("\n");
         }
-        System.out.print(s);
+        return s.toString();
     }
 
 
@@ -115,7 +118,9 @@ public class Board {
 
     }
 
-    public boolean  dictionaryLegal(Word word){return true;}
+    public boolean  dictionaryLegal(Word word){
+        return true;
+    }
 
     private Word getFull(Word word, int index, int adj){
         //          8
@@ -719,7 +724,7 @@ public class Board {
         int row = 0; // row iterator
         int column = 0; // column iterator
         //System.out.println(word);
-        if (boardLegal(word) && dictionaryLegal(word)) {
+        if (boardLegal(word)) {
             wordArray = getWords(word);
             for (Word w : wordArray) {
 //               // System.out.println(w);

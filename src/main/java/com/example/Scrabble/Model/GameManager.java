@@ -1,13 +1,23 @@
 package com.example.Scrabble.Model;
 
+import com.example.Scrabble.Game.Board;
+import com.example.Scrabble.Game.Tile;
+import com.example.Scrabble.Game.Word;
+import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
 import com.example.Scrabble.ScrabbleServer.MyServer;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
-class GameManager {
+public class GameManager {
 
-    private LinkedHashMap<String,Player> playerMap;
-    MyServer localServer;
+    private LinkedList<Player> playerList;
+    MyServer hostServer;
+    MyServer IOserver;
+    private Board gameBoard;
+
 
     private static GameManager single_instance = null;
 
@@ -20,20 +30,44 @@ class GameManager {
     }
 
     private GameManager(){
-        playerMap = new LinkedHashMap<>();
+        Random r = new Random();
+        playerList = new LinkedList<>();
+        gameBoard = Board.getBoard();
+        this.IOserver = new MyServer(6000 + r.nextInt(6000), new BookScrabbleHandler());
     }
-    public void setHostplayer(Player hostplayer){
-        if(playerMap.isEmpty())
-            playerMap.put(hostplayer.getName(),hostplayer);
-        else
-            System.out.println("Host player already exists!");
+    public void setHost(MyServer hostServer, Player hostplayer) {
+        this.hostServer = hostServer;
+        playerList.add(hostplayer);
     }
-    public void addPlayer(Player player){
-        playerMap.put(player.getName(),player);
+
+    public String addPlayer(Player player){
+        if(playerList.contains(player) || playerList.size() > 4)
+            return "Player already in game or game is full";
+        else{
+            playerList.add(player);
+            return "Player added" + playerList.getLast().toString();
+        }
     }
-    public Player getPlayer(String name){
-        return playerMap.get(name);
+    public String getGameBoard() {
+        return gameBoard.getPrintableBoard();
     }
+    public Tile getTilefromBag(){
+        return Tile.Bag.getBag().getRand();
+    }
+
+    public void stopGame() {
+        hostServer.close();
+        IOserver.close();
+    }
+
+    public String printPlayers() {
+        return playerList.toString();
+    }
+
+
+//    public Player getPlayer(String name){
+//        return playerMap.get(name);
+//    }
 
 
 //    public boolean addPlayer(Player player){

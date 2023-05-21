@@ -6,21 +6,36 @@ import java.io.*;
 
 public class PlayerHandler implements ClientHandler {
 
-    GameManager pm;
+    GameManager GM;
     BufferedReader in;
     PrintWriter out;
+
+
     @Override
     public void handleClient(InputStream inFromclient, OutputStream outToClient) {
-        pm = GameManager.get();
+        GM = GameManager.get();
         try {
             in = new BufferedReader(new InputStreamReader(inFromclient));
             out = new PrintWriter(outToClient, true);
             String line = in.readLine();
+            if(line.contains("GetTile")){
+                out.println(GM.getTilefromBag());
+            }
+            if(line.contains("boardState")){
+                out.println(GM.getGameBoard());
+            }
+            if(line.contains("Join")){
+                String[] arg = line.split(":");
+                out.println(GM.addPlayer(new GuestPlayer(arg[1],Integer.parseInt(arg[2]))));
+            }
+            if(line.contains("printPlayers")){
+                out.println(GM.printPlayers());
+            }
 
 
             //logic for handling the model requests goes here (i.e. the logic for the model)
             //System.out.println("this came from the handleClient: "+ line);
-            out.println("from: ModelHandler");
+            //out.println("from: ModelHandler");
         }
         catch (IOException e){
             e.printStackTrace();

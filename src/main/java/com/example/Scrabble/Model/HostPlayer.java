@@ -2,12 +2,12 @@ package com.example.Scrabble.Model;
 
 import com.example.Scrabble.ScrabbleServer.MyServer;
 
-import java.util.Objects;
 import java.util.Random;
 
 public class HostPlayer extends GuestPlayer{
 
-    private final MyServer gameServer;
+    private final MyServer HostgameServer;
+    private GameManager GM;
 
 
 
@@ -15,19 +15,27 @@ public class HostPlayer extends GuestPlayer{
 
     public HostPlayer(Player player) {
         super(player);
+
         Random r = new Random();
-        int port = 6000 + r.nextInt(1000);
-        gameServer = new MyServer(port, new PlayerHandler());
+        int port = 6000 + r.nextInt(6000);
+        HostgameServer = new MyServer(port, new PlayerHandler());
         setServerAddress("localhost", port);
-        gameServer.start();
+        HostgameServer.start();
+        GM = GameManager.get();
+        GM.setHost(HostgameServer, this);
+    }
+    public MyServer getHostgameServer() {
+        return HostgameServer;
     }
     public void stopGame(){
-        gameServer.close();
+        GM.stopGame();
+        HostgameServer.close();
     }
 
     @Override
     public String toString() {
-        return "HostPlayer|"+getName()+"|"+getPlayerID()+ "|"+getScore()+"|"+getServerAddress()+"|" ;
+        return "HostPlayer|"+getName()+"|"+getPlayerID()+"|"+getServerAddress()+"|" ;
     }
+
 
 }

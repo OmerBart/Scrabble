@@ -5,8 +5,7 @@ public interface Player {
     public void setName(String name);
     public int getPlayerID();
     public void setPlayerID(int playerID);
-    public int getScore();
-    public void setScore(int score);
+
 
 
 }
