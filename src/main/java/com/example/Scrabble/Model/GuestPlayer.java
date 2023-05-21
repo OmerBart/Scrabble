@@ -86,7 +86,7 @@ public class GuestPlayer implements Player{
 
     public String joinGame() {
         try {
-            if(this.serverSocket == null)
+            if(this.serverSocket == null || this.serverSocket.isClosed())
                 this.serverSocket = new Socket("localhost",hostServer.getPort());
 //            assert serverSocket != null;
             return askServer("Join:"+name+":"+playerID, serverSocket);
@@ -105,7 +105,7 @@ public class GuestPlayer implements Player{
 
     public String getTile() {
         try {
-            if(this.serverSocket == null)
+            if(this.serverSocket == null || this.serverSocket.isClosed())
                 this.serverSocket = new Socket("localhost",hostServer.getPort());
 
             return askServer("GetTile:"+name+":"+playerID, serverSocket);

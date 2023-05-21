@@ -24,7 +24,7 @@ public class TestMain {
             guest3.setHostServer(host.getHostgameServer());
             guest4.setHostServer(host.getHostgameServer());
             System.out.println("trying to join game...." + guest.joinGame());
-//            System.out.println("trying to get tile..... " + guest.getTile()); TODO: fix this
+            System.out.println("trying to get tile..... " + guest.getTile());
 
 
 

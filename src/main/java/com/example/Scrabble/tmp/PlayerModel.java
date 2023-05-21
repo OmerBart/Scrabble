@@ -1,4 +1,4 @@
-package com.example.Scrabble.Model;
+package com.example.Scrabble.tmp;
 
 public class PlayerModel {
 

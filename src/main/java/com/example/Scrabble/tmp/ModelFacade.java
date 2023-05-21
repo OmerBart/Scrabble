@@ -1,4 +1,4 @@
-package com.example.Scrabble.Model;
+package com.example.Scrabble.tmp;
 
 import com.example.Scrabble.tmp.GuestModel;
 import com.example.Scrabble.tmp.HostModel;
