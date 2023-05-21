@@ -724,7 +724,7 @@ public class Board {
         int row = 0; // row iterator
         int column = 0; // column iterator
         //System.out.println(word);
-        if (boardLegal(word)) {
+        if (boardLegal(word) && dictionaryLegal(word)) {
             wordArray = getWords(word);
             for (Word w : wordArray) {
 //               // System.out.println(w);

@@ -12,13 +12,12 @@ public class GuestPlayer implements Player{
     private String name;
     private int playerID;
     private String serverAddress; // format "ip:port"
-    private MyServer hostServer;
     private Socket serverSocket;
 
 
-    public void setHostServer(MyServer hostServer) {
-        this.hostServer = hostServer;
-    }
+//    public void setHostServer(MyServer hostServer) {
+//        this.hostServer = hostServer;
+//    }
 
 
     private String askServer(String query, Socket serverSocket) {
@@ -55,10 +54,10 @@ public class GuestPlayer implements Player{
 
     public void setServerAddress(String serverAddress,int port) {
         this.serverAddress = serverAddress+":"+port;
-        System.out.println("server address set to: "+this.serverAddress);
+        //System.out.println("server address set to: "+this.serverAddress);
     }
-    public void setHost(MyServer host){
-        this.hostServer = host;
+    public void setHost(String hostname, int port){
+        setServerAddress(hostname, port);
     }
 
     public String getServerAddress() {
@@ -87,7 +86,7 @@ public class GuestPlayer implements Player{
     public String joinGame() {
         try {
             if(this.serverSocket == null || this.serverSocket.isClosed())
-                this.serverSocket = new Socket("localhost",hostServer.getPort());
+                this.serverSocket = new Socket(serverAddress.split(":")[0],Integer.parseInt(serverAddress.split(":")[1]));
 //            assert serverSocket != null;
             return askServer("Join:"+name+":"+playerID, serverSocket);
         } catch (IOException e) {
@@ -106,7 +105,7 @@ public class GuestPlayer implements Player{
     public String getTile() {
         try {
             if(this.serverSocket == null || this.serverSocket.isClosed())
-                this.serverSocket = new Socket("localhost",hostServer.getPort());
+                this.serverSocket = new Socket(serverAddress.split(":")[0],Integer.parseInt(serverAddress.split(":")[1]));
 
             return askServer("GetTile:"+name+":"+playerID, serverSocket);
     } catch (IOException e) {

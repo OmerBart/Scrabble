@@ -41,7 +41,7 @@ public class GameManager {
     }
 
     public String addPlayer(Player player){
-        if(playerList.contains(player) || playerList.size() > 4)
+        if(playerList.contains(player) || playerList.size() > 3)
             return "Player already in game or game is full";
         else{
             playerList.add(player);
