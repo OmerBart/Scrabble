@@ -134,7 +134,7 @@ public class Board {
         int r = 0; // row iterator
         boolean foo = false;
         boolean flag = false;
-//word.getRow() - r >= 0 && word.getRow() -r <= 14 && word.getCol() - c >= 0 && word.getCol() - c <= 14
+
         while(!flag){
 
             if(adj == 5){
@@ -198,19 +198,8 @@ public class Board {
                     tileArrayList.add(word.getTiles()[index]);
                 }
 
-                //    System.out.println("$$$$$ - " + tileArrayList.get(c) + " - $$$$$");
-                //   System.out.println("@@@@ - " + (boardState[head_row][head_column +c + 2] == null) + " - @@@@");
                 c++;
 
-//                    if (boardState[word.getRow() + index][word.getCol() + c + 1] == null) {
-//                        tileArrayList.add(boardState[word.getRow() + index][word.getCol() + c]);
-//                        return new Word(tileArrayList.toArray(Tile[]::new), head_row, head_column, !word.isVertical());
-//                    } else if (tileArrayList.isEmpty()) {
-//                        head_row = word.getRow() + index;
-//                        head_column = word.getCol();
-//                    }
-//                    tileArrayList.add(boardState[word.getRow() + index][word.getCol() + c]);
-//                    c++;
             }
             else if(adj == 4){
                 if (boardState[word.getRow() - r - 1][word.getCol() + index] == null || foo) {
@@ -234,9 +223,6 @@ public class Board {
                     }
 
 
-//                            else if(word.getTiles()[index] == null && boardState[head_row + r][head_column] != null)
-//                                tileArrayList.add(boardState[head_row + r][head_column]);
-
 
                     r++;
                     if (boardState[head_row][head_column+c] != null)
@@ -247,22 +233,7 @@ public class Board {
 
                 else
                     c++;
-//                    if (boardState[word.getRow() + index][word.getCol() - c - 1] == null || foo) {
-//                        if (tileArrayList.isEmpty()) {
-//                            head_row = word.getRow() + index;
-//                            head_column = word.getCol() - c;
-//                            foo = true;
-//                            tileArrayList.add(boardState[head_row][head_column]);
-//                            c = 0;
-//                        } else if (boardState[head_row][head_column + c + 1] == null) {
-//                            tileArrayList.add(word.getTiles()[index]);
-//                            return new Word(tileArrayList.toArray(Tile[]::new), head_row, head_column, !word.isVertical());
-//                        } else {
-//                            c++;
-//                            tileArrayList.add(boardState[head_row][head_column + c]);
-//                        }
-//                    } else
-//                        c++;
+
             }
             else if(adj == 8){
                 if (boardState[word.getRow() - r - 1][word.getCol() + index] == null || foo) {
@@ -286,8 +257,6 @@ public class Board {
                     }
 
 
-//                            else if(word.getTiles()[index] == null && boardState[head_row + r][head_column] != null)
-//                                tileArrayList.add(boardState[head_row + r][head_column]);
 
 
                     r++;
@@ -302,155 +271,7 @@ public class Board {
             }
             else
                 flag = true;
-//            switch (adj) {
-//                case 5 -> {
-//                    if(word.isVertical())
-//                        r = index;
-//                    else
-//                        c = index;
-//                    for(Tile x : word.getTiles()) {
-//                        if (x == null) {
-//                          //  System.out.println("$*$* - r: " + (word.getRow() + r) + " c: " + (word.getCol() + c) + " " + boardState[word.getRow() + r][word.getCol() + c]);
-//                            tileArrayList.add(boardState[word.getRow() + r][word.getCol() + c]);
-//                        }
-//                        else
-//                            tileArrayList.add(x);
-//                    }
-//                    return new Word(tileArrayList.toArray(Tile[]::new), word.getRow(), word.getCol(), word.isVertical());
-//                }
-//                case 2 -> {
-//                  if (tileArrayList.isEmpty()) {
-//                      head_row = word.getRow();
-//                      head_column = word.getCol() + index;
-//                  }
-//                    else if (boardState[head_row + r + 1][head_column] == null) {
-//                      // if 2 cases word tile not on board
-//                          tileArrayList.add(boardState[head_row + r][head_column]);
-//                      return new Word(tileArrayList.toArray(Tile[]::new), head_row, head_column, !word.isVertical());
-//                  }
-//
-//                      if (boardState[head_row + r][head_column] != null) {
-//                          tileArrayList.add(boardState[head_row + r][head_column]);
-//                      } else {
-//                          tileArrayList.add(word.getTiles()[index]);
-//                      }
-//
-//                    r++;
-//
-//
-//                }
-//
-//                case 6 -> {
-//                    if  (tileArrayList.isEmpty()) {
-//                        head_row = word.getRow() + index;
-//                        head_column = word.getCol();
-//                    }
-//                    if (boardState[head_row][head_column +c + 1] == null) {
-//                      //  System.out.println("Bout to return  ");
-//                        tileArrayList.add(boardState[head_row][head_column+c]);
-//                        return new Word(tileArrayList.toArray(Tile[]::new), head_row, head_column, !word.isVertical());
-//                    }
-//                    if(boardState[head_row][head_column+c] != null){
-//                        tileArrayList.add(boardState[head_row][head_column + c]);
-//                    }
-//                    else {
-//                        tileArrayList.add(word.getTiles()[index]);
-//                    }
-//
-//                    //    System.out.println("$$$$$ - " + tileArrayList.get(c) + " - $$$$$");
-//                     //   System.out.println("@@@@ - " + (boardState[head_row][head_column +c + 2] == null) + " - @@@@");
-//                    c++;
-//
-////                    if (boardState[word.getRow() + index][word.getCol() + c + 1] == null) {
-////                        tileArrayList.add(boardState[word.getRow() + index][word.getCol() + c]);
-////                        return new Word(tileArrayList.toArray(Tile[]::new), head_row, head_column, !word.isVertical());
-////                    } else if (tileArrayList.isEmpty()) {
-////                        head_row = word.getRow() + index;
-////                        head_column = word.getCol();
-////                    }
-////                    tileArrayList.add(boardState[word.getRow() + index][word.getCol() + c]);
-////                    c++;
-//                }
-//                case 4 -> {
-//                    if (boardState[word.getRow() - r - 1][word.getCol() + index] == null || foo) {
-//                        if (tileArrayList.isEmpty()) {
-//                            head_column = word.getCol() -c;
-//                            head_row = word.getRow() + index;
-//                            foo = true;
-//                            tileArrayList.add(boardState[head_row][head_column]);
-//                            c = 0;
-//                        } else if (boardState[head_row ][head_column+c+1] == null ) {
-//                            if(word.getTiles()[index] != null&&head_column+c + 1 == word.getCol()){
-//                                tileArrayList.add(word.getTiles()[index]);
-//                            }
-//                            return new Word(tileArrayList.toArray(Tile[]::new), head_row, head_column, !word.isVertical());
-//                        }
-//
-//
-////                            else if(word.getTiles()[index] == null && boardState[head_row + r][head_column] != null)
-////                                tileArrayList.add(boardState[head_row + r][head_column]);
-//
-//
-//                        r++;
-//                        if (boardState[head_row][head_column+c] != null)
-//                            tileArrayList.add(boardState[head_row ][head_column+c]);
-//                        else
-//                            tileArrayList.add(word.getTiles()[index]);
-//                    }
-//
-//                    else
-//                        c++;
-////                    if (boardState[word.getRow() + index][word.getCol() - c - 1] == null || foo) {
-////                        if (tileArrayList.isEmpty()) {
-////                            head_row = word.getRow() + index;
-////                            head_column = word.getCol() - c;
-////                            foo = true;
-////                            tileArrayList.add(boardState[head_row][head_column]);
-////                            c = 0;
-////                        } else if (boardState[head_row][head_column + c + 1] == null) {
-////                            tileArrayList.add(word.getTiles()[index]);
-////                            return new Word(tileArrayList.toArray(Tile[]::new), head_row, head_column, !word.isVertical());
-////                        } else {
-////                            c++;
-////                            tileArrayList.add(boardState[head_row][head_column + c]);
-////                        }
-////                    } else
-////                        c++;
-//                }
-//                case 8 -> {
-//                    if (boardState[word.getRow() - r - 1][word.getCol() + index] == null || foo) {
-//                        if (tileArrayList.isEmpty()) {
-//                            head_column = word.getCol() + index;
-//                            head_row = word.getRow() - r;
-//                            foo = true;
-//                            tileArrayList.add(boardState[head_row][head_column]);
-//                            r = 0;
-//                        } else if (boardState[head_row + r + 1][head_column] == null ) {
-//                            if(word.getTiles()[index] != null&&head_row + r + 1 == word.getRow()){
-//                                tileArrayList.add(word.getTiles()[index]);
-//                            }
-//                            return new Word(tileArrayList.toArray(Tile[]::new), head_row, head_column, !word.isVertical());
-//                        }
-//
-//
-////                            else if(word.getTiles()[index] == null && boardState[head_row + r][head_column] != null)
-////                                tileArrayList.add(boardState[head_row + r][head_column]);
-//
-//
-//                    r++;
-//                    if (boardState[head_row + r][head_column] != null)
-//                        tileArrayList.add(boardState[head_row + r][head_column]);
-//                    else
-//                        tileArrayList.add(word.getTiles()[index]);
-//                }
-//
-//                    else
-//                        r++;
-//                }
-//                default -> flag = true;
-//
-//
-//            }
+
 
         }
 
@@ -484,16 +305,9 @@ public class Board {
                 count1 = 5;
 
             w = getFull(word,i,adj[i]);
-//            if(w == word) // meaning we got the original word back, not interested in that
-//                continue;
-            //word.printWord();
-//            if(w != null) {
-//                w.printWord();
-//            }
-//            System.out.println("Is it in? " + !boardWords.contains(w));
+
                 if (!boardWords.contains(w)) {
-                    //boardWords.add(w);
-                    //boardWords.add(w);
+
                     wordArray.add(w);
                 }
             //}
@@ -504,15 +318,7 @@ public class Board {
             wordArray.add(word);
 
 
-//            for (Word t : wordArray) {
-//                System.out.println("size of wordArray: " + wordArray.size());
-//                if(t != null) {
-//                    for (Tile z : t.getTiles()) {
-//
-//                        System.out.println(z);
-//                    }
-//                }
-//            }
+
 
 
         return wordArray;
@@ -523,104 +329,54 @@ public class Board {
 
 
     private int[] getAdj(Word word) {
-        boolean flag;
-        boolean foo;
         int head_row = word.getRow();
         int head_col = word.getCol();
 
         int c = 0; // column iterator
         int r = 0; // row iterator
-//        for(Tile tt : word.getTiles())
-//            System.out.println(tt);
 
         int[] adj = new int[word.getTiles().length];
 
         for (int i = 0; i < word.getTiles().length; i++) {
-            flag = word.getCol() + c > 0 && word.getCol() + c < 14 && word.getRow() + r > 0 && word.getRow() + r < 14;
+            boolean flag = word.getCol() + c > 0 && word.getCol() + c < 14 && word.getRow() + r > 0 && word.getRow() + r < 14;
 
-
-                if (word.isVertical()) {
-                    if(word.getTiles()[i] == null || boardState[head_row+i][head_col] == word.getTiles()[i]){
-                        adj[i] = 5;
-                        r++;
-                        continue;
-                    }
-                    else if (r == 0 && flag) {
-                        if (boardState[head_row - 1][head_col] != null) {
-                            adj[i] = 8;
-                            r++;
-                            continue;
-                        }
-                    }
+            if (word.isVertical()) {
+                if (word.getTiles()[i] == null || boardState[head_row + i][head_col] == word.getTiles()[i]) {
+                    adj[i] = 5;
                     r++;
+                    continue;
+                } else if (r == 0 && flag && boardState[head_row - 1][head_col] != null) {
+                    adj[i] = 8;
+                    r++;
+                    continue;
                 }
-                else {
-                    if (word.getTiles()[i] == null || boardState[head_row][head_col+i] == word.getTiles()[i]){
-                        adj[i] = 5;
-                        c++;
-                        continue;
-                    }
-                    else if (c == 0 && flag)
-                        if (boardState[head_row][head_col - 1] != null) {
-                            adj[i] = 4;
-                            c++;
-                            continue;
-                        }
+                r++;
+            } else {
+                if (word.getTiles()[i] == null || boardState[head_row][head_col + i] == word.getTiles()[i]) {
+                    adj[i] = 5;
                     c++;
+                    continue;
+                } else if (c == 0 && flag && boardState[head_row][head_col - 1] != null) {
+                    adj[i] = 4;
+                    c++;
+                    continue;
                 }
-
-
-                if (!word.isVertical()) {
-
-                    if ((foo = boardState[head_row - 1][head_col + i] != null)|| boardState[head_row + 1][head_col + i] != null) {
-                        if (foo) {
-                            adj[i] = 8;
-                        } else {
-                            adj[i] = 2;
-                        }
-                    } else
-                        adj[i] = 0;
-
-                } else {
-                    if ((foo = boardState[head_row + i][head_col - 1] != null) || boardState[head_row + i][head_col + 1] != null) {
-                        if (foo)
-                            adj[i] = 4;
-                        else
-                            adj[i] = 6;
-                    } else
-                        adj[i] = 0;
-
-                }
-
-
-//                if ((foo = flag && boardState[word.getRow() - i][word.getCol() - 1] != null && boardState[word.getRow() - i][word.getCol() - 1] != word.getTiles()[i]) || flag && boardState[word.getRow() - 1][word.getCol() + i] != null && boardState[word.getRow() - 1][word.getCol() + i] != word.getTiles()[i]) {
-//                    if (foo)
-//                        adj[i] = 4;
-//                    else {
-//                        System.out.println("&X&X&X " + boardState[word.getRow() - 1][word.getCol() + i] + " &X&X&X");
-//                        System.out.println("row: " + (word.getRow() - 1) + " column: " + (word.getCol() + i));
-//                        adj[i] = 8;
-//                    }
-//                } else if ((foo = boardState[word.getRow() + i][word.getCol() + 1] != null )|| boardState[word.getRow() + 1][word.getCol() + i] != null && boardState[word.getRow() + 1][word.getCol() + i] != word.getTiles()[i]) {
-//                    if (foo) {
-//                        //if(word.getRow() - i == 11 )
-//
-//                        adj[i] = 6;
-//                    }
-//                    else
-//                        adj[i] = 2;
-//                } else
-//                    adj[i] = 0;
-//            }
-
-
-//        for(int x : adj)
-//            System.out.println(x);
-
+                c++;
             }
 
-            return adj;
+            boolean foo;
+            if (!word.isVertical()) {
+                foo = boardState[head_row - 1][head_col + i] != null || boardState[head_row + 1][head_col + i] != null;
+                adj[i] = foo ? 8 : 2;
+            } else {
+                foo = boardState[head_row + i][head_col - 1] != null || boardState[head_row + i][head_col + 1] != null;
+                adj[i] = foo ? 4 : 6;
+            }
         }
+
+        return adj;
+    }
+
 
 
     public int getScore(Word word){
@@ -723,7 +479,7 @@ public class Board {
         int totalScore = 0;
         int row = 0; // row iterator
         int column = 0; // column iterator
-        //System.out.println(word);
+
         if (boardLegal(word) && dictionaryLegal(word)) {
             wordArray = getWords(word);
             for (Word w : wordArray) {
@@ -736,9 +492,7 @@ public class Board {
             }
         } else
             return 0;
-            //System.out.println("WHAT");
-        // System.out.println(totalScore);
-        //int count = 0;
+
         Tile.Bag b = Tile.Bag.getBag();
         for (Tile x : word.getTiles()) {
             if (x != null)
