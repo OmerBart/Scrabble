@@ -3,6 +3,8 @@ package com.example.Scrabble.Model;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class GuestPlayer implements Player {
@@ -10,6 +12,7 @@ public class GuestPlayer implements Player {
     private int playerID;
     private String serverAddress; // format "ip:port"
     private Socket serverSocket;
+    private List<String> playerTiles;
 
     public GuestPlayer() {
     }
@@ -44,12 +47,17 @@ public class GuestPlayer implements Player {
 
     public String joinGame() {
         openSocketIfClosed();
-        return sendRequestToServer("Join:" + name + ":" + playerID);
+        return sendRequestToServer("JoinGame:" + name + ":" + playerID);
+
     }
 
     public String getTile() {
         openSocketIfClosed();
-        return sendRequestToServer("GetTile:" + name + ":" + playerID);
+        if(playerTiles == null)
+            playerTiles = new ArrayList<>();
+        String tile = sendRequestToServer("GetTile:"+name+":"+playerID);
+        playerTiles.add(tile);
+        return tile;
     }
 
     public void disconnectFromServer() {
@@ -84,10 +92,19 @@ public class GuestPlayer implements Player {
 
             // Receive the response from the server
             String res = in.nextLine();
+            in.close();
+            out.close();
             return res;
         } catch (IOException e) {
             throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
         }
+    }
+    public String printTiles(){
+        StringBuilder tiles = new StringBuilder();
+        for(String tile: playerTiles){
+            tiles.append(tile).append(" ");
+        }
+        return tiles.toString();
     }
 
     @Override

@@ -19,6 +19,7 @@ public class TestMain {
             GuestPlayer guest4 = new GuestPlayer("TheGuest4", 5);
             GameManager GM = GameManager.get();
 
+
             guest.setServerAddress("localhost",host.getHostgameServer().getPort());
             guest2.setServerAddress("localhost",host.getHostgameServer().getPort());
             guest3.setServerAddress("localhost",host.getHostgameServer().getPort());
@@ -31,12 +32,17 @@ public class TestMain {
 
 
             System.out.println("giving each player 7 tiles");
-            for(int i = 0; i<7;i++){
+            for(int i = 0; i<9;i++){
+                host.getTile();
                 guest.getTile();
                 guest2.getTile();
                 guest3.getTile();
-                guest4.getTile();
             }
+            System.out.println(host.printTiles());
+            System.out.println(guest.printTiles());
+            System.out.println(guest2.printTiles());
+            System.out.println(guest3.printTiles());
+
 
 
 

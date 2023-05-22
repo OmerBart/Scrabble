@@ -19,7 +19,7 @@ public class PlayerHandler implements ClientHandler {
             out = new PrintWriter(outToClient, true);
             String line = in.readLine();
             if(line.contains("GetTile")){
-                out.println(GM.getTilefromBag());
+                out.println(GM.getTilefromBag().toString());
                 out.flush();
             }
             if(line.contains("boardState")){

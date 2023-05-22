@@ -17,6 +17,7 @@ public class GameManager {
     MyServer hostServer;
     MyServer IOserver;
     private Board gameBoard;
+    private Tile.Bag bag;
 
 
     private static GameManager single_instance = null;
@@ -34,6 +35,7 @@ public class GameManager {
         playerList = new LinkedList<>();
         gameBoard = Board.getBoard();
         this.IOserver = new MyServer(6000 + r.nextInt(6000), new BookScrabbleHandler());
+        bag = Tile.Bag.getBag();
     }
     public void setHost(MyServer hostServer, Player hostplayer) {
         this.hostServer = hostServer;
@@ -41,10 +43,13 @@ public class GameManager {
     }
 
     public String addPlayer(Player player){
-        if(playerList.contains(player) || playerList.size() > 3)
+        if(playerList.contains(player) || playerList.size() > 3) {
+           // System.out.println("from addplayer >3");
             return "Player already in game or game is full";
+        }
         else{
             playerList.add(player);
+           // System.out.println("added player: " + playerList.getLast().toString());
             return "Player added" + playerList.getLast().toString();
         }
     }
@@ -52,7 +57,7 @@ public class GameManager {
         return gameBoard.getPrintableBoard();
     }
     public Tile getTilefromBag(){
-        return Tile.Bag.getBag().getRand();
+        return bag.getRand();
     }
 
     public void stopGame() {
