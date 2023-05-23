@@ -55,7 +55,7 @@ public class GameManager {
     }
     public String getTilefromBag(){
         Tile t = bag.getRand();
-        System.out.println(Arrays.toString(Tile.Bag.getBag().getQuantities()));
+        //System.out.println(Arrays.toString(Tile.Bag.getBag().getQuantities()));
         if(t == null)
             return "Bag is empty";
         else
