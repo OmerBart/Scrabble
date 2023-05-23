@@ -5,14 +5,10 @@ import com.example.Scrabble.ScrabbleServer.MyServer;
 
 import java.util.Random;
 
-public class HostPlayer extends GuestPlayer{
+public class HostPlayer extends GuestPlayer {
 
     private final MyServer HostgameServer;
     private GameManager GM;
-
-
-
-
 
     public HostPlayer(Player player) {
         super(player);
@@ -25,18 +21,19 @@ public class HostPlayer extends GuestPlayer{
         GM = GameManager.get();
         GM.setHost(HostgameServer, this);
     }
+
     public MyServer getHostgameServer() {
         return HostgameServer;
     }
-    public void stopGame(){
+
+    public void stopGame() {
         GM.stopGame();
         HostgameServer.close();
     }
 
     @Override
     public String toString() {
-        return "HostPlayer|"+getName()+"|"+getPlayerID()+"|"+getServerAddress()+"|" ;
+        return "HostPlayer|" + getName() + "|" + getPlayerID() + "|" + getServerAddress() + "|";
     }
-
 
 }

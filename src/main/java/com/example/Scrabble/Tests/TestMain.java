@@ -1,4 +1,4 @@
-package com.example.Scrabble.Test;
+package com.example.Scrabble.Tests;
 
 
 import com.example.Scrabble.Game.GameManager;
