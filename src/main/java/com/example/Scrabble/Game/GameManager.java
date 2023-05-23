@@ -1,14 +1,11 @@
-package com.example.Scrabble.Model;
+package com.example.Scrabble.Game;
 
-import com.example.Scrabble.Game.Board;
-import com.example.Scrabble.Game.Tile;
-import com.example.Scrabble.Game.Word;
+import com.example.Scrabble.Model.Player;
 import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
 import com.example.Scrabble.ScrabbleServer.MyServer;
 
-import java.util.LinkedHashMap;
+import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Random;
 
 public class GameManager {
@@ -56,8 +53,13 @@ public class GameManager {
     public String getGameBoard() {
         return gameBoard.getPrintableBoard();
     }
-    public Tile getTilefromBag(){
-        return bag.getRand();
+    public String getTilefromBag(){
+        Tile t = bag.getRand();
+        System.out.println(Arrays.toString(Tile.Bag.getBag().getQuantities()));
+        if(t == null)
+            return "Bag is empty";
+        else
+            return t.toString();
     }
 
     public void stopGame() {

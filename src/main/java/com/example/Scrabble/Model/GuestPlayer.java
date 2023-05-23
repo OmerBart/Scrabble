@@ -101,10 +101,14 @@ public class GuestPlayer implements Player {
     }
     public String printTiles(){
         StringBuilder tiles = new StringBuilder();
-        for(String tile: playerTiles){
-            tiles.append(tile).append(" ");
+        if(playerTiles == null)
+            return "";
+           else {
+            for (String tile : playerTiles) {
+                tiles.append(tile).append(" ");
+            }
+            return tiles.toString();
         }
-        return tiles.toString();
     }
 
     @Override

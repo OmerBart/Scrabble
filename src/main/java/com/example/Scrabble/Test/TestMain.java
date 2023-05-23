@@ -1,10 +1,8 @@
 package com.example.Scrabble.Test;
 
 
-import com.example.Scrabble.Model.GameManager;
+import com.example.Scrabble.Game.GameManager;
 import com.example.Scrabble.Model.GuestPlayer;
-import com.example.Scrabble.Model.Player;
-import com.example.Scrabble.tmp.HostModel;
 import com.example.Scrabble.Model.HostPlayer;
 
 // import java.util.Random;
@@ -32,7 +30,7 @@ public class TestMain {
 
 
             System.out.println("giving each player 7 tiles");
-            for(int i = 0; i<9;i++){
+            for(int i = 0; i<13;i++){
                 host.getTile();
                 guest.getTile();
                 guest2.getTile();

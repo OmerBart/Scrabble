@@ -60,14 +60,14 @@ public class Tile {
                 single_instance = new Bag();
             return single_instance;
         }
-        private boolean isEmpty(){ //returns true if bag is empty
-            int count=0;
-            for (int x : this.tileCount){
-                if (x == 0)
-                    count++;
+        private boolean isEmpty() {
+            // Check if all tile types have been exhausted (count = 0)
+            for (int count : tileCount) {
+                if (count > 0) {
+                    return false; // At least one type of tile is still available
+                }
             }
-            return count == 25;
-
+            return true; // All tile types have been exhausted
         }
         private boolean maxTile(Tile tile){ //returns true if max legal amount of tile already in bag
             int[] legalTileCount = new int[]{9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1};
@@ -76,16 +76,22 @@ public class Tile {
         private boolean legalLetter(char letter){//returns true is letter is in legal range
             return letter >= 'A' && letter <= 'Z';
         }
-        public Tile getRand(){
-            Random r = new Random(); //new random object r
-            int t; //random tile index
-            while(!isEmpty()){
-                if((t=this.tileCount[r.nextInt(26)]) > 0) {
-                    this.tileCount[t]--;
-                    return this.tileArray[t];
+        public Tile getRand() {
+            Random r = new Random(); // Create a new random object r
+            int t; // Random tile index
+
+            // Check if there are any available tiles
+            while (!isEmpty()) {
+                t = r.nextInt(26); // Generate a random index between 0 and 25
+
+                // Check if the randomly selected tile type has available tiles
+                if (tileCount[t] > 0) {
+                    tileCount[t]--; // Decrement the count of available tiles for the selected type
+                    return tileArray[t]; // Return the corresponding tile object
                 }
             }
-            return null;
+
+            return null; // Return null if there are no available tiles
         }
         public Tile getTile(char letter){
             if(!legalLetter(letter))

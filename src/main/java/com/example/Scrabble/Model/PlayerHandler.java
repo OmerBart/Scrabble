@@ -1,5 +1,6 @@
 package com.example.Scrabble.Model;
 
+import com.example.Scrabble.Game.GameManager;
 import com.example.Scrabble.ScrabbleServer.ClientHandler;
 
 import java.io.*;
@@ -15,12 +16,20 @@ public class PlayerHandler implements ClientHandler {
     public void handleClient(InputStream inFromclient, OutputStream outToClient) {
         GM = GameManager.get();
         try {
+            String s;
             in = new BufferedReader(new InputStreamReader(inFromclient));
             out = new PrintWriter(outToClient, true);
             String line = in.readLine();
             if(line.contains("GetTile")){
-                out.println(GM.getTilefromBag().toString());
-                out.flush();
+                if((s = GM.getTilefromBag()) == null) {
+                    out.println("Bag is empty");
+                    out.flush();
+                }
+                else{
+
+                    out.println(GM.getTilefromBag());
+                    out.flush();
+                }
             }
             if(line.contains("boardState")){
                 out.println(GM.getGameBoard());
