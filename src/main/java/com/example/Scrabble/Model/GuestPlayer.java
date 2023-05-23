@@ -21,10 +21,19 @@ public class GuestPlayer implements Player {
         this.name = player.getName();
         this.playerID = player.getPlayerID();
     }
+    public GuestPlayer(Player player, String serverAddress) {
+        this.name = name;
+        this.serverAddress = serverAddress;
+    }
 
     public GuestPlayer(String name, int playerID) {
         this.name = name;
         this.playerID = playerID;
+    }
+    public GuestPlayer(String name, int playerID, String serverAddress) {
+        this.name = name;
+        this.playerID = playerID;
+        this.serverAddress = serverAddress;
     }
 
     public void setServerAddress(String serverAddress, int port) {
@@ -58,6 +67,10 @@ public class GuestPlayer implements Player {
         String tile = sendRequestToServer("GetTile:"+name+":"+playerID);
         playerTiles.add(tile);
         return tile;
+    }
+    public String placeWord(String word, int x, int y, boolean isHorizontal){
+        openSocketIfClosed();
+        return sendRequestToServer("PlaceWord:"+name+":"+playerID+":"+word+":"+x+":"+y+":"+isHorizontal);
     }
 
     public void disconnectFromServer() {

@@ -41,6 +41,19 @@ public class PlayerHandler implements ClientHandler {
             if(line.contains("printPlayers")){
                 out.println(GM.printPlayers());
             }
+            if (line.contains("stopGame")){
+                GM.stopGame();
+            }
+            if(line.contains("getScore")){
+                out.println(GM.getScore());
+            }
+            if(line.contains("getTurn")){
+                out.println(GM.getTurn());
+            }
+            if(line.contains("Word")){
+                String[] arg = line.split(":");
+                out.println(GM.placeWord(arg[1]));
+            }
 
 
             //logic for handling the model requests goes here (i.e. the logic for the model)

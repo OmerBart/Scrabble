@@ -4,13 +4,15 @@ import com.example.Scrabble.Model.Player;
 import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
 import com.example.Scrabble.ScrabbleServer.MyServer;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Random;
+import java.util.*;
 
 public class GameManager {
 
-    private LinkedList<Player> playerList;
+    //private LinkedList<Player> playerList;
+    private ArrayList<Player> playerList;
+    private LinkedHashMap <Player, Integer> playerScores;
+    private LinkedHashMap <Player, Tile> playerTiles;
+
     MyServer hostServer;
     MyServer IOserver;
     private Board gameBoard;
@@ -29,7 +31,7 @@ public class GameManager {
 
     private GameManager(){
         Random r = new Random();
-        playerList = new LinkedList<>();
+        playerList = new ArrayList<>();
         gameBoard = Board.getBoard();
         this.IOserver = new MyServer(6000 + r.nextInt(6000), new BookScrabbleHandler());
         bag = Tile.Bag.getBag();
@@ -40,26 +42,27 @@ public class GameManager {
     }
 
     public String addPlayer(Player player){
+
         if(playerList.contains(player) || playerList.size() > 3) {
            // System.out.println("from addplayer >3");
-            return "Player already in game or game is full";
+            return "Player already in game or game is full!";
         }
         else{
             playerList.add(player);
            // System.out.println("added player: " + playerList.getLast().toString());
-            return "Player added" + playerList.getLast().toString();
+            return "Player added to game successfully";
         }
     }
     public String getGameBoard() {
         return gameBoard.getPrintableBoard();
     }
-    public String getTilefromBag(){
+    public String getTilefromBag(Player player){
         Tile t = bag.getRand();
         //System.out.println(Arrays.toString(Tile.Bag.getBag().getQuantities()));
         if(t == null)
-            return "Bag is empty";
+            return "Bag is empty!";
         else
-            return t.toString();
+            return "Got: " + t.toString();
     }
 
     public void stopGame() {
@@ -69,6 +72,10 @@ public class GameManager {
 
     public String printPlayers() {
         return playerList.toString();
+    }
+
+    public int getScore(Player player) {
+        return
     }
 
 
