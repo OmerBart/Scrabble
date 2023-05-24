@@ -2,7 +2,19 @@
 Scrabble game built using Java 
 By Omer, Hadar, and Eilon
 
-
+# Division to teams
+- Model
+   * Omer, Eilon
+- Scrum Master
+   * Hadar
+-  QA
+   * Eilon
+- Server
+   * Omer
+- View
+   * Hadar
+- View Model
+   * Eilon
 
 # First MileStone 
 
