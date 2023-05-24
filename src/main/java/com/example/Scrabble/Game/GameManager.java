@@ -104,7 +104,7 @@ public class GameManager {
             return -1;
         else {
             //String[] s = word.split("(?!^)");
-            char[] carr = word.toCharArray();
+            char[] carr = word.toUpperCase().toCharArray();
             Tile tt;
             Tile[] wordTiles = new Tile[word.length()];
             for (char c : carr) {
@@ -114,7 +114,7 @@ public class GameManager {
                     wordTiles[word.indexOf(c)] = tt;
 
                 } catch (NoSuchElementException e) {
-                    return -1;
+                    System.out.println("you do not have the letters for the word in your hand");
                 }
             }
             //Word wordT = new Word(wordTiles, x, y, isHorizontal);
