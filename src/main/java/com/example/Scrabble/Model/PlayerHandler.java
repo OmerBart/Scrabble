@@ -20,8 +20,8 @@ public class PlayerHandler implements ClientHandler {
             in = new BufferedReader(new InputStreamReader(inFromclient));
             out = new PrintWriter(outToClient, true);
             String line = in.readLine();
-            if(line.contains("GetTile")){
-                String playerName = line.split("GetTile:")[1];
+            if(line.contains("getTile:")){
+                String playerName = line.split("getTile:")[1];
                 if((s = GM.getTilefromBag(playerName)) == null) {
                     out.println("Bag is empty");
                     out.flush();
@@ -35,7 +35,7 @@ public class PlayerHandler implements ClientHandler {
             if(line.contains("boardState")){
                 out.println(GM.getGameBoard());
             }
-            if(line.contains("Join")){
+            if(line.contains("join")){
                 String[] arg = line.split(":");
                 out.println(GM.addPlayer(new GuestPlayer(arg[1],Integer.parseInt(arg[2]))));
             }
@@ -49,6 +49,10 @@ public class PlayerHandler implements ClientHandler {
                 String playerName = line.split("getScore:")[1];
                 //System.out.println(playerName);
                 out.println(GM.getScore(playerName));
+            }
+            if(line.contains("placeWord")){
+                String[] arg = line.split(":");
+                out.println(GM.placeWord(arg[1]));
             }
 //            if(line.contains("getTurn")){
 //                out.println(GM.getTurn());

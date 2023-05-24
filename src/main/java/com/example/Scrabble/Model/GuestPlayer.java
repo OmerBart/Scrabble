@@ -59,7 +59,7 @@ public class GuestPlayer implements Player {
 
     public String joinGame() {
         openSocketIfClosed();
-        return sendRequestToServer("JoinGame:" + name + ":" + playerID);
+        return sendRequestToServer("joinGame:" + name + ":" + playerID);
 
     }
     public int getScore(){
@@ -71,13 +71,13 @@ public class GuestPlayer implements Player {
         openSocketIfClosed();
         if(playerTiles == null)
             playerTiles = new ArrayList<>();
-        String tile = sendRequestToServer("GetTile:"+name+":"+playerID);
+        String tile = sendRequestToServer("getTile:"+name+":"+playerID);
         playerTiles.add(tile);
         return tile;
     }
     public String placeWord(String word, int x, int y, boolean isHorizontal){
         openSocketIfClosed();
-        return sendRequestToServer("PlaceWord:"+name+":"+playerID+":"+word+":"+x+":"+y+":"+isHorizontal);
+        return sendRequestToServer("placeWord:"+name+":"+playerID+":"+word+":"+x+":"+y+":"+isHorizontal);
     }
 
     public void disconnectFromServer() {

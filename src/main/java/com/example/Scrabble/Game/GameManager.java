@@ -11,7 +11,7 @@ public class GameManager {
     //private LinkedList<Player> playerList;
     private ArrayList<Player> playerList;
     private LinkedHashMap <String, Integer> playerScores; //key: name+ID, value: score
-    private LinkedHashMap <String, Tile[]> playerTiles; //key: name+ID, value: array of tiles
+    private LinkedHashMap <String, LinkedHashMap<Tile,List<Tile>>> playerTiles; //key: name+ID, value: array of tiles
 
     MyServer hostServer;
     MyServer IOserver;
@@ -61,8 +61,13 @@ public class GameManager {
         //System.out.println(Arrays.toString(Tile.Bag.getBag().getQuantities()));
         if(t == null)
             return "Bag is empty!";
-        else
+        else {
+            if(!playerTiles.containsKey(playerName))
+                playerTiles.put(playerName, new LinkedHashMap<>());
+            playerTiles.get(playerName).
+            playerTiles;
             return "Got: " + t.toString();
+        }
     }
 
     public void stopGame() {
@@ -77,6 +82,9 @@ public class GameManager {
     public String getScore(String playerName) {
         //System.out.println(playerName);
         return Integer.toString(10);
+    }
+    public int placeWord(String playername, int x, int y, String word, boolean isHorizontal){
+        return gameBoard.tryPlaceWord();
     }
 
 
