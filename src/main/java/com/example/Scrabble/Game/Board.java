@@ -119,7 +119,7 @@ public class Board {
     }
 
     public boolean  dictionaryLegal(Word word){
-        return true;
+        return true; //send to IO server
     }
 
     private Word getFull(Word word, int index, int adj){

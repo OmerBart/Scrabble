@@ -26,7 +26,7 @@ public class TestMain {
             System.out.println("trying to join game...." + guest2.joinGame());
             System.out.println("trying to join game...." + guest3.joinGame());
             System.out.println("trying to join game...." + guest4.joinGame());
-
+            //System.out.println(guest3.getScore());
 
 
             System.out.println("giving each player 7 tiles");
@@ -40,6 +40,7 @@ public class TestMain {
             System.out.println(guest.printTiles());
             System.out.println(guest2.printTiles());
             System.out.println(guest3.printTiles());
+
 
 
 

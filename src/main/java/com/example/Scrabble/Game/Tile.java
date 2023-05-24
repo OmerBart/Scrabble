@@ -121,4 +121,8 @@ public class Tile {
 
 
     }
+
+    public char getLetter() {
+        return letter;
+    }
 }
