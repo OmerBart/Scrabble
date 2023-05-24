@@ -17,6 +17,11 @@ public class CommandFactory {
                 return new JoinCommand(playerName, playerID);
             }
         }
+        else if (request.contains("startGame")) {
+            String playerName = request.split(":")[1];
+            return new StartGameCommand(playerName);
+        }
+
         // Add more conditions to handle other commands
         return null;
     }
@@ -56,6 +61,19 @@ public class CommandFactory {
         public String execute() {
             GameManager GM = GameManager.get();
             return GM.addPlayer(new GuestPlayer(playerName, playerID));
+        }
+    }
+
+    private class StartGameCommand implements Command {
+        private String playerName;
+
+        public StartGameCommand(String playerName) {
+            this.playerName = playerName;
+        }
+        @Override
+        public String execute() {
+            GameManager GM = GameManager.get();
+            return GM.startGame(playerName);
         }
     }
 }
