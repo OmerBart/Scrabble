@@ -50,10 +50,10 @@ public class PlayerHandler implements ClientHandler {
                 //System.out.println(playerName);
                 out.println(GM.getScore(playerName));
             }
-            if(line.contains("placeWord")){
-                String[] arg = line.split(":");
-                out.println(GM.placeWord(arg[1]));
-            }
+//            if(line.contains("placeWord")){
+//                String[] arg = line.split(":");
+//                out.println(GM.placeWord(arg[1]));
+//            }
 //            if(line.contains("getTurn")){
 //                out.println(GM.getTurn());
 //            }
