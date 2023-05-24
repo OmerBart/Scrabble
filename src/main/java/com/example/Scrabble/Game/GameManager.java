@@ -99,9 +99,9 @@ public class GameManager {
         //System.out.println(playerName);
         return Integer.toString(10);
     }
-    public int placeWord(String playername, int x, int y, String word, boolean isHorizontal){
+    public String placeWord(String playername, String word, int x, int y, boolean isHorizontal){
         if(playerTiles.get(playername).size() < word.length())
-            return -1;
+            return Integer.toString(0);
         else {
             //String[] s = word.split("(?!^)");
             char[] carr = word.toUpperCase().toCharArray();
@@ -111,10 +111,11 @@ public class GameManager {
                 try {
                     tt = playerTiles.get(playername).stream().filter(t -> t.getLetter() == c).findFirst().get();
                     playerTiles.get(playername).remove(tt);
-                    wordTiles[word.indexOf(c)] = tt;
+                    wordTiles[word.indexOf(c)+1] = tt;
 
                 } catch (NoSuchElementException e) {
                     System.out.println("you do not have the letters for the word in your hand");
+                    return Integer.toString(0);
                 }
             }
             //Word wordT = new Word(wordTiles, x, y, isHorizontal);
@@ -125,10 +126,10 @@ public class GameManager {
             }
             else {
                 playerScores.put(playername, playerScores.get(playername) + score);
-                return score;
+                return Integer.toString(score);
             }
         }
-        return 0; //to remove
+        return Integer.toString(0); //to remove
        // return gameBoard.tryPlaceWord()
     }
 
