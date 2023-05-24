@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,6 +19,10 @@ public class GuestPlayer implements Player {
 
 
     public GuestPlayer() {
+    }
+    public String startGame() {
+        openSocketIfClosed();
+        return sendRequestToServer("startGame:" + name + ":" + playerID);
     }
 
     public GuestPlayer(Player player) {
@@ -107,6 +112,7 @@ public class GuestPlayer implements Player {
             Scanner in = new Scanner(serverSocket.getInputStream());
 
             // Send the request to the server
+
             out.println(request);
             out.flush();
 
@@ -130,6 +136,16 @@ public class GuestPlayer implements Player {
             }
             return tiles.toString();
         }
+    }
+    public boolean queryIO(String... Args){
+        openSocketIfClosed();
+        String request = String.join(",", Args);
+        return Boolean.parseBoolean(sendRequestToServer("Q," + request));
+    }
+    public boolean challangeIO(String...Args){
+        openSocketIfClosed();
+        String request = String.join(",", Args);
+        return Boolean.parseBoolean(sendRequestToServer("C," + request));
     }
 
     @Override
