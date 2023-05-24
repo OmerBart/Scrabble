@@ -24,17 +24,20 @@ class HostPlayerTest {
 
     @Test
     void getHostgameServer() {
+        System.out.println("HostPlayerTest: getHostgameServer()");
         assertNotNull(hostPlayer.getHostgameServer());
     }
 
     @Test
     void stopGame() {
+        System.out.println("HostPlayerTest: stopGame()");
         hostPlayer.stopGame();
         assertEquals(true, hostPlayer.getHostgameServer().isStop());
     }
 
     @Test
     void testToString() {
+        System.out.println("HostPlayerTest: testToString()");
         assertEquals("HostPlayer|test|1|localhost:", hostPlayer.toString().substring(0, 28));
     }
 }

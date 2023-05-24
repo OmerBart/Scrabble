@@ -33,7 +33,7 @@ public class GuestPlayerTest {
 
     @Test
     void getServerAddress() {
-        assertEquals("localhost:", guestPlayer.getServerAddress().substring(0, 9));
+        assertEquals("localhost:", guestPlayer.getServerAddress().substring(0, 10));
     }
 
     @Test
