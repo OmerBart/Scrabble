@@ -119,7 +119,7 @@ public class Board {
     }
 
     public boolean  dictionaryLegal(Word word){
-        return true;
+        return true; //send to IO server
     }
 
     private Word getFull(Word word, int index, int adj){
@@ -482,6 +482,19 @@ public class Board {
 
         if (boardLegal(word) && dictionaryLegal(word)) {
             wordArray = getWords(word);
+            for (Tile x : word.getTiles()) {
+                if (x != null&&word.isVertical()) {
+                    boardState[word.getRow() + row][word.getCol() + column] = x;
+                    row++;
+                }
+
+//            if (word.isVertical())
+//                row++;
+                else
+                    column++;
+
+            }
+
             for (Word w : wordArray) {
 //               // System.out.println(w);
 
@@ -493,17 +506,8 @@ public class Board {
         } else
             return 0;
 
-        Tile.Bag b = Tile.Bag.getBag();
-        for (Tile x : word.getTiles()) {
-            if (x != null)
-                boardState[word.getRow() + row][word.getCol() + column] = x;
+        //Tile.Bag b = Tile.Bag.getBag();
 
-            if (word.isVertical())
-                row++;
-            else
-                column++;
-
-        }
 
         return totalScore;
 

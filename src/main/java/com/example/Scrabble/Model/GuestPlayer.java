@@ -1,9 +1,12 @@
 package com.example.Scrabble.Model;
 
+import javafx.beans.property.StringProperty;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,17 +17,31 @@ public class GuestPlayer implements Player {
     private Socket serverSocket;
     private List<String> playerTiles;
 
+
     public GuestPlayer() {
+    }
+    public String startGame() {
+        openSocketIfClosed();
+        return sendRequestToServer("startGame:" + name + ":" + playerID);
     }
 
     public GuestPlayer(Player player) {
         this.name = player.getName();
         this.playerID = player.getPlayerID();
     }
+    public GuestPlayer(Player player, String serverAddress) {
+        this.name = name;
+        this.serverAddress = serverAddress;
+    }
 
     public GuestPlayer(String name, int playerID) {
         this.name = name;
         this.playerID = playerID;
+    }
+    public GuestPlayer(String name, int playerID, String serverAddress) {
+        this.name = name;
+        this.playerID = playerID;
+        this.serverAddress = serverAddress;
     }
 
     public void setServerAddress(String serverAddress, int port) {
@@ -47,17 +64,25 @@ public class GuestPlayer implements Player {
 
     public String joinGame() {
         openSocketIfClosed();
-        return sendRequestToServer("JoinGame:" + name + ":" + playerID);
+        return sendRequestToServer("joinGame:" + name + ":" + playerID);
 
+    }
+    public int getScore(){
+        openSocketIfClosed();
+        return Integer.parseInt(sendRequestToServer("getScore:"+name+":"+playerID));
     }
 
     public String getTile() {
         openSocketIfClosed();
         if(playerTiles == null)
             playerTiles = new ArrayList<>();
-        String tile = sendRequestToServer("GetTile:"+name+":"+playerID);
+        String tile = sendRequestToServer("getTile:"+name+":"+playerID);
         playerTiles.add(tile);
         return tile;
+    }
+    public String placeWord(String word, int x, int y, boolean isHorizontal){
+        openSocketIfClosed();
+        return sendRequestToServer("placeWord:"+name+":"+playerID+":"+word+":"+x+":"+y+":"+isHorizontal);
     }
 
     public void disconnectFromServer() {
@@ -87,8 +112,10 @@ public class GuestPlayer implements Player {
             Scanner in = new Scanner(serverSocket.getInputStream());
 
             // Send the request to the server
+
             out.println(request);
             out.flush();
+
 
             // Receive the response from the server
             String res = in.nextLine();
@@ -109,6 +136,16 @@ public class GuestPlayer implements Player {
             }
             return tiles.toString();
         }
+    }
+    public boolean queryIO(String... Args){
+        openSocketIfClosed();
+        String request = String.join(",", Args);
+        return Boolean.parseBoolean(sendRequestToServer("Q," + request));
+    }
+    public boolean challangeIO(String...Args){
+        openSocketIfClosed();
+        String request = String.join(",", Args);
+        return Boolean.parseBoolean(sendRequestToServer("C," + request));
     }
 
     @Override
