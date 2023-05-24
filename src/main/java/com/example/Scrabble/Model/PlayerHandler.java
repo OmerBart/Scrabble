@@ -62,6 +62,9 @@ public class PlayerHandler implements ClientHandler {
             if(line.contains("Q")){
                out.println(GM.queryIOserver(line));
             }
+            if(line.contains("C")){
+                out.println(GM.queryIOserver(line));
+            }
             if(line.contains("startGame:")){
                 String[] arg = line.split(":");
                 out.println(GM.startGame(arg[1]));

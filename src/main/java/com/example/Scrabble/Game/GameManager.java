@@ -140,6 +140,7 @@ public class GameManager {
         return Integer.toString(0); //to remove
        // return gameBoard.tryPlaceWord()
     }
+    //query + challenge dictionary
     public boolean queryIOserver(String Args) {
         try {
             Socket s = new Socket("localhost",IOserver.getPort());

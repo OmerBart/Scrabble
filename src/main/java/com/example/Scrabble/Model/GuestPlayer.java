@@ -142,6 +142,11 @@ public class GuestPlayer implements Player {
         String request = String.join(",", Args);
         return Boolean.parseBoolean(sendRequestToServer("Q," + request));
     }
+    public boolean challangeIO(String...Args){
+        openSocketIfClosed();
+        String request = String.join(",", Args);
+        return Boolean.parseBoolean(sendRequestToServer("C," + request));
+    }
 
     @Override
     public String toString() {
