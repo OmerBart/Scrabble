@@ -17,6 +17,7 @@ public class Word {
     }
 
 
+
     public void printWord() {
         System.out.println();
         for (Tile t : this.getTiles()){
