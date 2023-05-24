@@ -4,6 +4,10 @@ import com.example.Scrabble.Model.Player;
 import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
 import com.example.Scrabble.ScrabbleServer.MyServer;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.*;
 
 public class GameManager {
@@ -20,6 +24,7 @@ public class GameManager {
     private int turn;
 
 
+
     private static GameManager single_instance = null;
 
 
@@ -30,7 +35,7 @@ public class GameManager {
         return single_instance;
     }
 
-    private GameManager(){
+    public GameManager(){
         Random r = new Random();
         playerList = new ArrayList<>();
         gameBoard = Board.getBoard();
@@ -65,8 +70,10 @@ public class GameManager {
     public String getGameBoard() {
         return gameBoard.getPrintableBoard();
     }
-    public void startGame() {
+    public String startGame(String playerName) {
+        //if(playerList.)
         System.out.println("starting game");
+        IOserver.start();
         System.out.println("num of players : " + playerList.size());
         //giving 7 tiles to each player
         for (int i = 0 ; i<7 ; i++) {
@@ -74,6 +81,7 @@ public class GameManager {
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
         turn = 0;
+        return "Game started";
     }
     public String getTilefromBag(String playerName){
         Tile t = bag.getRand();
@@ -131,6 +139,26 @@ public class GameManager {
         }
         return Integer.toString(0); //to remove
        // return gameBoard.tryPlaceWord()
+    }
+    public boolean queryIOserver(String Args) {
+        try {
+            Socket s = new Socket("localhost",IOserver.getPort());
+            PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+            Scanner in = new Scanner(s.getInputStream());
+
+            // Send the request to the server
+            out.println(Args);
+            out.flush();
+
+
+            // Receive the response from the server
+            String res = in.nextLine();
+            in.close();
+            out.close();
+            return Boolean.parseBoolean(res);
+        } catch (IOException e) {
+            throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
+        }
     }
 
 

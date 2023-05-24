@@ -27,35 +27,37 @@ public class TestMain {
             System.out.println("trying to join game...." + guest3.joinGame());
             System.out.println("trying to join game...." + guest4.joinGame());
             //System.out.println(guest3.getScore());
+            System.out.println(host.startGame());
 
 
-            System.out.println("giving each player 7 tiles");
-            for(int i = 0; i<7;i++){
-                host.getTile();
-                guest.getTile();
-                guest2.getTile();
-                guest3.getTile();
-            }
+//            System.out.println("giving each player 7 tiles");
+//            for(int i = 0; i<7;i++){
+//                host.getTile();
+//                guest.getTile();
+//                guest2.getTile();
+//                guest3.getTile();
+//            }
             System.out.println(host.printTiles());
             System.out.println(guest.printTiles());
             System.out.println(guest2.printTiles());
             System.out.println(guest3.printTiles());
+            System.out.println(guest.queryIO("s1.txt","s2.txt","18878"));
 
-            int x,y;
-            boolean ishorizontal;
+//            int x,y;
+//            boolean ishorizontal;
+//
+//            Scanner myObj = new Scanner(System.in);  // Create a Scanner object
+//            System.out.println("word to place");
+//            String wordtoplace = myObj.nextLine();
 
-            Scanner myObj = new Scanner(System.in);  // Create a Scanner object
-            System.out.println("word to place");
-            String wordtoplace = myObj.nextLine();
-
-            System.out.println("x:");// Read user input
-            x = myObj.nextInt();  // Read user input
-            System.out.println("y:");
-            y = myObj.nextInt();  // Read user input
-            System.out.println("ishorizontal:");
-            ishorizontal = myObj.nextBoolean();  // Read user input
-            //System.out.println("word to place: " + wordtoplace +" x " + x + " y " + y + " ishorizontal " + ishorizontal  );  // Output user input
-            System.out.println(guest.placeWord(wordtoplace,x,y,ishorizontal));
+//            System.out.println("x:");// Read user input
+//            x = myObj.nextInt();  // Read user input
+//            System.out.println("y:");
+//            y = myObj.nextInt();  // Read user input
+//            System.out.println("ishorizontal:");
+//            ishorizontal = myObj.nextBoolean();  // Read user input
+//            //System.out.println("word to place: " + wordtoplace +" x " + x + " y " + y + " ishorizontal " + ishorizontal  );  // Output user input
+//            System.out.println(guest.placeWord(wordtoplace,x,y,ishorizontal));
 
 
 

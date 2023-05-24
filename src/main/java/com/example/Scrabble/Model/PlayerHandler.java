@@ -59,6 +59,13 @@ public class PlayerHandler implements ClientHandler {
                 boolean isHorizontal = Boolean.parseBoolean(arg[6]);
                 out.println(GM.placeWord(playerName, word, x, y, isHorizontal));
             }
+            if(line.contains("Q")){
+               out.println(GM.queryIOserver(line));
+            }
+            if(line.contains("startGame:")){
+                String[] arg = line.split(":");
+                out.println(GM.startGame(arg[1]));
+            }
 //            }
 //            if(line.contains("getTurn")){
 //                out.println(GM.getTurn());
