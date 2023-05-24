@@ -1,5 +1,7 @@
 package com.example.Scrabble.Model;
 
+import javafx.beans.property.StringProperty;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -13,6 +15,7 @@ public class GuestPlayer implements Player {
     private String serverAddress; // format "ip:port"
     private Socket serverSocket;
     private List<String> playerTiles;
+
 
     public GuestPlayer() {
     }
@@ -59,6 +62,10 @@ public class GuestPlayer implements Player {
         return sendRequestToServer("JoinGame:" + name + ":" + playerID);
 
     }
+    public int getScore(){
+        openSocketIfClosed();
+        return Integer.parseInt(sendRequestToServer("getScore:"+name+":"+playerID));
+    }
 
     public String getTile() {
         openSocketIfClosed();
@@ -102,6 +109,7 @@ public class GuestPlayer implements Player {
             // Send the request to the server
             out.println(request);
             out.flush();
+
 
             // Receive the response from the server
             String res = in.nextLine();

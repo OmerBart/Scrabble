@@ -21,13 +21,14 @@ public class PlayerHandler implements ClientHandler {
             out = new PrintWriter(outToClient, true);
             String line = in.readLine();
             if(line.contains("GetTile")){
-                if((s = GM.getTilefromBag()) == null) {
+                String playerName = line.split("GetTile:")[1];
+                if((s = GM.getTilefromBag(playerName)) == null) {
                     out.println("Bag is empty");
                     out.flush();
                 }
                 else{
 
-                    out.println(GM.getTilefromBag());
+                    out.println(GM.getTilefromBag(playerName));
                     out.flush();
                 }
             }
@@ -45,15 +46,17 @@ public class PlayerHandler implements ClientHandler {
                 GM.stopGame();
             }
             if(line.contains("getScore")){
-                out.println(GM.getScore());
+                String playerName = line.split("getScore:")[1];
+                //System.out.println(playerName);
+                out.println(GM.getScore(playerName));
             }
-            if(line.contains("getTurn")){
-                out.println(GM.getTurn());
-            }
-            if(line.contains("Word")){
-                String[] arg = line.split(":");
-                out.println(GM.placeWord(arg[1]));
-            }
+//            if(line.contains("getTurn")){
+//                out.println(GM.getTurn());
+//            }
+//            if(line.contains("Word")){
+//                String[] arg = line.split(":");
+//                out.println(GM.placeWord(arg[1]));
+//            }
 
 
             //logic for handling the model requests goes here (i.e. the logic for the model)

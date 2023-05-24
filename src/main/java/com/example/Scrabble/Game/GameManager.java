@@ -10,8 +10,8 @@ public class GameManager {
 
     //private LinkedList<Player> playerList;
     private ArrayList<Player> playerList;
-    private LinkedHashMap <Player, Integer> playerScores;
-    private LinkedHashMap <Player, Tile> playerTiles;
+    private LinkedHashMap <String, Integer> playerScores; //key: name+ID, value: score
+    private LinkedHashMap <String, Tile[]> playerTiles; //key: name+ID, value: array of tiles
 
     MyServer hostServer;
     MyServer IOserver;
@@ -56,7 +56,7 @@ public class GameManager {
     public String getGameBoard() {
         return gameBoard.getPrintableBoard();
     }
-    public String getTilefromBag(Player player){
+    public String getTilefromBag(String playerName){
         Tile t = bag.getRand();
         //System.out.println(Arrays.toString(Tile.Bag.getBag().getQuantities()));
         if(t == null)
@@ -74,8 +74,9 @@ public class GameManager {
         return playerList.toString();
     }
 
-    public int getScore(Player player) {
-        return
+    public String getScore(String playerName) {
+        //System.out.println(playerName);
+        return Integer.toString(10);
     }
 
 
