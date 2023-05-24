@@ -43,6 +43,8 @@ public class GameManager {
     public void setHost(MyServer hostServer, Player hostplayer) {
         this.hostServer = hostServer;
         playerList.add(hostplayer);
+        playerScores.put(hostplayer.getName(), 0);
+        playerTiles.put(hostplayer.getName(), new ArrayList<>());
         //addPLayer("Host", 0);
     }
 
