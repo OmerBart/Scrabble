@@ -120,16 +120,16 @@ public class GameManager {
             //Word wordT = new Word(wordTiles, x, y, isHorizontal);
             int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
             if (!(score > 0)) {
-                playerScores.put(playername, playerScores.get(playername) + score);
-                for (Tile t : wordTiles) {
+                for (Tile t : wordTiles)
                     playerTiles.get(playername).add(t);
-
-                   ;
-                }
             }
-            return score;
+            else {
+                playerScores.put(playername, playerScores.get(playername) + score);
+                return score;
+            }
         }
-       // return gameBoard.tryPlaceWord();
+        return 0; //to remove
+       // return gameBoard.tryPlaceWord()
     }
 
 
