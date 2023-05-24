@@ -16,6 +16,9 @@ By Omer, Hadar, and Eilon
 - View Model
    * Eilon
 
+# GAANT
+![scrabble_2023-05-24_03 28pm](https://github.com/OmerBart/Scrabble/assets/121627693/6c5c61e5-6dff-4862-8587-b3091034f5ed)
+
 # First MileStone 
 
 - Link to GIT of 2 to 4 team-members
