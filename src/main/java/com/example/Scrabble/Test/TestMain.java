@@ -37,12 +37,12 @@ public class TestMain {
 //                guest2.getTile();
 //                guest3.getTile();
 //            }
-            System.out.println(host.printTiles());
-            System.out.println(guest.printTiles());
-            System.out.println(guest2.printTiles());
-            System.out.println(guest3.printTiles());
-            System.out.println(guest.queryIO("s1.txt","s2.txt","kaka"));//18878
-            System.out.println(guest.challangeIO("s1.txt","s2.txt","18878"));//18878
+//            System.out.println(host.printTiles());
+//            System.out.println(guest.printTiles());
+//            System.out.println(guest2.printTiles());
+//            System.out.println(guest3.printTiles());
+//            System.out.println(guest.queryIO("s1.txt","s2.txt","kaka"));//18878
+//            System.out.println(guest.challangeIO("s1.txt","s2.txt","18878"));//18878
 
 //            int x,y;
 //            boolean ishorizontal;

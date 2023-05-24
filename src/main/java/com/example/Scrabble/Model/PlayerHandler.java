@@ -1,3 +1,5 @@
+package com.example.Scrabble.Model;
+
 import com.example.Scrabble.Game.GameManager;
 import com.example.Scrabble.Model.Command;
 import com.example.Scrabble.Model.CommandFactory;
