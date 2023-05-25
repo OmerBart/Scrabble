@@ -9,13 +9,12 @@ import java.io.*;
 
 public class PlayerHandler implements ClientHandler {
 
-    private GameManager GM;
     private BufferedReader in;
     private PrintWriter out;
     private CommandFactory commandFactory;
 
     public PlayerHandler() {
-        GM = GameManager.get();
+        //GameManager GM = GameManager.get();
         commandFactory = new CommandFactory();
     }
 
