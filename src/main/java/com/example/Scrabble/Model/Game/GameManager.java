@@ -19,6 +19,7 @@ public class GameManager {
     private LinkedHashMap <String, Integer> playerScores; //key: name+ID, value: score
     private LinkedHashMap <String,List<Tile>> playerTiles; //key: name+ID, value: tiles
 
+
     MyServer hostServer;
     MyServer IOserver;
     private Board gameBoard;
@@ -84,7 +85,7 @@ public class GameManager {
         {
             //System.out.println("whello from " + playerName);
             try {
-                System.out.println(playerName + " is waiting for their turn");
+                System.out.println(playerName + " ifs waiting for their turn");
                 Thread.sleep(1500);
             } catch (InterruptedException e) {
                 return "false";
@@ -126,6 +127,7 @@ public class GameManager {
     public void stopGame() {
         hostServer.close();
         IOserver.close();
+
     }
 
     public String printPlayers() {
@@ -186,6 +188,7 @@ public class GameManager {
             String res = in.nextLine();
             in.close();
             out.close();
+            s.close();
             return res;
         } catch (IOException e) {
             throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
