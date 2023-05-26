@@ -1,4 +1,4 @@
-package com.example.Scrabble.Game;
+package com.example.Scrabble.Model.Game;
 
 import com.example.Scrabble.Model.Player;
 import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
@@ -7,13 +7,12 @@ import com.example.Scrabble.ScrabbleServer.MyServer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.SocketAddress;
 import java.util.*;
 
 public class GameManager {
 
     //private LinkedList<Player> playerList;
-    private ArrayList<Player> playerList;
+    private List<Player> playersList;
     private LinkedHashMap <String, Integer> playerScores; //key: name+ID, value: score
     private LinkedHashMap <String,List<Tile>> playerTiles; //key: name+ID, value: tiles
 
@@ -37,7 +36,7 @@ public class GameManager {
 
     public GameManager(){
         Random r = new Random();
-        playerList = new ArrayList<>();
+        playersList = new ArrayList<>();
         gameBoard = Board.getBoard();
         this.IOserver = new MyServer(6000 + r.nextInt(6000), new BookScrabbleHandler());
         bag = Tile.Bag.getBag();
@@ -47,20 +46,19 @@ public class GameManager {
     }
     public void setHost(MyServer hostServer, Player hostplayer) {
         this.hostServer = hostServer;
-        playerList.add(hostplayer);
+        playersList.add(hostplayer);
         playerScores.put(hostplayer.getName(), 0);
         playerTiles.put(hostplayer.getName(), new ArrayList<>());
         //addPLayer("Host", 0);
     }
 
     public String addPlayer(Player player){
-
-        if(playerList.contains(player) || playerList.size() > 3) {
+        if(playersList.contains(player) || playersList.size() > 3) {
            // System.out.println("from addplayer >3");
             return "Player already in game or game is full!";
         }
         else{
-            playerList.add(player);
+            playersList.add(player);
             playerScores.put(player.getName(), 0);
             playerTiles.put(player.getName(), new ArrayList<>());
            // System.out.println("added player: " + playerList.getLast().toString());
@@ -70,14 +68,13 @@ public class GameManager {
     public String getGameBoard() {
         return gameBoard.getPrintableBoard();
     }
-    public String startGame(String playerName) {
-        //if(playerList.)
+    public String startGame() {
         System.out.println("starting game");
         IOserver.start();
-        System.out.println("num of players : " + playerList.size());
+        System.out.println("num of players : " + playersList.size());
         //giving 7 tiles to each player
         for (int i = 0 ; i<7 ; i++) {
-            for(Player p : playerList)
+            for(Player p : playersList)
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
         turn = 0;
@@ -100,7 +97,7 @@ public class GameManager {
     }
 
     public String printPlayers() {
-        return playerList.toString();
+        return playersList.toString();
     }
 
     public String getScore(String playerName) {
@@ -141,7 +138,7 @@ public class GameManager {
        // return gameBoard.tryPlaceWord()
     }
     //query + challenge dictionary
-    public boolean queryIOserver(String Args) {
+    public String queryIOserver(String Args) {
         try {
             Socket s = new Socket("localhost",IOserver.getPort());
             PrintWriter out = new PrintWriter(s.getOutputStream(), true);
@@ -156,11 +153,14 @@ public class GameManager {
             String res = in.nextLine();
             in.close();
             out.close();
-            return Boolean.parseBoolean(res);
+            return res;
         } catch (IOException e) {
             throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
         }
+
     }
+
+//    public String
 
 
 //    public Player getPlayer(String name){

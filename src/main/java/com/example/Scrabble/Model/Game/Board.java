@@ -1,7 +1,4 @@
-package com.example.Scrabble.Game;
-
-import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
-import com.example.Scrabble.ScrabbleServer.MyServer;
+package com.example.Scrabble.Model.Game;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -119,6 +116,7 @@ public class Board {
     }
 
     public boolean  dictionaryLegal(Word word){
+
         return true; //send to IO server
     }
 

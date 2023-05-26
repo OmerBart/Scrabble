@@ -1,6 +1,6 @@
 package com.example.Scrabble.Model;
 
-import com.example.Scrabble.Game.GameManager;
+import com.example.Scrabble.Model.Game.GameManager;
 
 public class CommandFactory {
     public Command createCommand(String request) {
@@ -10,17 +10,17 @@ public class CommandFactory {
         } else if (request.contains("boardState")) {
             return new BoardStateCommand();
         } else if (request.contains("join")) {
-            String[] args = request.split(":");
-            if (args.length == 3) {
+            String[] args = request.split(",");
+            if (args.length == 2) {
                 String playerName = args[1];
-                int playerID = Integer.parseInt(args[2]);
-                return new JoinCommand(playerName, playerID);
-            }
+                return new JoinCommand(playerName);
+            } else
+                return new ErrorCommand("Join command must be in the format: join,playerName:ID");
         }
-        else if (request.contains("startGame")) {
-            String playerName = request.split(":")[1];
-            return new StartGameCommand(playerName);
-        }
+//        else if (request.contains("startGame")) {
+//            String playerName = request.split(":")[1];
+//            return new StartGameCommand(playerName);
+//        }
         else if (request.contains("stopGame")) {
             return new StopGameCommand();
         }
@@ -69,9 +69,9 @@ public class CommandFactory {
         private String playerName;
         private int playerID;
 
-        public JoinCommand(String playerName, int playerID) {
-            this.playerName = playerName;
-            this.playerID = playerID;
+        public JoinCommand(String playerNameID) {
+            this.playerName = playerNameID.split(":")[0];
+            this.playerID = Integer.parseInt(playerNameID.split(":")[1]);
         }
 
         @Override
@@ -81,18 +81,18 @@ public class CommandFactory {
         }
     }
 
-    private class StartGameCommand implements Command {
-        private String playerName;
-
-        public StartGameCommand(String playerName) {
-            this.playerName = playerName;
-        }
-        @Override
-        public String execute() {
-            GameManager GM = GameManager.get();
-            return GM.startGame(playerName);
-        }
-    }
+//    private class StartGameCommand implements Command {
+//        private String playerName;
+//
+//        public StartGameCommand(String playerName) {
+//            this.playerName = playerName;
+//        }
+//        @Override
+//        public String execute() {
+//            GameManager GM = GameManager.get();
+//            return GM.startGame();
+//        }
+//    }
 
     private class StopGameCommand implements Command {
         @Override
@@ -134,6 +134,31 @@ public class CommandFactory {
         public String execute() {
             GameManager GM = GameManager.get();
             return GM.placeWord(playerName, word, x, y, isHorizontal);
+        }
+    }
+    private class QueryCommand implements Command {
+        private String query;
+
+        public QueryCommand(String query) {
+           this.query = query;
+        }
+
+        @Override
+        public String execute() {
+            GameManager GM = GameManager.get();
+            return GM.queryIOserver(this.query);
+        }
+    }
+
+    private class ErrorCommand implements Command {
+        private String Error;
+        public ErrorCommand(String Error) {
+            this.Error = Error;
+        }
+
+        @Override
+        public String execute() {
+            return this.Error;
         }
     }
 }

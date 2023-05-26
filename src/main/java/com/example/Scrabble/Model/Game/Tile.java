@@ -1,4 +1,4 @@
-package com.example.Scrabble.Game;
+package com.example.Scrabble.Model.Game;
 
 import java.util.Arrays;
 import java.util.Objects;
