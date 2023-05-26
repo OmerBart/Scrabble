@@ -8,19 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HostPlayerTest {
 
-    HostPlayer hostPlayer;
-
-    @BeforeEach
-    void setUp() {
-        hostPlayer = new HostPlayer(new GuestPlayer("test", 1, "localhost:8080"));
-        System.out.println("HostPlayerTest: setUp()");
-    }
-
-    @AfterEach
-    void tearDown() {
-        hostPlayer = null;
-        System.out.println("HostPlayerTest: tearDown()");
-    }
+    HostPlayer hostPlayer = HostPlayer.get(new GuestPlayer("test", 1));
 
     @Test
     void getHostgameServer() {

@@ -1,6 +1,5 @@
 package com.example.Scrabble.Model;
 
-
 import com.example.Scrabble.Model.Game.GameManager;
 import com.example.Scrabble.ScrabbleServer.MyServer;
 
@@ -12,20 +11,18 @@ public class HostPlayer extends GuestPlayer {
     private GameManager GM;
     private static HostPlayer hostPlayer_instance = null;
 
-
     public static HostPlayer get(Player player) {
         if (hostPlayer_instance == null)
             hostPlayer_instance = new HostPlayer(player);
         return hostPlayer_instance;
     }
 
-
     private HostPlayer(Player player) {
 
         super(player);
 
         Random r = new Random();
-        //int port = 6000 + r.nextInt(6000);
+        // int port = 6000 + r.nextInt(6000);
         int port = 65432;
         HostgameServer = new MyServer(port, new PlayerHandler());
         setServerAddress("localhost", port);
@@ -47,5 +44,4 @@ public class HostPlayer extends GuestPlayer {
     public String toString() {
         return this.getName();
     }
-
 }
