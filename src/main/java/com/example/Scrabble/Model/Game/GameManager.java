@@ -68,6 +68,20 @@ public class GameManager {
     public String getGameBoard() {
         return gameBoard.getPrintableBoard();
     }
+
+    public String myTurn(String playerName) {
+        while(!(playersList.get(turn).getName().equals(playerName)))
+        {
+            System.out.println(playerName + " is waiting for their turn");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                return "false";
+            }
+        }
+            return "true";
+
+    }
     public String startGame() {
         System.out.println("starting game");
         IOserver.start();

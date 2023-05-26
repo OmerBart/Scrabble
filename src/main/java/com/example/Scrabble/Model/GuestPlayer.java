@@ -145,6 +145,11 @@ public class GuestPlayer implements Player {
         return Boolean.parseBoolean(sendRequestToServer("C," + request));
     }
 
+    public boolean isMyTurn(){
+        openSocketIfClosed();
+        return Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name + ":" + playerID));
+    }
+
     @Override
     public String toString() {
         return "GuestPlayer|" + name + "|" + playerID + "|" + serverAddress + "|";
