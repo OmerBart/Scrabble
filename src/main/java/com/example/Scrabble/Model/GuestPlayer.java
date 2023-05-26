@@ -18,18 +18,13 @@ public class GuestPlayer implements Player {
     private List<String> playerTiles;
 
 
-    public GuestPlayer() {
-    }
 
 
     public GuestPlayer(Player player) {
         this.name = player.getName();
         this.playerID = player.getPlayerID();
     }
-    public GuestPlayer(String serverAddress) {
-        this.name = name;
-        this.serverAddress = serverAddress;
-    }
+
 
     public GuestPlayer(String name, int playerID) {
         this.name = name;

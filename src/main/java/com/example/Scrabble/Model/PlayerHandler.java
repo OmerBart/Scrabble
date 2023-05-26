@@ -18,7 +18,6 @@ public class PlayerHandler implements ClientHandler {
     @Override
     public void handleClient(InputStream inFromclient, OutputStream outToClient) {
         try {
-            String s;
             in = new BufferedReader(new InputStreamReader(inFromclient));
             out = new PrintWriter(outToClient, true);
             String line = in.readLine();
