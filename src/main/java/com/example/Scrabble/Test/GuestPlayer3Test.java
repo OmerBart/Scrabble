@@ -8,7 +8,7 @@ import static java.lang.Thread.sleep;
 
 public class GuestPlayer3Test {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
             int port = 65432;
             try {
                     sleep(2000);
@@ -26,14 +26,24 @@ public class GuestPlayer3Test {
 
 //            guest.setServerAddress("localhost",port);
 //            guest2.setServerAddress("localhost",port);
-            guest3.setServerAddress("localhost",port);
+            guest3.setServerAddress("localhost", port);
 //            guest4.setServerAddress("localhost",port);
 //            System.out.println("trying to join game...." + guest.joinGame());
 //            System.out.println("trying to join game...." + guest2.joinGame());
             System.out.println("trying to join game...." + guest3.joinGame());
 //            System.out.println("trying to join game...." + guest4.joinGame());
             //System.out.println(guest3.getScore());
-           // System.out.println(host.startGame());
+            // System.out.println(host.startGame());
+
+            System.out.println("trying to join game...." + guest3.joinGame());
+            sleep(1500);
+            System.out.println("guest tiles: " + guest3.printTiles());
+            sleep(1500);
+            //System.out.println("guest is my turn? " + guest.isMyTurn());
+            if (guest3.isMyTurn()) {
+                    System.out.println(guest3.getTile());
+                    sleep(1500);
+                    System.out.println(guest3.endTurn());
 
 
 //            System.out.println("giving each player 7 tiles");
@@ -67,19 +77,17 @@ public class GuestPlayer3Test {
 //            System.out.println(guest.placeWord(wordtoplace,x,y,ishorizontal));
 
 
-
-            //System.out.println(GM.printPlayers());
-            //host.stopGame();
+                    //System.out.println(GM.printPlayers());
+                    //host.stopGame();
 //            guest.disconnectFromServer();
 //            guest2.disconnectFromServer();
-            guest3.disconnectFromServer();
+                    guest3.disconnectFromServer();
 //            guest4.disconnectFromServer();
 
-            System.out.println("Done!");
+                    System.out.println("Done!");
 
 
-
+            }
     }
-
 
 }

@@ -10,6 +10,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.*;
 
+import static java.lang.Thread.sleep;
+
 public class GameManager {
 
     //private LinkedList<Player> playerList;
@@ -35,7 +37,7 @@ public class GameManager {
         return single_instance;
     }
 
-    public GameManager(){
+    private GameManager(){
         Random r = new Random();
         playersList = new ArrayList<>();
         gameBoard = Board.getBoard();
@@ -52,7 +54,13 @@ public class GameManager {
         playerTiles.put(hostplayer.getName(), new ArrayList<>());
         //addPLayer("Host", 0);
     }
-
+    public String playerTiles(String playerName){
+        String tiles = "";
+        for(Tile tile : playerTiles.get(playerName)){
+            tiles += tile.toString() + " ";
+        }
+        return tiles;
+    }
     public String addPlayer(Player player){
         if(playersList.contains(player) || playersList.size() > 3) {
             // System.out.println("from addplayer >3");
@@ -71,21 +79,26 @@ public class GameManager {
     }
 
     public String myTurn(String playerName) {
-        while(!(playersList.get(turn).getName().equals(playerName)))
+        System.out.println("hello from " + playerName);
+        while((playersList.get(turn%playersList.size()).getName().equals(playerName)))
         {
-            System.out.println(playerName + " is waiting for their turn");
+            //System.out.println("whello from " + playerName);
             try {
-                Thread.sleep(1000);
+                System.out.println(playerName + " is waiting for their turn");
+                Thread.sleep(1500);
             } catch (InterruptedException e) {
                 return "false";
             }
         }
+        turn++;
         return "true";
 
     }
-    public String startGame() {
-        System.out.println("starting game");
+    public String startGame(String playerName) {
+        //StringBuilder players = new StringBuilder(System.out);
+        System.out.println("Starting IO server...");
         IOserver.start();
+        System.out.println("IO server started successfully at: " + IOserver.getPort());
         System.out.println("num of players : " + playersList.size());
         //giving 7 tiles to each player
         for (int i = 0 ; i<7 ; i++) {
@@ -104,6 +117,10 @@ public class GameManager {
             playerTiles.get(playerName).add(t);
             return "Got: " + t.toString();
         }
+    }
+    public boolean endTurn(){
+        turn++;
+        return true;
     }
 
     public void stopGame() {
@@ -175,40 +192,6 @@ public class GameManager {
         }
 
     }
-
-//    public String
-
-
-//    public Player getPlayer(String name){
-//        return playerMap.get(name);
-//    }
-
-
-//    public boolean addPlayer(Player player){
-//        if(playerMap.containsKey(name))
-//            return false;
-//        else{
-//            //Player player = new Player(name,playerID);
-//            playerMap.put(name,player);
-//            return true;
-//        }
-//    }
-
-
-
-
-
-//    private PlayerManager(MyServer modelServer, Player hostPlayer){
-//        playerMap = new LinkedHashMap<>();
-//        localServer = modelServer;
-//        //add host player as first in the map
-//        playerMap.put(hostPlayer.getName(),hostPlayer);
-//    }
-
-
-
-
-
 
 
 

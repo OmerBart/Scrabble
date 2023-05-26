@@ -45,7 +45,7 @@ public class HostPlayer extends GuestPlayer {
 
     @Override
     public String toString() {
-        return "HostPlayer|" + getName() + "|" + getPlayerID() + "|" + getServerAddress() + "|";
+        return this.getName();
     }
 
 }
