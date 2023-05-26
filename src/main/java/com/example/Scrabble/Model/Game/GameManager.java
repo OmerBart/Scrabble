@@ -1,5 +1,6 @@
 package com.example.Scrabble.Model.Game;
 
+
 import com.example.Scrabble.Model.Player;
 import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
 import com.example.Scrabble.ScrabbleServer.MyServer;
@@ -54,14 +55,14 @@ public class GameManager {
 
     public String addPlayer(Player player){
         if(playersList.contains(player) || playersList.size() > 3) {
-           // System.out.println("from addplayer >3");
+            // System.out.println("from addplayer >3");
             return "Player already in game or game is full!";
         }
         else{
             playersList.add(player);
             playerScores.put(player.getName(), 0);
             playerTiles.put(player.getName(), new ArrayList<>());
-           // System.out.println("added player: " + playerList.getLast().toString());
+            // System.out.println("added player: " + playerList.getLast().toString());
             return "Player added to game successfully";
         }
     }
@@ -79,7 +80,7 @@ public class GameManager {
                 return "false";
             }
         }
-            return "true";
+        return "true";
 
     }
     public String startGame() {
@@ -138,6 +139,7 @@ public class GameManager {
                 }
             }
             //Word wordT = new Word(wordTiles, x, y, isHorizontal);
+
             int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
             if (!(score > 0)) {
                 for (Tile t : wordTiles)
@@ -149,7 +151,7 @@ public class GameManager {
             }
         }
         return Integer.toString(0); //to remove
-       // return gameBoard.tryPlaceWord()
+        // return gameBoard.tryPlaceWord()
     }
     //query + challenge dictionary
     public String queryIOserver(String Args) {
