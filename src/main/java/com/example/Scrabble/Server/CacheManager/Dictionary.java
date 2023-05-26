@@ -30,6 +30,7 @@ public class Dictionary {
                     bf.add(word);
 
                 }
+                scanner.close();
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }

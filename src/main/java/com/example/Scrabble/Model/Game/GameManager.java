@@ -9,15 +9,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.*;
 
-import static java.lang.Thread.sleep;
-
 public class GameManager {
 
     // private LinkedList<Player> playerList;
     private List<Player> playersList;
     private LinkedHashMap<String, Integer> playerScores; // key: name+ID, value: score
     private LinkedHashMap<String, List<Tile>> playerTiles; // key: name+ID, value: tiles
-
 
     MyServer hostServer;
     MyServer IOserver;
