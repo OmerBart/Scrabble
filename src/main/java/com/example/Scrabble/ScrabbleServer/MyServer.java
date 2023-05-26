@@ -11,6 +11,7 @@ public class MyServer {
     int port;
     boolean stop;
     ClientHandler ch;
+    //Socket client;
 
     public MyServer(int port, ClientHandler ch){
         this.port = port;
