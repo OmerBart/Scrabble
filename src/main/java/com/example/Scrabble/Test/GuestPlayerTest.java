@@ -37,6 +37,9 @@ public class GuestPlayerTest {
                 System.out.println("turn ended");
             else
                 System.out.println("turn not ended");
+            System.out.println(guest.queryIO("s1.txt","s2.txt","kaka"));//18878
+            System.out.println(guest.challangeIO("s1.txt","s2.txt","18878"));//18878
+
 //            System.out.println(guest.endTurn());
 //            System.out.println(guest.endTurn());
 

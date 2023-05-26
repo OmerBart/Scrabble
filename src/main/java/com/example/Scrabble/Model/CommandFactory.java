@@ -16,19 +16,15 @@ public class CommandFactory {
                 return new JoinCommand(playerName);
             } else
                 return new ErrorCommand("Join command must be in the format: join,playerName:ID");
-        }
-        else if (request.contains("startGame")) {
+        } else if (request.contains("startGame")) {
             String playerName = request.split(",")[1];
             return new StartGameCommand(playerName);
-        }
-        else if (request.contains("stopGame")) {
+        } else if (request.contains("stopGame")) {
             return new StopGameCommand();
-        }
-        else if (request.contains("getScore")) {
+        } else if (request.contains("getScore")) {
             String playerName = request.split("getScore:")[1];
             return new GetScoreCommand(playerName);
-        }
-        else if (request.contains("placeWord")) {
+        } else if (request.contains("placeWord")) {
             //request comes in format of "placeWord:playerName:ID:word:x:y:isHorizontal"
             String[] arg = request.split(":");
             String playerName = arg[1] + ":" + arg[2];
@@ -37,16 +33,23 @@ public class CommandFactory {
             int y = Integer.parseInt(arg[5]);
             boolean isHorizontal = Boolean.parseBoolean(arg[6]);
             return new PlaceWordCommand(playerName, word, x, y, isHorizontal);
-        }
-        else if (request.contains("isMyTurn")) {
+        } else if (request.contains("isMyTurn")) {
             String playerName = request.split(",")[1];
             return new IsTurnCommand(playerName);
 
+        } else if (request.contains("Q")) {
+            return new QueryCommand(request);
+
+        } else if (request.contains("C")) {
+            return new ChallengeCommand(request);
+
         }
+//        else if (request.contains("getTurn")) {
+//            return new GetTurnCommand();
+//        }
         else if (request.contains("endTurn")) {
             return new EndTurnCommand();
-        }
-        else if (request.contains("printTiles")) {
+        } else if (request.contains("printTiles")) {
             String playerName = request.split(",")[1];
             return new PrintTilesCommand(playerName);
         }
@@ -99,6 +102,7 @@ public class CommandFactory {
         public StartGameCommand(String playerName) {
             this.playerName = playerName;
         }
+
         @Override
         public String execute() {
             GameManager GM = GameManager.get();
@@ -114,6 +118,7 @@ public class CommandFactory {
             return "Game stopped";
         }
     }
+
     private class GetScoreCommand implements Command {
         private String playerName;
 
@@ -127,6 +132,7 @@ public class CommandFactory {
             return GM.getScore(playerName);
         }
     }
+
     private class PlaceWordCommand implements Command {
         private String playerName;
         private String word;
@@ -148,11 +154,12 @@ public class CommandFactory {
             return GM.placeWord(playerName, word, x, y, isHorizontal);
         }
     }
+
     private class QueryCommand implements Command {
         private String query;
 
         public QueryCommand(String query) {
-           this.query = query;
+            this.query = query;
         }
 
         @Override
@@ -164,6 +171,7 @@ public class CommandFactory {
 
     private class ErrorCommand implements Command {
         private String Error;
+
         public ErrorCommand(String Error) {
             this.Error = Error;
         }
@@ -176,9 +184,11 @@ public class CommandFactory {
 
     private class IsTurnCommand implements Command {
         private String playerName;
+
         public IsTurnCommand(String playerName) {
             this.playerName = playerName;
         }
+
         @Override
         public String execute() {
             GameManager GM = GameManager.get();
@@ -193,15 +203,32 @@ public class CommandFactory {
             return String.valueOf(GM.endTurn());
         }
     }
+
     private class PrintTilesCommand implements Command {
         private String playerName;
+
         public PrintTilesCommand(String playerName) {
             this.playerName = playerName;
         }
+
         @Override
         public String execute() {
             GameManager GM = GameManager.get();
             return GM.playerTiles(playerName);
+        }
+    }
+
+    private class ChallengeCommand implements Command {
+        private String query;
+
+        public ChallengeCommand(String query) {
+            this.query = query;
+        }
+
+        @Override
+        public String execute() {
+            GameManager GM = GameManager.get();
+            return GM.queryIOserver(this.query);
         }
     }
 }
