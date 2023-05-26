@@ -1,4 +1,4 @@
-package com.example.Scrabble.Game;
+package com.example.Scrabble.Model.Game;
 
 import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
 import com.example.Scrabble.ScrabbleServer.MyServer;
