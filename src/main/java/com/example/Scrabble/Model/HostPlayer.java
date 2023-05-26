@@ -39,6 +39,7 @@ public class HostPlayer extends GuestPlayer {
         GM.stopGame();
         HostgameServer.close();
     }
+
     // @Override
     // public String getName() {
     // return this.toString();
