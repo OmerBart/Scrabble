@@ -1,5 +1,6 @@
 package com.example.Scrabble.Game;
 
+import com.example.Scrabble.Model.Game.Tile;
 import com.example.Scrabble.Model.Player;
 import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
 import com.example.Scrabble.ScrabbleServer.MyServer;
