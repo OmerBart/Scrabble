@@ -1,6 +1,7 @@
 package com.example.Scrabble.Model;
 
-import com.example.Scrabble.Game.GameManager;
+
+import com.example.Scrabble.Model.Game.GameManager;
 import com.example.Scrabble.ScrabbleServer.MyServer;
 
 import java.util.Random;
@@ -24,7 +25,8 @@ public class HostPlayer extends GuestPlayer {
         super(player);
 
         Random r = new Random();
-        int port = 6000 + r.nextInt(6000);
+        //int port = 6000 + r.nextInt(6000);
+        int port = 65432;
         HostgameServer = new MyServer(port, new PlayerHandler());
         setServerAddress("localhost", port);
         HostgameServer.start();
