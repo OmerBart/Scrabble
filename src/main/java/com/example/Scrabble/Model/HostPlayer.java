@@ -13,9 +13,7 @@ public class HostPlayer extends GuestPlayer{
 
 
 
-    public static HostPlayer get() {
-        return hostPlayer_instance;
-    }
+
     public static HostPlayer get(Player player) {
         if (hostPlayer_instance == null)
             hostPlayer_instance = new HostPlayer(player);
