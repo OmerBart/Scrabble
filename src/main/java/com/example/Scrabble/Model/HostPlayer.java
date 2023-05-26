@@ -9,8 +9,18 @@ public class HostPlayer extends GuestPlayer {
 
     private final MyServer HostgameServer;
     private GameManager GM;
+    private static HostPlayer hostPlayer_instance = null;
 
-    public HostPlayer(Player player) {
+
+    public static HostPlayer get(Player player) {
+        if (hostPlayer_instance == null)
+            hostPlayer_instance = new HostPlayer(player);
+        return hostPlayer_instance;
+    }
+
+
+    private HostPlayer(Player player) {
+
         super(player);
 
         Random r = new Random();
