@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import com.example.Scrabble.Model.GuestPlayer;
 import com.example.Scrabble.Model.HostPlayer;
+import com.example.Scrabble.Model.Game.GameManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,20 +13,8 @@ import org.junit.jupiter.api.BeforeEach;
 
 public class GameManagerTest {
 
-    GameManager gameManager;
-    HostPlayer hostPlayer;
-
-    @BeforeEach
-    public void setUp() {
-        hostPlayer = new HostPlayer(new GuestPlayer("test", 1, "localhost"));
-        gameManager = GameManager.get();
-        gameManager.setHost(hostPlayer.getHostgameServer(), hostPlayer);
-    }
-
-    @AfterEach
-    public void tearDown() {
-        gameManager.reset();
-    }
+    GameManager gameManager = GameManager.get();
+    HostPlayer hostPlayer = HostPlayer.get(new GuestPlayer("test", 1, "localhost"));
 
     @Test
     public void testGameManager() {
@@ -42,20 +31,10 @@ public class GameManagerTest {
     }
 
     @Test
-    public void testSetHost() {
-        System.out.println("Test setHost");
-        gameManager.setHost(hostPlayer.getHostgameServer(), hostPlayer);
-        assertNotNull(gameManager.hostServer);
-        // need to test if the hostPlayer is added to the playerList @Omer add
-        // getPlayerList()
-    }
-
-    @Test
     public void testAddPlayer() {
         System.out.println("Test addPlayer");
         gameManager.addPlayer(new GuestPlayer("test", 1, "localhost"));
-        // need to test if the player is added to the playerList @Omer add
-        // getPlayerList()
+        gameManager.printPlayers();
     }
 
     @Test
@@ -71,10 +50,8 @@ public class GameManagerTest {
         gameManager.addPlayer(new GuestPlayer("test1", 1, "localhost"));
         gameManager.addPlayer(new GuestPlayer("test2", 2, "localhost"));
         gameManager.addPlayer(new GuestPlayer("test3", 3, "localhost"));
-
         gameManager.startGame("test1");
-
-        // check if players got their tiles
+        gameManager.printPlayers();
     }
-    
+
 }

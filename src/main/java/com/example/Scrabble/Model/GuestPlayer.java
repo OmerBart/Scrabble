@@ -1,12 +1,9 @@
 package com.example.Scrabble.Model;
 
-import javafx.beans.property.StringProperty;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -17,19 +14,16 @@ public class GuestPlayer implements Player {
     private Socket serverSocket;
     private List<String> playerTiles;
 
-
-
-
     public GuestPlayer(Player player) {
         this.name = player.getName();
         this.playerID = player.getPlayerID();
     }
 
-
     public GuestPlayer(String name, int playerID) {
         this.name = name;
         this.playerID = playerID;
     }
+
     public GuestPlayer(String name, int playerID, String serverAddress) {
         this.name = name;
         this.playerID = playerID;
@@ -59,22 +53,25 @@ public class GuestPlayer implements Player {
         return sendRequestToServer("joinGame," + name + ":" + playerID);
 
     }
-    public int getScore(){
+
+    public int getScore() {
         openSocketIfClosed();
-        return Integer.parseInt(sendRequestToServer("getScore:"+name+":"+playerID));
+        return Integer.parseInt(sendRequestToServer("getScore:" + name + ":" + playerID));
     }
 
     public String getTile() {
         openSocketIfClosed();
-        if(playerTiles == null)
+        if (playerTiles == null)
             playerTiles = new ArrayList<>();
-        String tile = sendRequestToServer("getTile:"+name+":"+playerID);
+        String tile = sendRequestToServer("getTile:" + name + ":" + playerID);
         playerTiles.add(tile);
         return tile;
     }
-    public String placeWord(String word, int x, int y, boolean isHorizontal){
+
+    public String placeWord(String word, int x, int y, boolean isHorizontal) {
         openSocketIfClosed();
-        return sendRequestToServer("placeWord:"+name+":"+playerID+":"+word+":"+x+":"+y+":"+isHorizontal);
+        return sendRequestToServer(
+                "placeWord:" + name + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
     }
 
     public void disconnectFromServer() {
@@ -108,7 +105,6 @@ public class GuestPlayer implements Player {
             out.println(request);
             out.flush();
 
-
             // Receive the response from the server
             String res = in.nextLine();
             in.close();
@@ -118,36 +114,40 @@ public class GuestPlayer implements Player {
             throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
         }
     }
-//    public String printTiles(){
-//        StringBuilder tiles = new StringBuilder();
-//        if(playerTiles == null)
-//            return "";
-//           else {
-//            for (String tile : playerTiles) {
-//                tiles.append(tile).append(" ");
-//            }
-//            return tiles.toString();
-//        }
-//    }
-    public String printTiles(){
+
+    // public String printTiles(){
+    // StringBuilder tiles = new StringBuilder();
+    // if(playerTiles == null)
+    // return "";
+    // else {
+    // for (String tile : playerTiles) {
+    // tiles.append(tile).append(" ");
+    // }
+    // return tiles.toString();
+    // }
+    // }
+    public String printTiles() {
         openSocketIfClosed();
-        return sendRequestToServer("printTiles,"+name+":"+playerID);
+        return sendRequestToServer("printTiles," + name + ":" + playerID);
     }
-    public boolean queryIO(String... Args){
+
+    public boolean queryIO(String... Args) {
         openSocketIfClosed();
         String request = String.join(",", Args);
         return Boolean.parseBoolean(sendRequestToServer("Q," + request));
     }
-    public boolean challangeIO(String...Args){
+
+    public boolean challangeIO(String... Args) {
         openSocketIfClosed();
         String request = String.join(",", Args);
         return Boolean.parseBoolean(sendRequestToServer("C," + request));
     }
 
-    public boolean isMyTurn(){
+    public boolean isMyTurn() {
         openSocketIfClosed();
         return Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name + ":" + playerID));
     }
+
     public String startGame() {
         openSocketIfClosed();
         return sendRequestToServer("startGame," + name + ":" + playerID);
@@ -155,15 +155,14 @@ public class GuestPlayer implements Player {
 
     @Override
     public String toString() {
-//        return "GuestPlayer|" + name + "|" + playerID + "|" + serverAddress + "|";
+        // return "GuestPlayer|" + name + "|" + playerID + "|" + serverAddress + "|";
         return name + ":" + playerID;
     }
 
     @Override
-    public boolean endTurn(){
+    public boolean endTurn() {
         openSocketIfClosed();
         return Boolean.parseBoolean(sendRequestToServer("endTurn" + name + ":" + playerID));
     }
-
 
 }

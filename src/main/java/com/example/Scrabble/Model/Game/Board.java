@@ -1,8 +1,5 @@
 package com.example.Scrabble.Model.Game;
 
-import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
-import com.example.Scrabble.ScrabbleServer.MyServer;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
