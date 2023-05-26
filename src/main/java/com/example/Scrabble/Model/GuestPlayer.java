@@ -20,10 +20,7 @@ public class GuestPlayer implements Player {
 
     public GuestPlayer() {
     }
-    public String startGame() {
-        openSocketIfClosed();
-        return sendRequestToServer("startGame:" + name + ":" + playerID);
-    }
+
 
     public GuestPlayer(Player player) {
         this.name = player.getName();
@@ -64,7 +61,7 @@ public class GuestPlayer implements Player {
 
     public String joinGame() {
         openSocketIfClosed();
-        return sendRequestToServer("joinGame:" + name + ":" + playerID);
+        return sendRequestToServer("joinGame," + name + ":" + playerID);
 
     }
     public int getScore(){
@@ -146,6 +143,11 @@ public class GuestPlayer implements Player {
         openSocketIfClosed();
         String request = String.join(",", Args);
         return Boolean.parseBoolean(sendRequestToServer("C," + request));
+    }
+
+    public boolean isMyTurn(){
+        openSocketIfClosed();
+        return Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name + ":" + playerID));
     }
 
     @Override
