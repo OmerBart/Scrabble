@@ -25,7 +25,8 @@ public class HostPlayer extends GuestPlayer {
         super(player);
 
         Random r = new Random();
-        int port = 6000 + r.nextInt(6000);
+//        int port = 6000 + r.nextInt(6000);
+        int port = 65432;
         HostgameServer = new MyServer(port, new PlayerHandler());
         setServerAddress("localhost", port);
         HostgameServer.start();
