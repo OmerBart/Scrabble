@@ -4,6 +4,10 @@ import com.example.Scrabble.Model.Player;
 import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
 import com.example.Scrabble.ScrabbleServer.MyServer;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.*;
 
 public class GameManager {
@@ -20,6 +24,7 @@ public class GameManager {
     private int turn;
 
 
+
     private static GameManager single_instance = null;
 
 
@@ -30,7 +35,7 @@ public class GameManager {
         return single_instance;
     }
 
-    private GameManager(){
+    public GameManager(){
         Random r = new Random();
         playerList = new ArrayList<>();
         gameBoard = Board.getBoard();
@@ -65,8 +70,10 @@ public class GameManager {
     public String getGameBoard() {
         return gameBoard.getPrintableBoard();
     }
-    public void startGame() {
+    public String startGame(String playerName) {
+        //if(playerList.)
         System.out.println("starting game");
+        IOserver.start();
         System.out.println("num of players : " + playerList.size());
         //giving 7 tiles to each player
         for (int i = 0 ; i<7 ; i++) {
@@ -74,6 +81,7 @@ public class GameManager {
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
         turn = 0;
+        return "Game started";
     }
     public String getTilefromBag(String playerName){
         Tile t = bag.getRand();
@@ -99,37 +107,59 @@ public class GameManager {
         //System.out.println(playerName);
         return Integer.toString(10);
     }
-    public int placeWord(String playername, int x, int y, String word, boolean isHorizontal){
+    public String placeWord(String playername, String word, int x, int y, boolean isHorizontal){
         if(playerTiles.get(playername).size() < word.length())
-            return -1;
+            return Integer.toString(0);
         else {
             //String[] s = word.split("(?!^)");
-            char[] carr = word.toCharArray();
+            char[] carr = word.toUpperCase().toCharArray();
             Tile tt;
             Tile[] wordTiles = new Tile[word.length()];
             for (char c : carr) {
                 try {
                     tt = playerTiles.get(playername).stream().filter(t -> t.getLetter() == c).findFirst().get();
                     playerTiles.get(playername).remove(tt);
-                    wordTiles[word.indexOf(c)] = tt;
+                    wordTiles[word.indexOf(c)+1] = tt;
 
                 } catch (NoSuchElementException e) {
-                    return -1;
+                    System.out.println("you do not have the letters for the word in your hand");
+                    return Integer.toString(0);
                 }
             }
             //Word wordT = new Word(wordTiles, x, y, isHorizontal);
             int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
             if (!(score > 0)) {
-                playerScores.put(playername, playerScores.get(playername) + score);
-                for (Tile t : wordTiles) {
+                for (Tile t : wordTiles)
                     playerTiles.get(playername).add(t);
-
-                   ;
-                }
             }
-            return score;
+            else {
+                playerScores.put(playername, playerScores.get(playername) + score);
+                return Integer.toString(score);
+            }
         }
-       // return gameBoard.tryPlaceWord();
+        return Integer.toString(0); //to remove
+       // return gameBoard.tryPlaceWord()
+    }
+    //query + challenge dictionary
+    public boolean queryIOserver(String Args) {
+        try {
+            Socket s = new Socket("localhost",IOserver.getPort());
+            PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+            Scanner in = new Scanner(s.getInputStream());
+
+            // Send the request to the server
+            out.println(Args);
+            out.flush();
+
+
+            // Receive the response from the server
+            String res = in.nextLine();
+            in.close();
+            out.close();
+            return Boolean.parseBoolean(res);
+        } catch (IOException e) {
+            throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
+        }
     }
 
 
