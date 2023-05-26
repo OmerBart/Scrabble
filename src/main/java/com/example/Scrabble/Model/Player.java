@@ -5,6 +5,8 @@ public interface Player {
 
     public int getPlayerID();
 
+    public boolean endTurn();
+
 
 
 

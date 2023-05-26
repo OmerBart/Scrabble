@@ -14,7 +14,18 @@ public class LocalHostServerTestMain {
         Scanner scanner = new Scanner(System.in);
 
 
-        sleep(15000);
+        sleep(1500);
+        System.out.println(hostPlayer.startGame());
+        sleep(1500);
+        System.out.println("host tiles: " + hostPlayer.printTiles());
+        sleep(1500);
+        if(hostPlayer.isMyTurn())
+        {
+            System.out.println("Host's turn");
+            sleep(2000);
+        }
+        sleep(2000);
+
         System.out.println("Close Host Server? (y/n)");
         String input = scanner.nextLine();
         if (input.equals("y")) {

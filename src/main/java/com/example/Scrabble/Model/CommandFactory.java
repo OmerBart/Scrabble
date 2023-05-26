@@ -17,10 +17,10 @@ public class CommandFactory {
             } else
                 return new ErrorCommand("Join command must be in the format: join,playerName:ID");
         }
-//        else if (request.contains("startGame")) {
-//            String playerName = request.split(":")[1];
-//            return new StartGameCommand(playerName);
-//        }
+        else if (request.contains("startGame")) {
+            String playerName = request.split(",")[1];
+            return new StartGameCommand(playerName);
+        }
         else if (request.contains("stopGame")) {
             return new StopGameCommand();
         }
@@ -37,6 +37,18 @@ public class CommandFactory {
             int y = Integer.parseInt(arg[5]);
             boolean isHorizontal = Boolean.parseBoolean(arg[6]);
             return new PlaceWordCommand(playerName, word, x, y, isHorizontal);
+        }
+        else if (request.contains("isMyTurn")) {
+            String playerName = request.split(",")[1];
+            return new IsTurnCommand(playerName);
+
+        }
+        else if (request.contains("endTurn")) {
+            return new EndTurnCommand();
+        }
+        else if (request.contains("printTiles")) {
+            String playerName = request.split(",")[1];
+            return new PrintTilesCommand(playerName);
         }
 
         // Add more conditions to handle other commands
@@ -81,18 +93,18 @@ public class CommandFactory {
         }
     }
 
-//    private class StartGameCommand implements Command {
-//        private String playerName;
-//
-//        public StartGameCommand(String playerName) {
-//            this.playerName = playerName;
-//        }
-//        @Override
-//        public String execute() {
-//            GameManager GM = GameManager.get();
-//            return GM.startGame();
-//        }
-//    }
+    private class StartGameCommand implements Command {
+        private String playerName;
+
+        public StartGameCommand(String playerName) {
+            this.playerName = playerName;
+        }
+        @Override
+        public String execute() {
+            GameManager GM = GameManager.get();
+            return GM.startGame(playerName);
+        }
+    }
 
     private class StopGameCommand implements Command {
         @Override
@@ -159,6 +171,37 @@ public class CommandFactory {
         @Override
         public String execute() {
             return this.Error;
+        }
+    }
+
+    private class IsTurnCommand implements Command {
+        private String playerName;
+        public IsTurnCommand(String playerName) {
+            this.playerName = playerName;
+        }
+        @Override
+        public String execute() {
+            GameManager GM = GameManager.get();
+            return GM.myTurn(playerName);
+        }
+    }
+
+    private class EndTurnCommand implements Command {
+        @Override
+        public String execute() {
+            GameManager GM = GameManager.get();
+            return String.valueOf(GM.endTurn());
+        }
+    }
+    private class PrintTilesCommand implements Command {
+        private String playerName;
+        public PrintTilesCommand(String playerName) {
+            this.playerName = playerName;
+        }
+        @Override
+        public String execute() {
+            GameManager GM = GameManager.get();
+            return GM.playerTiles(playerName);
         }
     }
 }

@@ -26,7 +26,7 @@ public class GuestPlayer implements Player {
         this.name = player.getName();
         this.playerID = player.getPlayerID();
     }
-    public GuestPlayer(Player player, String serverAddress) {
+    public GuestPlayer(String serverAddress) {
         this.name = name;
         this.serverAddress = serverAddress;
     }
@@ -123,16 +123,20 @@ public class GuestPlayer implements Player {
             throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
         }
     }
+//    public String printTiles(){
+//        StringBuilder tiles = new StringBuilder();
+//        if(playerTiles == null)
+//            return "";
+//           else {
+//            for (String tile : playerTiles) {
+//                tiles.append(tile).append(" ");
+//            }
+//            return tiles.toString();
+//        }
+//    }
     public String printTiles(){
-        StringBuilder tiles = new StringBuilder();
-        if(playerTiles == null)
-            return "";
-           else {
-            for (String tile : playerTiles) {
-                tiles.append(tile).append(" ");
-            }
-            return tiles.toString();
-        }
+        openSocketIfClosed();
+        return sendRequestToServer("printTiles,"+name+":"+playerID);
     }
     public boolean queryIO(String... Args){
         openSocketIfClosed();
@@ -149,9 +153,22 @@ public class GuestPlayer implements Player {
         openSocketIfClosed();
         return Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name + ":" + playerID));
     }
+    public String startGame() {
+        openSocketIfClosed();
+        return sendRequestToServer("startGame," + name + ":" + playerID);
+    }
 
     @Override
     public String toString() {
-        return "GuestPlayer|" + name + "|" + playerID + "|" + serverAddress + "|";
+//        return "GuestPlayer|" + name + "|" + playerID + "|" + serverAddress + "|";
+        return name + ":" + playerID;
     }
+
+    @Override
+    public boolean endTurn(){
+        openSocketIfClosed();
+        return Boolean.parseBoolean(sendRequestToServer("endTurn" + name + ":" + playerID));
+    }
+
+
 }

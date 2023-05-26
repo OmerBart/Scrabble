@@ -5,7 +5,7 @@ import com.example.Scrabble.Model.GuestPlayer;
 import static java.lang.Thread.sleep;
 
 public class GuestPlayerTest {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         int port = 65432;
         try {
             sleep(2000);
@@ -26,6 +26,22 @@ public class GuestPlayerTest {
 //        guest3.setServerAddress("localhost",port);
 //        guest4.setServerAddress("localhost",port);
         System.out.println("trying to join game...." + guest.joinGame());
+        sleep(1500);
+        System.out.println("guest tiles: " + guest.printTiles());
+        sleep(1500);
+        //System.out.println("guest is my turn? " + guest.isMyTurn());
+        if(guest.isMyTurn()){
+            System.out.println(guest.getTile());
+            sleep(1500);
+            if(guest.endTurn())
+                System.out.println("turn ended");
+            else
+                System.out.println("turn not ended");
+//            System.out.println(guest.endTurn());
+//            System.out.println(guest.endTurn());
+
+
+        }
 //        System.out.println("trying to join game...." + guest2.joinGame());
 //        System.out.println("trying to join game...." + guest3.joinGame());
 //        System.out.println("trying to join game...." + guest4.joinGame());
