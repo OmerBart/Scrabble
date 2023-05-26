@@ -21,6 +21,23 @@ public class CommandFactory {
             String playerName = request.split(":")[1];
             return new StartGameCommand(playerName);
         }
+        else if (request.contains("stopGame")) {
+            return new StopGameCommand();
+        }
+        else if (request.contains("getScore")) {
+            String playerName = request.split("getScore:")[1];
+            return new GetScoreCommand(playerName);
+        }
+        else if (request.contains("placeWord")) {
+            //request comes in format of "placeWord:playerName:ID:word:x:y:isHorizontal"
+            String[] arg = request.split(":");
+            String playerName = arg[1] + ":" + arg[2];
+            String word = arg[3];
+            int x = Integer.parseInt(arg[4]);
+            int y = Integer.parseInt(arg[5]);
+            boolean isHorizontal = Boolean.parseBoolean(arg[6]);
+            return new PlaceWordCommand(playerName, word, x, y, isHorizontal);
+        }
 
         // Add more conditions to handle other commands
         return null;
@@ -74,6 +91,49 @@ public class CommandFactory {
         public String execute() {
             GameManager GM = GameManager.get();
             return GM.startGame(playerName);
+        }
+    }
+
+    private class StopGameCommand implements Command {
+        @Override
+        public String execute() {
+            GameManager GM = GameManager.get();
+            GM.stopGame();
+            return "Game stopped";
+        }
+    }
+    private class GetScoreCommand implements Command {
+        private String playerName;
+
+        public GetScoreCommand(String playerName) {
+            this.playerName = playerName;
+        }
+
+        @Override
+        public String execute() {
+            GameManager GM = GameManager.get();
+            return GM.getScore(playerName);
+        }
+    }
+    private class PlaceWordCommand implements Command {
+        private String playerName;
+        private String word;
+        private int x;
+        private int y;
+        private boolean isHorizontal;
+
+        public PlaceWordCommand(String playerName, String word, int x, int y, boolean isHorizontal) {
+            this.playerName = playerName;
+            this.word = word;
+            this.x = x;
+            this.y = y;
+            this.isHorizontal = isHorizontal;
+        }
+
+        @Override
+        public String execute() {
+            GameManager GM = GameManager.get();
+            return GM.placeWord(playerName, word, x, y, isHorizontal);
         }
     }
 }
