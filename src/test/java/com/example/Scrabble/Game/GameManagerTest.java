@@ -76,7 +76,5 @@ public class GameManagerTest {
 
         // check if players got their tiles
     }
-
-    @Test
     
 }
