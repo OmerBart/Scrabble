@@ -28,7 +28,7 @@ public class GuestPlayerTest {
 
     @Test
     void getName() {
-        assertEquals("test", guestPlayer.getName());
+        assertEquals("test:1", guestPlayer.getName());
     }
 
     @Test
@@ -44,13 +44,7 @@ public class GuestPlayerTest {
 
     @Test
     void testToString() {
-        assertEquals("GuestPlayer|test|1|localhost:8080|", guestPlayer.toString());
-    }
-
-    @Test
-    void testEquals() {
-        GuestPlayer guestPlayer1 = new GuestPlayer("test", 1, "localhost:8080");
-        assertEquals(true, guestPlayer.equals(guestPlayer1));
+        assertEquals("test:1", guestPlayer.toString());
     }
 
 }

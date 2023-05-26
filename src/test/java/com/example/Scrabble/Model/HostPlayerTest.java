@@ -26,6 +26,6 @@ class HostPlayerTest {
     @Test
     void testToString() {
         System.out.println("HostPlayerTest: testToString()");
-        assertEquals("HostPlayer|test|1|localhost:", hostPlayer.toString().substring(0, 28));
+        assertEquals("test:1", hostPlayer.toString());
     }
 }

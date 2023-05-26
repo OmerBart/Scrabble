@@ -21,10 +21,8 @@ public class HostPlayer extends GuestPlayer {
 
         super(player);
 
-
-
-        //Random r = new Random();
-        //int port = 6000 + r.nextInt(6000);
+        // Random r = new Random();
+        // int port = 6000 + r.nextInt(6000);
         int port = 65432;
         HostgameServer = new MyServer(port, new PlayerHandler());
         setServerAddress("localhost", port);
@@ -41,14 +39,14 @@ public class HostPlayer extends GuestPlayer {
         GM.stopGame();
         HostgameServer.close();
     }
-    @Override
-    public String getName() {
-        return this.toString();
-    }
+    // @Override
+    // public String getName() {
+    // return this.toString();
+    // }
 
-//    @Override
-//    public String toString() {
-//        return this.getName();
-//    }
+    // @Override
+    // public String toString() {
+    // return this.getName();
+    // }
 
 }

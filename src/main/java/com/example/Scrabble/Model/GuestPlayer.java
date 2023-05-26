@@ -15,7 +15,7 @@ public class GuestPlayer implements Player {
     private List<String> playerTiles;
 
     public GuestPlayer(Player player) {
-        this.name = player.getName();
+        this.name = player.getName().split(":")[0];
         this.playerID = player.getPlayerID();
     }
 
@@ -155,7 +155,6 @@ public class GuestPlayer implements Player {
 
     @Override
     public String toString() {
-        // return "GuestPlayer|" + name + "|" + playerID + "|" + serverAddress + "|";
         return name + ":" + playerID;
     }
 
