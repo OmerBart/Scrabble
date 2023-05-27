@@ -193,4 +193,7 @@ public class GameManager {
 
     }
 
+    public LinkedHashMap<String, List<Tile>> getPlayerTiles() {
+        return playerTiles;
+    }
 }
