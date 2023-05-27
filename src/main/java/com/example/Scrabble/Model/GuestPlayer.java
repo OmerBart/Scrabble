@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.example.Scrabble.Model.Game.Tile;
+// import com.example.Scrabble.Model.Game.Tile;
 
 public class GuestPlayer implements Player {
     private String name;
