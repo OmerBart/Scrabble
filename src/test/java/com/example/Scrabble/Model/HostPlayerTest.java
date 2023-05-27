@@ -1,14 +1,26 @@
 package com.example.Scrabble.Model;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+
 class HostPlayerTest {
 
-    HostPlayer hostPlayer = HostPlayer.get(new GuestPlayer("test", 1));
+    static HostPlayer hostPlayer;
+
+    @BeforeAll
+    static void setUpAll() {
+        hostPlayer = HostPlayer.get(new GuestPlayer("test", 1));
+        hostPlayer.startGame();
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+        hostPlayer.stopGame();
+    }
 
     @Test
     void getHostgameServer() {
@@ -26,6 +38,6 @@ class HostPlayerTest {
     @Test
     void testToString() {
         System.out.println("HostPlayerTest: testToString()");
-        assertEquals("HostPlayer|test|1|localhost:", hostPlayer.toString().substring(0, 28));
+        assertEquals("test:1", hostPlayer.toString());
     }
 }

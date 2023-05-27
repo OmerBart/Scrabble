@@ -2,29 +2,54 @@ package com.example.Scrabble.Model;
 
 import org.junit.jupiter.api.Test;
 
+import com.example.Scrabble.ScrabbleServer.MyServer;
+
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Scanner;
+
+import org.junit.jupiter.api.BeforeAll;
 
 public class PlayerHandlerTest {
 
-    @Test
+    static PlayerHandler playerHandler;
+
+    @BeforeAll
+    static void setUpAll() {
+        playerHandler = new PlayerHandler();
+    }
+
     public void testPlayerHandler() {
-        System.out.println("Test PlayerHandler constructor");
-        PlayerHandler playerHandler = new PlayerHandler();
         assertNotNull(playerHandler);
     }
 
     @Test
     public void testHandleClient() {
-        System.out.println("Test handleClient");
-        PlayerHandler playerHandler = new PlayerHandler();
-        playerHandler.handleClient(null, null);
+        try {
+            MyServer server = new MyServer(5050, playerHandler);
+            server.start();
+            Socket socket = new Socket("localhost", server.getPort());
+            PrintWriter out = new PrintWriter(socket.getOutputStream());
+            Scanner in = new Scanner(socket.getInputStream());
+            out.println("joinGame,test:1");
+            out.flush();
+            String result = in.nextLine();
+            assertEquals("Player added to game successfully", result);
+            socket.close();
+            server.close();
+            in.close();
+            out.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
+        }
     }
 
     @Test
     public void testClose() {
-        System.out.println("Test close");
-        PlayerHandler playerHandler = new PlayerHandler();
-        playerHandler.close();
+        assertTrue(playerHandler.isClosed());
     }
 
 }

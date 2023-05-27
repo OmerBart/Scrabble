@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+// import com.example.Scrabble.Model.Game.Tile;
+
 public class GuestPlayer implements Player {
     private String name;
     private int playerID;
@@ -15,7 +17,7 @@ public class GuestPlayer implements Player {
     private List<String> playerTiles;
 
     public GuestPlayer(Player player) {
-        this.name = player.getName();
+        this.name = player.getName().split(":")[0];
         this.playerID = player.getPlayerID();
     }
 
@@ -51,7 +53,6 @@ public class GuestPlayer implements Player {
     public String joinGame() {
         openSocketIfClosed();
         return sendRequestToServer("joinGame," + name + ":" + playerID);
-
     }
 
     public int getScore() {
@@ -66,6 +67,10 @@ public class GuestPlayer implements Player {
         String tile = sendRequestToServer("getTile:" + name + ":" + playerID);
         playerTiles.add(tile);
         return tile;
+    }
+
+    public List<String> getPlayerTiles() {
+        return playerTiles;
     }
 
     public String placeWord(String word, int x, int y, boolean isHorizontal) {
@@ -85,12 +90,15 @@ public class GuestPlayer implements Player {
     }
 
     private void openSocketIfClosed() {
+        System.out.println("Opening socket if closed");
         try {
             // Only open a new socket connection if it's closed or null
             if (serverSocket == null || serverSocket.isClosed()) {
+                System.out.println("socket is null or closed");
                 serverSocket = new Socket(serverAddress.split(":")[0], Integer.parseInt(serverAddress.split(":")[1]));
             }
         } catch (IOException e) {
+            System.out.println("Error opening socket: " + e.getMessage());
             throw new RuntimeException("Error opening socket: " + e.getMessage(), e);
         }
     }
@@ -155,7 +163,6 @@ public class GuestPlayer implements Player {
 
     @Override
     public String toString() {
-        // return "GuestPlayer|" + name + "|" + playerID + "|" + serverAddress + "|";
         return name + ":" + playerID;
     }
 

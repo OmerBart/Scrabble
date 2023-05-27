@@ -11,7 +11,7 @@ public class PlayerHandler implements ClientHandler {
     private CommandFactory commandFactory;
 
     public PlayerHandler() {
-        //GameManager GM = GameManager.get();
+        // GameManager GM = GameManager.get();
         commandFactory = new CommandFactory();
     }
 
@@ -41,5 +41,9 @@ public class PlayerHandler implements ClientHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isClosed() {
+        return in == null && out == null;
     }
 }
