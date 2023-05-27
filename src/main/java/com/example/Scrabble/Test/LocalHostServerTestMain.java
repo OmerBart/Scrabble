@@ -1,7 +1,7 @@
 package com.example.Scrabble.Test;
 
-import com.example.Scrabble.Model.GuestPlayer;
-import com.example.Scrabble.Model.HostPlayer;
+import com.example.Scrabble.Model.Player.GuestPlayer;
+import com.example.Scrabble.Model.Player.HostPlayer;
 
 import java.util.Scanner;
 

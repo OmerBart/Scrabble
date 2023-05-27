@@ -1,4 +1,4 @@
-package com.example.Scrabble.Model;
+package com.example.Scrabble.Model.Player;
 
 public interface Player {
     public String getName();

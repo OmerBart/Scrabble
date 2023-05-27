@@ -1,4 +1,4 @@
-package com.example.Scrabble.ScrabbleServer;
+package com.example.Scrabble.ServerUtils;
 
 import java.io.InputStream;
 import java.io.OutputStream;

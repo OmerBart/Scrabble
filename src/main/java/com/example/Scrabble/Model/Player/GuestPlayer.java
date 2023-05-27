@@ -1,4 +1,4 @@
-package com.example.Scrabble.Model;
+package com.example.Scrabble.Model.Player;
 
 import java.io.IOException;
 import java.io.PrintWriter;

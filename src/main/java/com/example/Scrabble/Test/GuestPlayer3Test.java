@@ -1,7 +1,7 @@
 package com.example.Scrabble.Test;
 
 
-import com.example.Scrabble.Model.GuestPlayer;
+import com.example.Scrabble.Model.Player.GuestPlayer;
 
 import static java.lang.Thread.sleep;
 // import java.util.Random;

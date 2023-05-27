@@ -1,8 +1,8 @@
 package com.example.Scrabble.Model.Game;
 
-import com.example.Scrabble.Model.Player;
-import com.example.Scrabble.ScrabbleServer.BookScrabbleHandler;
-import com.example.Scrabble.ScrabbleServer.MyServer;
+import com.example.Scrabble.Model.Player.Player;
+import com.example.Scrabble.ScrabbleDictionary.IOserver.BookScrabbleHandler;
+import com.example.Scrabble.ServerUtils.MyServer;
 
 import java.io.IOException;
 import java.io.PrintWriter;
