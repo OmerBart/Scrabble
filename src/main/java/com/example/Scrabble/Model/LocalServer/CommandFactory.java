@@ -1,6 +1,5 @@
 package com.example.Scrabble.Model.LocalServer;
 
-import com.example.Scrabble.Model.Game.GameManager;
 import com.example.Scrabble.Model.Player.GuestPlayer;
 
 public class CommandFactory {

@@ -1,4 +1,4 @@
-package com.example.Scrabble.ServerUtils;
+package com.example.Scrabble.Model.ServerUtils;
 
 
 import java.io.IOException;

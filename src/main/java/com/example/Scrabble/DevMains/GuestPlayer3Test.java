@@ -1,4 +1,4 @@
-package com.example.Scrabble.Test;
+package com.example.Scrabble.DevMains;
 
 
 import com.example.Scrabble.Model.Player.GuestPlayer;

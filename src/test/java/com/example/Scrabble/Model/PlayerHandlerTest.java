@@ -3,7 +3,7 @@ package com.example.Scrabble.Model;
 import com.example.Scrabble.Model.LocalServer.PlayerHandler;
 import org.junit.jupiter.api.Test;
 
-import com.example.Scrabble.ServerUtils.MyServer;
+import com.example.Scrabble.Model.ServerUtils.MyServer;
 
 import static org.junit.jupiter.api.Assertions.*;
 

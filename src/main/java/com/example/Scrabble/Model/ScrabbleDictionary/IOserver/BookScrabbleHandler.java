@@ -1,7 +1,7 @@
-package com.example.Scrabble.ScrabbleDictionary.IOserver;
+package com.example.Scrabble.Model.ScrabbleDictionary.IOserver;
 
 
-import com.example.Scrabble.ServerUtils.ClientHandler;
+import com.example.Scrabble.Model.ServerUtils.ClientHandler;
 
 import java.io.*;
 

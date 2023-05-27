@@ -1,8 +1,8 @@
 package com.example.Scrabble.Model.Player;
 
-import com.example.Scrabble.Model.Game.GameManager;
+import com.example.Scrabble.Model.LocalServer.GameManager;
 import com.example.Scrabble.Model.LocalServer.PlayerHandler;
-import com.example.Scrabble.ServerUtils.MyServer;
+import com.example.Scrabble.Model.ServerUtils.MyServer;
 
 // import java.util.Random;
 

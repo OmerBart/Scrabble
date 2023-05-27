@@ -1,8 +1,11 @@
-package com.example.Scrabble.Model.Game;
+package com.example.Scrabble.Model.LocalServer;
 
+import com.example.Scrabble.Model.Game.Board;
+import com.example.Scrabble.Model.Game.Tile;
+import com.example.Scrabble.Model.Game.Word;
 import com.example.Scrabble.Model.Player.Player;
-import com.example.Scrabble.ScrabbleDictionary.IOserver.BookScrabbleHandler;
-import com.example.Scrabble.ServerUtils.MyServer;
+import com.example.Scrabble.Model.ScrabbleDictionary.IOserver.BookScrabbleHandler;
+import com.example.Scrabble.Model.ServerUtils.MyServer;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -1,6 +1,6 @@
 package com.example.Scrabble.Model.LocalServer;
 
-import com.example.Scrabble.ServerUtils.ClientHandler;
+import com.example.Scrabble.Model.ServerUtils.ClientHandler;
 
 import java.io.*;
 

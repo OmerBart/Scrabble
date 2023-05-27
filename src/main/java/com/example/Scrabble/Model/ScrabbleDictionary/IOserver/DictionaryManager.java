@@ -1,7 +1,7 @@
-package com.example.Scrabble.ScrabbleDictionary.IOserver;
+package com.example.Scrabble.Model.ScrabbleDictionary.IOserver;
 
 
-import com.example.Scrabble.ScrabbleDictionary.CacheManager.Dictionary;
+import com.example.Scrabble.Model.ScrabbleDictionary.CacheManager.Dictionary;
 
 import java.util.LinkedHashMap;
 

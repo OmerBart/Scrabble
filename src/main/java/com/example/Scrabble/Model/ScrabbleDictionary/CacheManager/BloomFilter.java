@@ -1,4 +1,4 @@
-package com.example.Scrabble.ScrabbleDictionary.CacheManager;
+package com.example.Scrabble.Model.ScrabbleDictionary.CacheManager;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
