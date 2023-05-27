@@ -1,4 +1,4 @@
-package com.example.Scrabble.Model;
+package com.example.Scrabble.Model.LocalServer;
 
 public interface Command {
     String execute();

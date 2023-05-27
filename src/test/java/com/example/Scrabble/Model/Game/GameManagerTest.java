@@ -2,8 +2,8 @@ package com.example.Scrabble.Model.Game;
 
 import org.junit.jupiter.api.Test;
 
-import com.example.Scrabble.Model.GuestPlayer;
-import com.example.Scrabble.Model.HostPlayer;
+import com.example.Scrabble.Model.Player.GuestPlayer;
+import com.example.Scrabble.Model.Player.HostPlayer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
