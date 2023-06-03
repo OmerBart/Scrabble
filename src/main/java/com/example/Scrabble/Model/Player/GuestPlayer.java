@@ -5,11 +5,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.Scanner;
 
 // import com.example.Scrabble.Model.Game.Tile;
 
-public class GuestPlayer implements Player {
+public class GuestPlayer extends Observable implements Player {
     private String name;
     private int playerID;
     private String serverAddress; // format "ip:port"
