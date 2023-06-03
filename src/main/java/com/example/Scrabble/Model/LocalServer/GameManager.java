@@ -145,18 +145,19 @@ public class GameManager {
         else {
             // String[] s = word.split("(?!^)");
             char[] carr = word.toUpperCase().toCharArray();
-            Tile tt;
+            Tile tmpTile;
             Tile[] wordTiles = new Tile[word.length()];
             for (char c : carr) {
                 try {
-                    tt = playerTiles.get(playername).stream().filter(t -> t.getLetter() == c).findFirst().get();
-                    playerTiles.get(playername).remove(tt);
-                    wordTiles[word.indexOf(c) + 1] = tt;
+                    tmpTile = playerTiles.get(playername).stream().filter(t -> t.getLetter() == c).findFirst().get();
+                    playerTiles.get(playername).remove(tmpTile);
+                    wordTiles[word.indexOf(c) + 1] = tmpTile;
 
                 } catch (NoSuchElementException e) {
                     System.out.println("you do not have the letters for the word in your hand");
                     return Integer.toString(0);
                 }
+
             }
             // Word wordT = new Word(wordTiles, x, y, isHorizontal);
 
