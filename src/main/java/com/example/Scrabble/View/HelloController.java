@@ -1,4 +1,4 @@
-package com.example.Scrabble;
+package com.example.Scrabble.View;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

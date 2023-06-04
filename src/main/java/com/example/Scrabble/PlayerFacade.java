@@ -3,10 +3,11 @@ package com.example.Scrabble;
 import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.HostPlayer;
 
-public class HostFacade {
+public class PlayerFacade {
     HostPlayer hostPLayer;
+    //StringProperty hostPlayerName; // observable
 
-    public HostFacade() {
+    public PlayerFacade() {
     this.hostPLayer = HostPlayer.get(new GuestPlayer("Host",0));
     }
 

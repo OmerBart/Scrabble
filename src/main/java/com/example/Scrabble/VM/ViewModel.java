@@ -23,8 +23,6 @@ public class ViewModel extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if(o instanceof HostPlayer) {
-            hostPlayerName.setValue(((HostPlayer) o).getName());
-        }
+
     }
 }
