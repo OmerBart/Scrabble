@@ -10,10 +10,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class ViewModel extends Observable implements Observer {
-
+    // Template for ViewModel(auto generated replace the bellow with your own variables and logic)
     Player player;
     public StringProperty hostPlayerName; // observable
     public DoubleProperty dp;
+
 
     public ViewModel(Player player, StringProperty hostPlayerName, DoubleProperty dp) {
         this.player = player;
@@ -23,8 +24,8 @@ public class ViewModel extends Observable implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if(o instanceof HostPlayer) {
-            hostPlayerName.setValue(((HostPlayer) o).getName());
-        }
+//        if(o instanceof HostPlayer) {
+//            hostPlayerName.setValue(((HostPlayer) o).getName());
+//        }
     }
 }
