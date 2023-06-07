@@ -3,7 +3,9 @@ package com.example.Scrabble;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+// import com.example.Scrabble.BoardCanvas;
+
+public class ScrabbleController {
     @FXML
     private Label welcomeText;
 

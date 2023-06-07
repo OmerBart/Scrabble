@@ -1,4 +1,4 @@
-package com.example.Scrabble.View;
+package com.example.Scrabble;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +13,8 @@ public class ScrabbleGame extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("scrabble.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("Scrabble Game");
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.getScene().getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         primaryStage.show();
     }
 

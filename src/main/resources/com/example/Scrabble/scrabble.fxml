@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.layout.Pane?>
 
-<Pane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.example.Scrabble.ScrabbleController" fx:id="rootPane" prefWidth="800" prefHeight="600">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<!-- <?import javafx.scene.canvas.Canvas?> -->
 
-    <Canvas fx:id="boardCanvas" width="800" height="800" />
-</Pane>
+
+<?import javafx.scene.control.Button?>
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.Scrabble.ScrabbleController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label fx:id="welcomeText"/>
+    <Button text="Join Game" onAction="#onJoinGameButtonClick"/>
+    <Button text="Host Game" onAction="#onHostGameButtonClick"/>
+
+    
+
+</VBox>
