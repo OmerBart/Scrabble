@@ -5,26 +5,27 @@
     -fx-font-size: 20px;
 }
 
-#board {
-    -fx-background-color: #f5f5f5;
+/* #board {
+    -fx-background-color: red;
     -fx-color: white;
     -fx-border-color: #f28888;
     -fx-border-width: 2px;
     -fx-border-radius: 15px;
     -fx-background-radius: 15px;
-}
+    -fx-width: auto;
+    -fx-height: auto;
+} */
 
-.board-tile{
-    -fx-background-color: green;
-    -fx-color: white;
-    -fx-border-color: #f28888;
-    -fx-border-width: 2px;
-    -fx-border-radius: 15px;
-    -fx-background-radius: 15px;
+.rectangle {
+    -fx-background-color: #f5f5f5;
+    -fx-fill: #f5f5f5;
+    -fx-stroke: #f28888;
+    -fx-stroke-width: 2px;
 }
 
 .label {
     -fx-text-fill: #ffffff;
+    -fx-font-size: 10px;   
 }
 
 .button {
