@@ -10,7 +10,7 @@ public class ScrabbleGame extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("scrabble.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("home-scene.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("Scrabble Game");
         primaryStage.setScene(new Scene(root, 800, 600));

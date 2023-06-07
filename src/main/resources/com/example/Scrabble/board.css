@@ -1,0 +1,9 @@
+.root {
+    -fx-background-color: #e6e6e6;
+}
+
+.position-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px;
+}
