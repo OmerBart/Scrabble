@@ -1,37 +1,22 @@
-.root {
-    -fx-background-color: black;
-    -fx-color: white;
-    -fx-font-family: "Arial";
-    -fx-font-size: 20px;
-}
-
-/* #board {
-    -fx-background-color: red;
-    -fx-color: white;
-    -fx-border-color: #f28888;
-    -fx-border-width: 2px;
-    -fx-border-radius: 15px;
-    -fx-background-radius: 15px;
-    -fx-width: auto;
-    -fx-height: auto;
-} */
-
-.rectangle {
-    -fx-background-color: #f5f5f5;
-    -fx-fill: #f5f5f5;
-    -fx-stroke: #f28888;
-    -fx-stroke-width: 2px;
+.hide {
+    -fx-fill: none;
 }
 
 .label {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 10px;   
+    -fx-text-fill: black;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+.welcome-text {
+    -fx-text-fill: black;
+    -fx-font-size: 20px;
 }
 
 .button {
     -fx-background-color: #f5f5f533;
-    -fx-color: white;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #000000;
     -fx-border-color: #f28888;
     -fx-border-width: 2px;
     -fx-border-radius: 15px;
@@ -40,4 +25,37 @@
 
 .button:hover {
     -fx-background-color: #f2888833;
+}
+
+.board-cell {
+    -fx-fill: green;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+    -fx-arc-width: 5;
+    -fx-arc-height: 5;
+    -fx-alignment: center;
+}
+
+.star {
+    -fx-fill: yellow;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+    -fx-arc-width: 5;
+    -fx-arc-height: 5;
+    -fx-alignment: center;
+}
+
+.board-border {
+    -fx-fill: #f5f5f5;
+    -fx-background-radius: 15px;
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+    -fx-arc-width: 5;
+    -fx-border-radius: 15px;
+    -fx-arc-height: 5;
+    -fx-alignment: center;
 }

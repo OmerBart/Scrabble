@@ -12,7 +12,6 @@ public class HomeController {
 
     private Stage stage;
     private Scene scene;
-    private Parent root;
 
     @FXML
     private Label welcomeText;
