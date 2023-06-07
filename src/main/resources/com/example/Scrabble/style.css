@@ -5,6 +5,15 @@
     -fx-font-size: 20px;
 }
 
+.canvas {
+    -fx-background-color: #f5f5f5;
+    -fx-color: white;
+    -fx-border-color: #f28888;
+    -fx-border-width: 2px;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+}
+
 .label {
     -fx-text-fill: #ffffff;
 }
