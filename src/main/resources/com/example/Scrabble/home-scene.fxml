@@ -16,5 +16,4 @@
     <Button text="Join Game" onAction="#onJoinGameButtonClick" />
     <Button text="Host Game" onAction="#onHostGameButtonClick" />
 
-
 </VBox>

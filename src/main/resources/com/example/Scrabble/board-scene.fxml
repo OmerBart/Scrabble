@@ -5,12 +5,27 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
     fx:controller="com.example.Scrabble.BoardController">
-
-    <Label fx:id="welcomeText" text='Welcome To Scrabble!!!!!!' />
-    <GridPane fx:id="board" alignment="CENTER" hgap="1" vgap="1">
-    </GridPane>
-
+    <SplitPane>
+        <AnchorPane>
+            <VBox alignment="CENTER" spacing="20.0">
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+                <Label fx:id="welcomeText" text='Welcome To Scrabble!!!!!!' />
+                <Button text="Place Word" />
+                <Button text="Get Tile" />
+                <Label fx:id="scoreText" text='Score: 0' />
+                <Label text='Tiles:' />
+            </VBox>
+        </AnchorPane>
+        <AnchorPane>
+            <GridPane fx:id="board" alignment="CENTER" hgap="1" vgap="1">
+            </GridPane>
+        </AnchorPane>
+    </SplitPane>
 </VBox>
