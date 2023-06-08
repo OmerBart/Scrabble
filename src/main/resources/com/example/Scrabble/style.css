@@ -39,7 +39,7 @@
 }
 
 .star {
-    -fx-fill: yellow;
+    -fx-fill: rgb(234, 234, 78);
     -fx-border-radius: 15px;
     -fx-background-radius: 15px;
     -fx-stroke: #000000;
@@ -56,6 +56,50 @@
     -fx-stroke-width: 1;
     -fx-arc-width: 5;
     -fx-border-radius: 15px;
+    -fx-arc-height: 5;
+    -fx-alignment: center;
+}
+
+.bonus-3W {
+    -fx-fill: red;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+    -fx-arc-width: 5;
+    -fx-arc-height: 5;
+    -fx-alignment: center;
+}
+
+.bonus-2W {
+    -fx-fill: yellow;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+    -fx-arc-width: 5;
+    -fx-arc-height: 5;
+    -fx-alignment: center;
+}
+
+.bonus-2L {
+    -fx-fill: rgb(104, 115, 213);
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+    -fx-arc-width: 5;
+    -fx-arc-height: 5;
+    -fx-alignment: center;
+}
+
+.bonus-3L {
+    -fx-fill: blue;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+    -fx-arc-width: 5;
     -fx-arc-height: 5;
     -fx-alignment: center;
 }
