@@ -20,8 +20,7 @@ public class HomeController {
     protected void onJoinGameButtonClick(ActionEvent event) {
         // change scene to board-scene.fxml
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("board-scene.fxml"));
-            welcomeText.setText("Welcome to Scrabble! (Join)");
+            Parent root = FXMLLoader.load(getClass().getResource("join-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root, 800, 600);
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());

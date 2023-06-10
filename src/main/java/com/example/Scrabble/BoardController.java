@@ -5,17 +5,25 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
+import javafx.scene.layout.Pane;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class BoardController implements Initializable {
 
+    ArrayList<StackPane> tilesList = new ArrayList<>();
+
     @FXML
     private GridPane board;
+
+    @FXML
+    private HBox tiles;
 
     @FXML
     private Label welcomeText;
@@ -188,5 +196,22 @@ public class BoardController implements Initializable {
         StackPane stack = new StackPane(rect, label);
         stack.setAlignment(Pos.CENTER);
         board.add(stack, c, r);
+    }
+
+    public void getTile() {
+        StackPane tile = buildTile();
+        tiles.getChildren().add(tile);
+    }
+
+    private StackPane buildTile() {
+        // random letter A-Z
+        Random r = new Random();
+        String letter = String.valueOf((char) (r.nextInt(26) + 'A'));
+        Label label = new Label(letter);
+        Rectangle rect = new Rectangle(40, 80);
+        rect.getStyleClass().add("tile");
+        StackPane stack = new StackPane(rect, label);
+        stack.setAlignment(Pos.CENTER);
+        return stack;
     }
 }

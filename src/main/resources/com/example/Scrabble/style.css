@@ -109,3 +109,14 @@
     -fx-arc-height: 5;
     -fx-alignment: center;
 }
+
+.tile{
+    -fx-fill: #eae49b;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+    -fx-arc-width: 5;
+    -fx-arc-height: 5;
+    -fx-alignment: center;
+}
