@@ -1,5 +1,5 @@
 module com.example.Scrabble {
-    requires javafx.controls;
+    requires transitive javafx.controls;
     requires javafx.fxml;
     requires transitive javafx.graphics;
 

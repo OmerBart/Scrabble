@@ -1,23 +1,25 @@
 package com.example.Scrabble;
 
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 public class BoardController implements Initializable {
 
     ArrayList<StackPane> tilesList = new ArrayList<>();
+
+    Tile selectedTile;
 
     @FXML
     private GridPane board;
@@ -33,6 +35,8 @@ public class BoardController implements Initializable {
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
         boardBuild();
+
+        System.out.println("here");
     }
 
     public void boardBuild() {
@@ -73,12 +77,8 @@ public class BoardController implements Initializable {
     }
 
     private void drawStar() {
-        Label label = new Label("★");
-        Rectangle rect = new Rectangle(40, 40);
-        rect.getStyleClass().add("star");
-        StackPane stack = new StackPane(rect, label);
-        stack.setAlignment(Pos.CENTER);
-        board.add(stack, 8, 8);
+        BoardCell cell = new BoardCell("star", 8, 8);
+        board.add(cell, 8, 8);
     }
 
     public void drawBonus() {
@@ -150,68 +150,75 @@ public class BoardController implements Initializable {
     }
 
     private void newCellBuilder(int r, int c) {
-        Label label = new Label("");
-        Rectangle rect = new Rectangle(40, 40);
-        if (r == 0 && c == 0) {
-            rect.getStyleClass().add("hide");
-        } else {
-            rect.getStyleClass().add("board-cell");
-        }
-        StackPane stack = new StackPane(rect, label);
-        stack.setAlignment(Pos.CENTER);
-        board.add(stack, c, r);
+        BoardCell cell = new BoardCell(r, c);
+        cell.setOnMouseClicked(event -> {
+            handleBoardClick(event, cell);
+        });
+        board.add(cell, c, r);
     }
 
     private void newCellBuilder(String bonus, int r, int c) {
-        Label label = new Label("");
-        Rectangle rect = new Rectangle(40, 40);
-        switch (bonus) {
-            case "2L":
-                label = new Label("2L");
-                rect = new Rectangle(40, 40);
-                rect.getStyleClass().add("bonus-2L");
-                break;
-
-            case "3L":
-                label = new Label("3L");
-                rect = new Rectangle(40, 40);
-                rect.getStyleClass().add("bonus-3L");
-                break;
-
-            case "2W":
-                label = new Label("2W");
-                rect = new Rectangle(40, 40);
-                rect.getStyleClass().add("bonus-2W");
-                break;
-
-            case "3W":
-                label = new Label("3W");
-                rect = new Rectangle(40, 40);
-                rect.getStyleClass().add("bonus-3W");
-                break;
-
-            default:
-                break;
-        }
-        StackPane stack = new StackPane(rect, label);
-        stack.setAlignment(Pos.CENTER);
-        board.add(stack, c, r);
+        BoardCell cell = new BoardCell(bonus, r, c);
+        cell.setOnMouseClicked(event -> {
+            handleBoardClick(event, cell);
+        });
+        board.add(cell, c, r);
     }
 
     public void getTile() {
-        StackPane tile = buildTile();
+        Tile tile = new Tile();
+        tilesList.add(tile);
         tiles.getChildren().add(tile);
+        tile.setOnMouseClicked(event -> {
+            handleTileClick(event, tile);
+        });
     }
 
-    private StackPane buildTile() {
-        // random letter A-Z
-        Random r = new Random();
-        String letter = String.valueOf((char) (r.nextInt(26) + 'A'));
-        Label label = new Label(letter);
-        Rectangle rect = new Rectangle(40, 80);
-        rect.getStyleClass().add("tile");
-        StackPane stack = new StackPane(rect, label);
-        stack.setAlignment(Pos.CENTER);
-        return stack;
+    private void handleTileClick(Event e, Tile tile) {
+        if (tile.selected) {
+            tile.selected = false;
+            tile.getChildren().get(0).getStyleClass().clear();
+            tile.getChildren().get(0).getStyleClass().add("tile");
+            selectedTile = null;
+        } else {
+            if (selectedTile != null) {
+                selectedTile.selected = false;
+                selectedTile.getChildren().get(0).getStyleClass().clear();
+                selectedTile.getChildren().get(0).getStyleClass().add("tile");
+            }
+            tile.selected = true;
+            tile.getChildren().get(0).getStyleClass().clear();
+            tile.getChildren().get(0).getStyleClass().add("tile-selected");
+            selectedTile = tile;
+        }
+    }
+
+    private void handleBoardClick(Event e, BoardCell cell) {
+        if (selectedTile != null && !cell.isOccupied) {
+            System.out.println("Cell is not occupied");
+            BoardCell newCell = new BoardCell(selectedTile.getLetter(), cell.row, cell.col);
+            Rectangle newRectangle = new Rectangle(40, 40);
+            newRectangle.getStyleClass().add("board-cell-tile");
+            newCell.setRect(newRectangle);
+            board.add(newCell, cell.col, cell.row);
+
+            BoardCell right = (BoardCell) getCell(cell.row, cell.col + 1);
+            right.getRect().getStyleClass().clear();
+            right.getRect().getStyleClass().add("board-cell-tile");
+
+
+            
+        } else {
+            System.out.println("Cell is occupied");
+        }
+    }
+
+    private Node getCell(int row, int col) {
+        for (Node cell : board.getChildren()) {
+            if (GridPane.getRowIndex(cell) == row && GridPane.getColumnIndex(cell) == col) {
+                return cell;
+            }
+        }
+        return null;
     }
 }

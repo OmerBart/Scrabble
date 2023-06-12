@@ -44,6 +44,17 @@
     -fx-alignment: center;
 }
 
+.board-cell-tile{
+    -fx-fill: #434343;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+    -fx-arc-width: 5;
+    -fx-arc-height: 5;
+    -fx-alignment: center;
+}
+
 .star {
     -fx-fill: rgb(234, 234, 78);
     -fx-border-radius: 15px;
@@ -112,6 +123,17 @@
 
 .tile{
     -fx-fill: #eae49b;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+    -fx-arc-width: 5;
+    -fx-arc-height: 5;
+    -fx-alignment: center;
+}
+
+.tile-selected{
+    -fx-fill: #05269e;
     -fx-border-radius: 15px;
     -fx-background-radius: 15px;
     -fx-stroke: #000000;
