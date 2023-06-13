@@ -1,5 +1,8 @@
 package com.example.Scrabble.Model.Player;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -10,24 +13,27 @@ import java.util.Scanner;
 // import com.example.Scrabble.Model.Game.Tile;
 
 public class GuestPlayer implements Player {
-    private String name;
+    private StringProperty name;
     private int playerID;
     private String serverAddress; // format "ip:port"
     private Socket serverSocket;
     private List<String> playerTiles;
 
     public GuestPlayer(Player player) {
-        this.name = player.getName().split(":")[0];
+        this.name = new SimpleStringProperty();
+        this.name.set(player.getName().split(":")[0]);
         this.playerID = player.getPlayerID();
     }
 
     public GuestPlayer(String name, int playerID) {
-        this.name = name;
+        this.name = new SimpleStringProperty();
+        this.name.set(name);
         this.playerID = playerID;
     }
 
     public GuestPlayer(String name, int playerID, String serverAddress) {
-        this.name = name;
+        this.name = new SimpleStringProperty();
+        this.name.set(name);
         this.playerID = playerID;
         this.serverAddress = serverAddress;
     }
@@ -42,7 +48,7 @@ public class GuestPlayer implements Player {
 
     @Override
     public String getName() {
-        return name + ":" + playerID;
+        return name.get() + ":" + playerID;
     }
 
     @Override
@@ -52,19 +58,19 @@ public class GuestPlayer implements Player {
 
     public String joinGame() {
         openSocketIfClosed();
-        return sendRequestToServer("joinGame," + name + ":" + playerID);
+        return sendRequestToServer("joinGame," + name.get() + ":" + playerID);
     }
 
     public int getScore() {
         openSocketIfClosed();
-        return Integer.parseInt(sendRequestToServer("getScore:" + name + ":" + playerID));
+        return Integer.parseInt(sendRequestToServer("getScore:" + name.get() + ":" + playerID));
     }
 
     public String getTile() {
         openSocketIfClosed();
         if (playerTiles == null)
             playerTiles = new ArrayList<>();
-        String tile = sendRequestToServer("getTile:" + name + ":" + playerID);
+        String tile = sendRequestToServer("getTile:" + name.get() + ":" + playerID);
         playerTiles.add(tile);
         return tile;
     }
@@ -76,7 +82,7 @@ public class GuestPlayer implements Player {
     public String placeWord(String word, int x, int y, boolean isHorizontal) {
         openSocketIfClosed();
         return sendRequestToServer(
-                "placeWord:" + name + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
+                "placeWord:" + name.get() + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
     }
 
     public void disconnectFromServer() {
@@ -136,7 +142,7 @@ public class GuestPlayer implements Player {
     // }
     public String printTiles() {
         openSocketIfClosed();
-        return sendRequestToServer("printTiles," + name + ":" + playerID);
+        return sendRequestToServer("printTiles," + name.get() + ":" + playerID);
     }
 
     public boolean queryIO(String... Args) {
@@ -153,23 +159,24 @@ public class GuestPlayer implements Player {
 
     public boolean isMyTurn() {
         openSocketIfClosed();
-        return Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name + ":" + playerID));
+        return Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name.get() + ":" + playerID));
     }
 
     public String startGame() {
         openSocketIfClosed();
-        return sendRequestToServer("startGame," + name + ":" + playerID);
+        return sendRequestToServer("startGame," + name.get() + ":" + playerID);
     }
 
     @Override
     public String toString() {
-        return name + ":" + playerID;
+        return name.get() + ":" + playerID;
     }
 
     @Override
     public boolean endTurn() {
         openSocketIfClosed();
-        return Boolean.parseBoolean(sendRequestToServer("endTurn" + name + ":" + playerID));
+        return Boolean.parseBoolean(sendRequestToServer("endTurn" + name.get() + ":" + playerID));
     }
 
 }
+
