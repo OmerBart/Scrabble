@@ -77,15 +77,16 @@ public class GuestPlayer implements Player {
 
             if(!(this instanceof HostPlayer)) {
                 response = sendRequestToServer("joinGame," + name.get() + ":" + playerID);
-                startListeningToServer();
+                //startListeningToServer();
+                if (!isMyTurn()) {
+                    startListeningToServer();
+                }
             }
             else {
                 response = "Connected to server";
                 //startListeningToServer();
             }
-//            if (!isMyTurn()) {
-//                startListeningToServer();
-//            }
+
             //startListeningToServer();
 
 
@@ -157,6 +158,7 @@ public class GuestPlayer implements Player {
 
     private String sendRequestToServer(String request) {
         try {
+            //stopListeningToServer();
             openSocketIfClosed();
 //            PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
 //            Scanner in = new Scanner(serverSocket.getInputStream());
@@ -170,6 +172,7 @@ public class GuestPlayer implements Player {
             String res = in.readLine();
             in.close();
             out.close();
+            //startListeningToServer();
             return res;
         } catch (IOException e) {
             throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
@@ -203,19 +206,21 @@ public class GuestPlayer implements Player {
                     while (in.hasNextLine()) {
                         String response = in.nextLine();
                         System.out.println("Response from server: " + response);
-                        if(response.equals("true")){
+                        if(response.contains("true")){
                             stopListeningToServer();
                             System.out.println("my turn now");
-                            //isMyTurn();
+                            break;
                         }
                         else if(response.contains("over!")) {
                             stopListeningToServer();
                             in.close();
+                            disconnectFromServer();
                             break;
                         }
                         in.close();
                         //in.close();
                     }
+                    //in.close();
 
                 } catch (IOException e) {
                     throw new RuntimeException("Error listening to server: " + e.getMessage(), e);
@@ -247,8 +252,9 @@ public class GuestPlayer implements Player {
 
     public boolean isMyTurn() {
         //openSocketIfClosed();
+
         boolean turn = Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name.get() + ":" + playerID));
-        if (turn)
+        if(turn)
             stopListeningToServer();
         return turn;
 

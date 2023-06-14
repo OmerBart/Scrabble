@@ -26,10 +26,10 @@ public class GuestPlayerTest {
 //        guest3.setServerAddress("localhost",port);
 //        guest4.setServerAddress("localhost",port);
         System.out.println("trying to join game...." + guest.joinGame());
-        //sleep(1500);
+        sleep(500);
         System.out.println("guest tiles: " + guest.printTiles());
-        //sleep(1500);
-        //System.out.println("guest is my turn? " + guest.isMyTurn());
+        sleep(1500);
+        System.out.println("guest is my turn? " + guest.isMyTurn());
         if(guest.isMyTurn()){
             System.out.println(guest.getTile());
             //sleep(1000);

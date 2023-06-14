@@ -84,7 +84,7 @@ public class GameManager {
             // System.out.println("whello from " + playerName);
             try {
                 System.out.println(playerName + " is waiting for their turn");
-                Thread.sleep(1500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 return "false";
             }
@@ -106,8 +106,8 @@ public class GameManager {
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
         turn = 0;
-        hostServer.sendMsg("Game started!");
-        return "";
+        //hostServer.sendMsg("Game started!");
+        return "Game Started!";
     }
 
     public String getTilefromBag(String playerName) {

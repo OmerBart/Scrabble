@@ -44,7 +44,7 @@ public class HostPlayer extends GuestPlayer {
 
     public void stopGame() {
         GM.stopGame();
-        HostgameServer.close();
+        //HostgameServer.close();
     }
 
 
