@@ -1,6 +1,5 @@
 package com.example.Scrabble;
 
-import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
@@ -13,7 +12,7 @@ public class BoardCell extends StackPane {
     int score;
     boolean isBonus;
     boolean isStar;
-    boolean isOccupied;
+    public boolean isOccupied;
     Rectangle rect;
     Label label;
     boolean sequence = false;
@@ -39,11 +38,6 @@ public class BoardCell extends StackPane {
 
         this.label = label;
         this.rect = rect;
-
-        // add event listener
-        this.setOnMouseClicked(e -> {
-            HandleBoardCellClick(e);
-        });
     }
 
     public BoardCell(String letter, int r, int c) {
@@ -64,6 +58,7 @@ public class BoardCell extends StackPane {
                 rect.getStyleClass().add("star");
                 this.label = label;
                 this.rect = rect;
+                this.isStar = true;
                 break;
             case "2L":
                 label = new Label("2L");
@@ -107,15 +102,6 @@ public class BoardCell extends StackPane {
         }
         this.getChildren().addAll(rect, label);
         this.setAlignment(Pos.CENTER);
-
-        // add event listener
-        this.setOnMouseClicked(e -> {
-            HandleBoardCellClick(e);
-        });
-    }
-
-    private void HandleBoardCellClick(Event e) {
-        System.out.println("BoardCell Clicked");
     }
 
     public void setLetter(String letter) {
@@ -124,7 +110,7 @@ public class BoardCell extends StackPane {
     }
 
     public Label getLabel() {
-        return this.label;
+        return this.getChildren().get(1) instanceof Label ? (Label) this.getChildren().get(1) : null;
     }
 
     public void setLabel(Label label) {
@@ -145,5 +131,10 @@ public class BoardCell extends StackPane {
         this.rect = rect;
         this.getChildren().clear();
         this.getChildren().addAll(rect, label);
+    }
+
+    @Override
+    public String toString() {
+        return "col=" + col + ", row=" + row + "isOccupied=" + isOccupied;
     }
 }

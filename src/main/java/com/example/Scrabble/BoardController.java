@@ -35,8 +35,6 @@ public class BoardController implements Initializable {
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
         boardBuild();
-
-        System.out.println("here");
     }
 
     public void boardBuild() {
@@ -77,8 +75,7 @@ public class BoardController implements Initializable {
     }
 
     private void drawStar() {
-        BoardCell cell = new BoardCell("star", 8, 8);
-        board.add(cell, 8, 8);
+        newCellBuilder("star", 8, 8);
     }
 
     public void drawBonus() {
@@ -157,8 +154,8 @@ public class BoardController implements Initializable {
         board.add(cell, c, r);
     }
 
-    private void newCellBuilder(String bonus, int r, int c) {
-        BoardCell cell = new BoardCell(bonus, r, c);
+    private void newCellBuilder(String letter, int r, int c) {
+        BoardCell cell = new BoardCell(letter, r, c);
         cell.setOnMouseClicked(event -> {
             handleBoardClick(event, cell);
         });
@@ -194,31 +191,30 @@ public class BoardController implements Initializable {
     }
 
     private void handleBoardClick(Event e, BoardCell cell) {
+        tryPlaceTile(cell);
+    }
+
+    private void tryPlaceTile(BoardCell cell) {
         if (selectedTile != null && !cell.isOccupied) {
-            System.out.println("Cell is not occupied");
+
             BoardCell newCell = new BoardCell(selectedTile.getLetter(), cell.row, cell.col);
-            Rectangle newRectangle = new Rectangle(40, 40);
-            newRectangle.getStyleClass().add("board-cell-tile");
-            newCell.setRect(newRectangle);
+            newCell.getRect().getStyleClass().clear();
+            newCell.getRect().getStyleClass().add("board-cell-tile");
+            newCell.isOccupied = true;
+            newCell.sequence = true;
             board.add(newCell, cell.col, cell.row);
 
-            BoardCell right = (BoardCell) getCell(cell.row, cell.col + 1);
-            right.getRect().getStyleClass().clear();
-            right.getRect().getStyleClass().add("board-cell-tile");
-
-
-            
+            selectedTile.selected = false;
+            selectedTile.getChildren().get(0).getStyleClass().clear();
+            selectedTile.getChildren().get(0).getStyleClass().add("tile");
+            tiles.getChildren().remove(selectedTile);
+            selectedTile = null;
         } else {
             System.out.println("Cell is occupied");
         }
     }
 
-    private Node getCell(int row, int col) {
-        for (Node cell : board.getChildren()) {
-            if (GridPane.getRowIndex(cell) == row && GridPane.getColumnIndex(cell) == col) {
-                return cell;
-            }
-        }
-        return null;
+    private BoardCell getCell(int row, int col) {
+        return (BoardCell) board.getChildren().get(row * 16 + col);
     }
 }
