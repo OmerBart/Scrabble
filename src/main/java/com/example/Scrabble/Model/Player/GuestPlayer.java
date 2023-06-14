@@ -170,8 +170,8 @@ public class GuestPlayer implements Player {
 
             // Receive the response from the server
             String res = in.readLine();
-            in.close();
-            out.close();
+//            in.close();
+//            out.close();
             //startListeningToServer();
             return res;
         } catch (IOException e) {
@@ -217,7 +217,7 @@ public class GuestPlayer implements Player {
                             disconnectFromServer();
                             break;
                         }
-                        in.close();
+                        //in.close();
                         //in.close();
                     }
                     //in.close();
