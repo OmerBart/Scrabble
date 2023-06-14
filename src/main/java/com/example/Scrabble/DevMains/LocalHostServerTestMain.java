@@ -1,5 +1,6 @@
 package com.example.Scrabble.DevMains;
 
+import com.example.Scrabble.Model.LocalServer.GameManager;
 import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.HostPlayer;
 
@@ -22,6 +23,9 @@ public class LocalHostServerTestMain {
         if(hostPlayer.isMyTurn())
         {
             System.out.println("Host's turn");
+            System.out.println(hostPlayer.getTile());
+            sleep(5000);
+            //GameManager.get().updatePlayers();
             sleep(2000);
         }
         sleep(2000);

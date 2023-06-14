@@ -3,9 +3,12 @@ package com.example.Scrabble.Model.Player;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,6 +21,10 @@ public class GuestPlayer implements Player {
     private String serverAddress; // format "ip:port"
     private Socket serverSocket;
     private List<String> playerTiles;
+    boolean listening;
+    PrintWriter out = null;
+    BufferedReader in = null;
+    Thread listeningThread = null;
 
     public GuestPlayer(Player player) {
         this.name = new SimpleStringProperty();
@@ -55,19 +62,51 @@ public class GuestPlayer implements Player {
     public int getPlayerID() {
         return playerID;
     }
+    public void setSocket(Socket socket){
+        this.serverSocket = socket;
+    }
 
     public String joinGame() {
-        openSocketIfClosed();
-        return sendRequestToServer("joinGame," + name.get() + ":" + playerID);
+        String response;
+        try {
+            serverSocket = new Socket(serverAddress.split(":")[0], Integer.parseInt(serverAddress.split(":")[1]));
+            serverSocket.setSoTimeout(5000);
+            out = new PrintWriter(serverSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+            //startListeningToServer();
+
+            if(!(this instanceof HostPlayer)) {
+                response = sendRequestToServer("joinGame," + name.get() + ":" + playerID);
+                startListeningToServer();
+            }
+            else {
+                response = "Connected to server";
+                //startListeningToServer();
+            }
+//            if (!isMyTurn()) {
+//                startListeningToServer();
+//            }
+            //startListeningToServer();
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
+
+
+//        openSocketIfClosed();
+//        new Thread(() -> startListeningToServer()).start();
+//        return sendRequestToServer("joinGame," + name.get() + ":" + playerID);
     }
 
     public int getScore() {
-        openSocketIfClosed();
+        //openSocketIfClosed();
         return Integer.parseInt(sendRequestToServer("getScore:" + name.get() + ":" + playerID));
     }
 
     public String getTile() {
-        openSocketIfClosed();
+        //openSocketIfClosed();
         if (playerTiles == null)
             playerTiles = new ArrayList<>();
         String tile = sendRequestToServer("getTile:" + name.get() + ":" + playerID);
@@ -80,15 +119,18 @@ public class GuestPlayer implements Player {
     }
 
     public String placeWord(String word, int x, int y, boolean isHorizontal) {
-        openSocketIfClosed();
+        //openSocketIfClosed();
         return sendRequestToServer(
                 "placeWord:" + name.get() + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
     }
 
     public void disconnectFromServer() {
+        stopListeningToServer();
         if (serverSocket != null && !serverSocket.isClosed()) {
             try {
+                this.listeningThread.stop();
                 serverSocket.close();
+
             } catch (IOException e) {
                 throw new RuntimeException("Error closing socket: " + e.getMessage(), e);
             }
@@ -99,9 +141,13 @@ public class GuestPlayer implements Player {
         System.out.println("Opening socket if closed");
         try {
             // Only open a new socket connection if it's closed or null
-            if (serverSocket == null || serverSocket.isClosed()) {
+            //serverSocket == null || serverSocket.isClosed()
+            if ( serverSocket == null || serverSocket.isClosed()) {
                 System.out.println("socket is null or closed");
                 serverSocket = new Socket(serverAddress.split(":")[0], Integer.parseInt(serverAddress.split(":")[1]));
+                serverSocket.setSoTimeout(5000);
+                out = new PrintWriter(serverSocket.getOutputStream(), true);
+                in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
             }
         } catch (IOException e) {
             System.out.println("Error opening socket: " + e.getMessage());
@@ -111,16 +157,17 @@ public class GuestPlayer implements Player {
 
     private String sendRequestToServer(String request) {
         try {
-            PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
-            Scanner in = new Scanner(serverSocket.getInputStream());
+            openSocketIfClosed();
+//            PrintWriter out = new PrintWriter(serverSocket.getOutputStream(), true);
+//            Scanner in = new Scanner(serverSocket.getInputStream());
 
             // Send the request to the server
 
             out.println(request);
-            out.flush();
+            //out.flush();
 
             // Receive the response from the server
-            String res = in.nextLine();
+            String res = in.readLine();
             in.close();
             out.close();
             return res;
@@ -141,29 +188,75 @@ public class GuestPlayer implements Player {
     // }
     // }
     public String printTiles() {
-        openSocketIfClosed();
+       // openSocketIfClosed();
         return sendRequestToServer("printTiles," + name.get() + ":" + playerID);
     }
 
+    private void startListeningToServer() {
+        listening = true;
+
+        this.listeningThread = new Thread(() -> {
+            openSocketIfClosed();
+            while (listening) {
+                try {
+                    Scanner in = new Scanner(serverSocket.getInputStream());
+                    while (in.hasNextLine()) {
+                        String response = in.nextLine();
+                        System.out.println("Response from server: " + response);
+                        if(response.equals("true")){
+                            stopListeningToServer();
+                            System.out.println("my turn now");
+                            //isMyTurn();
+                        }
+                        else if(response.contains("over!")) {
+                            stopListeningToServer();
+                            in.close();
+                            break;
+                        }
+                        in.close();
+                        //in.close();
+                    }
+
+                } catch (IOException e) {
+                    throw new RuntimeException("Error listening to server: " + e.getMessage(), e);
+                }
+            }
+
+        });
+        listeningThread.start();
+    }
+
+    private void stopListeningToServer() {
+        listening = false;
+//        if(listeningThread != null)
+//            listeningThread.interrupt();
+
+    }
+
     public boolean queryIO(String... Args) {
-        openSocketIfClosed();
+       // openSocketIfClosed();
         String request = String.join(",", Args);
         return Boolean.parseBoolean(sendRequestToServer("Q," + request));
     }
 
     public boolean challangeIO(String... Args) {
-        openSocketIfClosed();
+        //openSocketIfClosed();
         String request = String.join(",", Args);
         return Boolean.parseBoolean(sendRequestToServer("C," + request));
     }
 
     public boolean isMyTurn() {
-        openSocketIfClosed();
-        return Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name.get() + ":" + playerID));
+        //openSocketIfClosed();
+        boolean turn = Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name.get() + ":" + playerID));
+        if (turn)
+            stopListeningToServer();
+        return turn;
+
+
     }
 
     public String startGame() {
-        openSocketIfClosed();
+        //openSocketIfClosed();
         return sendRequestToServer("startGame," + name.get() + ":" + playerID);
     }
 
@@ -174,8 +267,10 @@ public class GuestPlayer implements Player {
 
     @Override
     public boolean endTurn() {
-        openSocketIfClosed();
-        return Boolean.parseBoolean(sendRequestToServer("endTurn" + name.get() + ":" + playerID));
+        //openSocketIfClosed();
+        sendRequestToServer("endTurn" + name.get() + ":" + playerID);
+        startListeningToServer();
+        return true;
     }
 
 }

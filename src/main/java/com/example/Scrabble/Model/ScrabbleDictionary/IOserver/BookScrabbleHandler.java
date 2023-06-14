@@ -45,4 +45,9 @@ public class BookScrabbleHandler implements ClientHandler {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void sendMsg(String msg) {
+
+    }
 }

@@ -6,4 +6,6 @@ import java.io.OutputStream;
 public interface ClientHandler {
 	void handleClient(InputStream inFromclient, OutputStream outToClient);
 	void close();
+	void sendMsg(String msg);
+
 }

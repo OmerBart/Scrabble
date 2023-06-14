@@ -2,7 +2,11 @@ package com.example.Scrabble.Model.Player;
 
 import com.example.Scrabble.Model.LocalServer.GameManager;
 import com.example.Scrabble.Model.LocalServer.PlayerHandler;
+import com.example.Scrabble.Model.ServerUtils.ClientHandler;
 import com.example.Scrabble.Model.ServerUtils.MyServer;
+
+import java.io.IOException;
+import java.net.Socket;
 
 // import java.util.Random;
 
@@ -25,11 +29,13 @@ public class HostPlayer extends GuestPlayer {
         // Random r = new Random();
         // int port = 6000 + r.nextInt(6000);
         int port = 65432;
-        HostgameServer = new MyServer(port, new PlayerHandler());
+        HostgameServer = new MyServer(port,new PlayerHandler());
         setServerAddress("localhost", port);
         HostgameServer.start();
         GM = GameManager.get();
         GM.setHost(HostgameServer, this);
+        joinGame();
+
     }
 
     public MyServer getHostgameServer() {
@@ -40,6 +46,7 @@ public class HostPlayer extends GuestPlayer {
         GM.stopGame();
         HostgameServer.close();
     }
+
 
     // @Override
     // public String getName() {

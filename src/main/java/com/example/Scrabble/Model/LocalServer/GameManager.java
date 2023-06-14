@@ -63,6 +63,7 @@ public class GameManager {
     public String addPlayer(Player player) {
         if (playersList.contains(player) || playersList.size() > 3) {
             // System.out.println("from addplayer >3");
+           // playerList.
             return "Player already in game or game is full!";
         } else {
             playersList.add(player);
@@ -78,17 +79,17 @@ public class GameManager {
     }
 
     public String myTurn(String playerName) {
-        System.out.println("hello from " + playerName);
-        while ((playersList.get(turn % playersList.size()).getName().equals(playerName))) {
+        //System.out.println("hello from " + playerName);
+        while ((playersList.get(turn % playersList.size()).getName().contains(playerName))) {
             // System.out.println("whello from " + playerName);
             try {
-                System.out.println(playerName + " ifs waiting for their turn");
+                System.out.println(playerName + " is waiting for their turn");
                 Thread.sleep(1500);
             } catch (InterruptedException e) {
                 return "false";
             }
         }
-        turn++;
+        //turn++;
         return "true";
 
     }
@@ -105,7 +106,8 @@ public class GameManager {
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
         turn = 0;
-        return "Game started";
+        hostServer.sendMsg("Game started!");
+        return "";
     }
 
     public String getTilefromBag(String playerName) {
@@ -115,16 +117,20 @@ public class GameManager {
             return "Bag is empty!";
         else {
             playerTiles.get(playerName).add(t);
+            //hostServer.sendMsg("wakakakaka");
             return "Got: " + t.toString();
         }
     }
 
+
     public boolean endTurn() {
         turn++;
+        hostServer.sendMsg("Turn ended");
         return true;
     }
 
     public void stopGame() {
+        hostServer.sendMsg("Game is over! from MEEE");
         hostServer.close();
         IOserver.close();
 
