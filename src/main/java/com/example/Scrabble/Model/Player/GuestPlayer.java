@@ -196,7 +196,7 @@ public class GuestPlayer implements Player {
         listening = true;
 
         this.listeningThread = new Thread(() -> {
-            openSocketIfClosed();
+           // openSocketIfClosed();
            // while (listening) {
             Scanner sin = new Scanner(this.in);
             while (sin.hasNextLine() && listening) {

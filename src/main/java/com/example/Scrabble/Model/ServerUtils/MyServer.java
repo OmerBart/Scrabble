@@ -87,6 +87,9 @@ public class MyServer {
     public void close(){
         stop = true;
         threadPool.shutdown();
+        for (ClientHandler clientHandler : clients.values()) {
+            clientHandler.close();
+        }
 
     }
     public int getPort() {
