@@ -1,4 +1,4 @@
-package com.example.Scrabble;
+package com.example.Scrabble.View;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;

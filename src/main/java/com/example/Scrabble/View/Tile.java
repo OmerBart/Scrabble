@@ -1,4 +1,4 @@
-package com.example.Scrabble;
+package com.example.Scrabble.View;
 
 import java.util.HashMap;
 import java.util.Random;

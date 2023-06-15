@@ -1,4 +1,4 @@
-package com.example.Scrabble;
+package com.example.Scrabble.View;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

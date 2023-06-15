@@ -12,7 +12,7 @@
 
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-    fx:controller="com.example.Scrabble.BoardController">
+    fx:controller="com.example.Scrabble.View.BoardController">
     <SplitPane>
         <AnchorPane>
             <VBox alignment="CENTER" spacing="20.0">
