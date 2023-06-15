@@ -13,7 +13,7 @@ public class PlayerHandler implements ClientHandler {
     private CommandFactory commandFactory;
     private Socket clientSocket;
     private boolean alive;
-    private ExecutorService threadPool;
+    //private ExecutorService threadPool;
 
     public PlayerHandler() {
         commandFactory = new CommandFactory();
@@ -23,7 +23,7 @@ public class PlayerHandler implements ClientHandler {
         this();
         this.clientSocket = client;
         this.alive = true;
-        this.threadPool = Executors.newCachedThreadPool();
+        //this.threadPool = Executors.newCachedThreadPool();
     }
 
     @Override
@@ -65,14 +65,15 @@ public class PlayerHandler implements ClientHandler {
                 out.close();
             if (clientSocket != null)
                 clientSocket.close();
-            if (threadPool != null)
-                threadPool.shutdown();
+//            if (threadPool != null)
+//                threadPool.shutdown();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public boolean isClosed() {
-        return in == null && out == null && clientSocket == null && (threadPool == null || threadPool.isShutdown());
+        return in == null && out == null && clientSocket == null ;
+        //&& (threadPool == null || threadPool.isShutdown())
     }
 }
