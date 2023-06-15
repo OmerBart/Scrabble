@@ -24,11 +24,11 @@ public class LocalHostServerTestMain {
         {
             System.out.println("Host's turn");
             System.out.println(hostPlayer.getTile());
-            sleep(5000);
+            //sleep(5000);
             //GameManager.get().updatePlayers();
-            sleep(2000);
+            //sleep(2000);
         }
-        sleep(2000);
+        //sleep(2000);
 
         System.out.println("Close Host Server? (y/n)");
         String input = scanner.nextLine();

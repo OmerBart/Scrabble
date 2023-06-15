@@ -106,7 +106,7 @@ public class GameManager {
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
         turn = 0;
-        hostServer.sendMsg("Game started!!@#@!#@!#!@#!@#@!#@!#!@#!@#");
+        //hostServer.sendMsg("Game started!!@#@!#@!#!@#!@#@!#@!#!@#!@#");
         return "Game Started!";
     }
 
@@ -125,7 +125,7 @@ public class GameManager {
 
     public boolean endTurn() {
         turn++;
-        hostServer.sendMsg("Turn ended");
+        //hostServer.sendMsg("Turn ended");
         return true;
     }
 

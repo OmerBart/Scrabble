@@ -68,31 +68,28 @@ public class GuestPlayer implements Player {
 
     public String joinGame() {
         String response;
-        try {
-            serverSocket = new Socket(serverAddress.split(":")[0], Integer.parseInt(serverAddress.split(":")[1]));
-            serverSocket.setSoTimeout(5000);
-            out = new PrintWriter(serverSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+        //            serverSocket = new Socket(serverAddress.split(":")[0], Integer.parseInt(serverAddress.split(":")[1]));
+//            serverSocket.setSoTimeout(5000);
+//            out = new PrintWriter(serverSocket.getOutputStream(), true);
+//            in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+        openSocketIfClosed();
+        //startListeningToServer();
+
+        if(!(this instanceof HostPlayer)) {
+            response = sendRequestToServer("joinGame," + name.get() + ":" + playerID);
             //startListeningToServer();
-
-            if(!(this instanceof HostPlayer)) {
-                response = sendRequestToServer("joinGame," + name.get() + ":" + playerID);
-                //startListeningToServer();
-                if (!isMyTurn()) {
-                    startListeningToServer();
-                }
+            if (!isMyTurn()) {
+                startListeningToServer();
             }
-            else {
-                response = "Connected to server";
-                //startListeningToServer();
-            }
-
-            //startListeningToServer();
-
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
+        else {
+            response = "Connected to server";
+            //startListeningToServer();
+        }
+
+        //startListeningToServer();
+
+
         return response;
 
 
@@ -200,32 +197,29 @@ public class GuestPlayer implements Player {
 
         this.listeningThread = new Thread(() -> {
             openSocketIfClosed();
-            while (listening) {
-                try {
-                    Scanner in = new Scanner(serverSocket.getInputStream());
-                    while (in.hasNextLine()) {
-                        String response = in.nextLine();
-                        System.out.println("Response from server: " + response);
-                        if(response.contains("true")){
-                            stopListeningToServer();
-                            System.out.println("my turn now");
-                            break;
-                        }
-                        else if(response.contains("over!")) {
-                            stopListeningToServer();
-                            in.close();
-                            disconnectFromServer();
-                            break;
-                        }
-                        //in.close();
-                        //in.close();
-                    }
-                    //in.close();
-
-                } catch (IOException e) {
-                    throw new RuntimeException("Error listening to server: " + e.getMessage(), e);
+           // while (listening) {
+            Scanner sin = new Scanner(this.in);
+            while (sin.hasNextLine() && listening) {
+                String response = sin.nextLine();
+                System.out.println("Response from server: " + response);
+                if(response.contains("true")){
+                    stopListeningToServer();
+                    System.out.println("my turn now");
+                    break;
                 }
+                else if(response.contains("over!")) {
+                    //stopListeningToServer();
+                    sin.close();
+                    break;
+                    //disconnectFromServer();
+                    //break;
+                }
+                //in.close();
+                //in.close();
             }
+            //sin.close();
+
+            //}
 
         });
         listeningThread.start();

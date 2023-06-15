@@ -92,7 +92,7 @@ public class GuestPlayerTest {
 //        guest3.disconnectFromServer();
 //        guest4.disconnectFromServer();
 
-        //sleep(1000*10);
+        sleep(1000*3);
         //guest.disconnectFromServer();
         System.out.println("Done!");
 
