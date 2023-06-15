@@ -74,6 +74,7 @@ public class Tile extends StackPane {
         Label label = new Label(letter);
         Rectangle rect = new Rectangle(60, 80);
         VBox scoreAndLetter = new VBox(10);
+        scoreAndLetter.setAlignment(Pos.CENTER);
         this.letter = letter;
         this.label = label;
         this.score = scores.get(letter);
