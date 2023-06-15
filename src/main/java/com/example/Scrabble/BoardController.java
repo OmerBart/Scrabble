@@ -13,6 +13,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 public class BoardController implements Initializable {
@@ -20,6 +21,7 @@ public class BoardController implements Initializable {
     ArrayList<StackPane> tilesList = new ArrayList<>();
 
     Tile selectedTile;
+    ArrayList<BoardCell> wordToSet = new ArrayList<>();
 
     @FXML
     private GridPane board;
@@ -196,13 +198,13 @@ public class BoardController implements Initializable {
 
     private void tryPlaceTile(BoardCell cell) {
         if (selectedTile != null && !cell.isOccupied) {
-
             BoardCell newCell = new BoardCell(selectedTile.getLetter(), cell.row, cell.col);
             newCell.getRect().getStyleClass().clear();
             newCell.getRect().getStyleClass().add("board-cell-tile");
             newCell.isOccupied = true;
             newCell.sequence = true;
             board.add(newCell, cell.col, cell.row);
+            wordToSet.add(newCell);
 
             selectedTile.selected = false;
             selectedTile.getChildren().get(0).getStyleClass().clear();
@@ -216,5 +218,42 @@ public class BoardController implements Initializable {
 
     private BoardCell getCell(int row, int col) {
         return (BoardCell) board.getChildren().get(row * 16 + col);
+    }
+
+    public void placeWord() {
+        if (isSequenceWord()) {
+            String word = "";
+            for (BoardCell cell : wordToSet) {
+                word += cell.letter;
+            }
+            System.out.println(word);
+        } else {
+            System.out.println("Not a sequence word");
+        }
+    }
+
+    private boolean isSequenceWord() {
+        wordToSet.sort(Comparator.comparing(BoardCell::getRow).thenComparing(BoardCell::getCol));
+        boolean isSequence = false;
+        System.out.println(wordToSet.size());
+        for (int i = 0; i < wordToSet.size() - 1; i++) {
+            if (wordToSet.get(i).row == wordToSet.get(i + 1).row) {
+                isSequence = true;
+            } else {
+                isSequence = false;
+                break;
+            }
+        }
+        if (!isSequence) {
+            for (int i = 0; i < wordToSet.size() - 1; i++) {
+                if (wordToSet.get(i).col == wordToSet.get(i + 1).col) {
+                    isSequence = true;
+                } else {
+                    isSequence = false;
+                    break;
+                }
+            }
+        }
+        return isSequence;
     }
 }

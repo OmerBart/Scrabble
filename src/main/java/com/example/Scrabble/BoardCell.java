@@ -43,7 +43,7 @@ public class BoardCell extends StackPane {
     public BoardCell(String letter, int r, int c) {
         this.row = r;
         this.col = c;
-        this.letter = "";
+        this.letter = letter;
         this.score = 0;
         this.isBonus = false;
         this.isStar = false;
@@ -107,6 +107,8 @@ public class BoardCell extends StackPane {
     public void setLetter(String letter) {
         this.letter = letter;
         this.label.setText(letter);
+        this.getChildren().clear();
+        this.getChildren().addAll(rect, label);
     }
 
     public Label getLabel() {
@@ -131,6 +133,14 @@ public class BoardCell extends StackPane {
         this.rect = rect;
         this.getChildren().clear();
         this.getChildren().addAll(rect, label);
+    }
+
+    public static <T> Integer getRow(T boardCell) {
+        return boardCell.getClass().equals(BoardCell.class) ? ((BoardCell) boardCell).row : null;
+    }
+
+    public static <T> Integer getCol(T boardCell) {
+        return boardCell.getClass().equals(BoardCell.class) ? ((BoardCell) boardCell).col : null;
     }
 
     @Override
