@@ -6,16 +6,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 
 public class BoardCell extends StackPane {
-    int row;
-    int col;
-    String letter;
-    int score;
-    String bonus;
-    boolean isStar;
+    public int row;
+    public int col;
+    public String letter;
+    public int score;
+    public String bonus;
+    public boolean isStar;
     public boolean isOccupied;
-    Rectangle rect;
-    Label label;
-    boolean sequence = false;
+    public Rectangle rect;
+    public Label label;
+    public boolean sequence = false;
 
     public BoardCell(int row, int col) {
         this.row = row;
@@ -49,7 +49,7 @@ public class BoardCell extends StackPane {
         this.isStar = false;
         this.isOccupied = false;
 
-        Label label = new Label("");
+        Label label = new Label(letter);
         Rectangle rect = new Rectangle(40, 40);
         switch (letter) {
             case "star":
@@ -140,6 +140,13 @@ public class BoardCell extends StackPane {
         this.getChildren().addAll(rect, label);
     }
 
+    public void changeStyle(String style) {
+        this.rect.getStyleClass().clear();
+        this.rect.getStyleClass().add(style);
+        this.getChildren().clear();
+        this.getChildren().addAll(rect, label);
+    }
+
     public static <T> Integer getRow(T boardCell) {
         return boardCell.getClass().equals(BoardCell.class) ? ((BoardCell) boardCell).row : null;
     }
@@ -150,12 +157,10 @@ public class BoardCell extends StackPane {
 
     @Override
     public String toString() {
-        return "col=" + col + ", row=" + row + "isOccupied=" + isOccupied;
+        return "col=" + col + ", row=" + row + "bonus= " + bonus;
     }
 
     public void setDefaultStyle() {
-        System.out.println("setDefaultStyle");
-        System.out.println(this.bonus);
         switch (this.bonus) {
             case "2L":
                 System.out.println("2L");

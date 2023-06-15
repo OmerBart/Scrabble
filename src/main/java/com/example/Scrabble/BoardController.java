@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 
 public class BoardController implements Initializable {
 
-    ArrayList<StackPane> tilesList = new ArrayList<>();
+    ArrayList<Tile> tilesList = new ArrayList<>();
 
     Tile selectedTile;
     ArrayList<BoardCell> wordToSet = new ArrayList<>();
@@ -201,8 +201,11 @@ public class BoardController implements Initializable {
             BoardCell newCell = new BoardCell(selectedTile.getLetter(), cell.row, cell.col);
             newCell.getRect().getStyleClass().clear();
             newCell.getRect().getStyleClass().add("board-cell-tile");
-            newCell.isOccupied = true;
-            newCell.sequence = true;
+            newCell.letter = selectedTile.getLetter();
+            newCell.bonus = cell.bonus;
+            newCell.setOnMouseClicked(event -> {
+                handleBoardClick(event, newCell);
+            });
             board.add(newCell, cell.col, cell.row);
             wordToSet.add(newCell);
 
@@ -211,26 +214,24 @@ public class BoardController implements Initializable {
             selectedTile.getChildren().get(0).getStyleClass().add("tile");
             tiles.getChildren().remove(selectedTile);
             selectedTile = null;
-        } else {
-            System.out.println("Cell is occupied");
         }
     }
 
     public void placeWord() {
+        selectedTile = null;
         if (isSequenceWord()) {
             String word = "";
             for (BoardCell cell : wordToSet) {
                 cell.getRect().getStyleClass().clear();
                 cell.getRect().getStyleClass().add("board-cell-occupied");
+                cell.isOccupied = true;
                 word += cell.letter;
             }
             wordToSet.clear();
             System.out.println(word);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
             alert.setHeaderText("Word is not a sequence");
-            alert.setContentText("Please select a sequence of tiles");
             alert.showAndWait();
             for (BoardCell cell : wordToSet) {
                 Tile tile = new Tile(cell.letter);
@@ -240,19 +241,14 @@ public class BoardController implements Initializable {
                 });
                 tiles.getChildren().add(tile);
             }
-            System.out.println("Not a sequence word");
+            wordToSet.clear();
         }
     }
 
     private boolean isSequenceWord() {
         wordToSet.sort(Comparator.comparing(BoardCell::getRow).thenComparing(BoardCell::getCol));
         boolean isSequence = false;
-        System.out.println(wordToSet.size());
         for (int i = 0; i < wordToSet.size() - 1; i++) {
-            System.out.println(wordToSet.get(i).row + " " + wordToSet.get(i).col);
-            System.out.println(wordToSet.get(i + 1).row + " " + wordToSet.get(i + 1).col);
-            System.out.println(wordToSet.get(i).row == wordToSet.get(i + 1).row);
-            System.out.println(wordToSet.get(i).col == wordToSet.get(i + 1).col - 1);
             if (wordToSet.get(i).row == wordToSet.get(i + 1).row
                     && wordToSet.get(i).col == wordToSet.get(i + 1).col - 1) {
                 isSequence = true;
