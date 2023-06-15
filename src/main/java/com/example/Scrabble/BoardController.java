@@ -4,7 +4,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -216,18 +216,30 @@ public class BoardController implements Initializable {
         }
     }
 
-    private BoardCell getCell(int row, int col) {
-        return (BoardCell) board.getChildren().get(row * 16 + col);
-    }
-
     public void placeWord() {
         if (isSequenceWord()) {
             String word = "";
             for (BoardCell cell : wordToSet) {
+                cell.getRect().getStyleClass().clear();
+                cell.getRect().getStyleClass().add("board-cell-occupied");
                 word += cell.letter;
             }
+            wordToSet.clear();
             System.out.println(word);
         } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Word is not a sequence");
+            alert.setContentText("Please select a sequence of tiles");
+            alert.showAndWait();
+            for (BoardCell cell : wordToSet) {
+                Tile tile = new Tile(cell.letter);
+                cell.setDefaultStyle();
+                tile.setOnMouseClicked(event -> {
+                    handleTileClick(event, tile);
+                });
+                tiles.getChildren().add(tile);
+            }
             System.out.println("Not a sequence word");
         }
     }
@@ -237,7 +249,12 @@ public class BoardController implements Initializable {
         boolean isSequence = false;
         System.out.println(wordToSet.size());
         for (int i = 0; i < wordToSet.size() - 1; i++) {
-            if (wordToSet.get(i).row == wordToSet.get(i + 1).row) {
+            System.out.println(wordToSet.get(i).row + " " + wordToSet.get(i).col);
+            System.out.println(wordToSet.get(i + 1).row + " " + wordToSet.get(i + 1).col);
+            System.out.println(wordToSet.get(i).row == wordToSet.get(i + 1).row);
+            System.out.println(wordToSet.get(i).col == wordToSet.get(i + 1).col - 1);
+            if (wordToSet.get(i).row == wordToSet.get(i + 1).row
+                    && wordToSet.get(i).col == wordToSet.get(i + 1).col - 1) {
                 isSequence = true;
             } else {
                 isSequence = false;
@@ -246,7 +263,8 @@ public class BoardController implements Initializable {
         }
         if (!isSequence) {
             for (int i = 0; i < wordToSet.size() - 1; i++) {
-                if (wordToSet.get(i).col == wordToSet.get(i + 1).col) {
+                if (wordToSet.get(i).col == wordToSet.get(i + 1).col &&
+                        wordToSet.get(i).row == wordToSet.get(i + 1).row - 1) {
                     isSequence = true;
                 } else {
                     isSequence = false;

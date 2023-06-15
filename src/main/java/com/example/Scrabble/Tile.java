@@ -33,6 +33,21 @@ public class Tile extends StackPane {
         this.rect = rect;
     }
 
+    public Tile(String letter) {
+        Label label = new Label(letter);
+        Rectangle rect = new Rectangle(40, 80);
+        rect.getStyleClass().add("tile");
+
+        this.setAlignment(Pos.CENTER);
+        this.getChildren().addAll(rect, label);
+        this.letter = letter;
+        this.label = label;
+        this.score = 0;
+        this.row = 0;
+        this.col = 0;
+        this.rect = rect;
+    }
+
     public String getLetter() {
         return this.letter;
     }

@@ -55,6 +55,17 @@
     -fx-alignment: center;
 }
 
+.board-cell-occupied{
+    -fx-fill: #ffffff;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-stroke: #000000;
+    -fx-stroke-width: 1;
+    -fx-arc-width: 5;
+    -fx-arc-height: 5;
+    -fx-alignment: center;
+}
+
 .star {
     -fx-fill: rgb(234, 234, 78);
     -fx-border-radius: 15px;
