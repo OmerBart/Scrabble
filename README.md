@@ -32,7 +32,7 @@ How to run: (for now)
 - run the ScrabbleGame class in the view package
 - enjoy
 
-<img src="https://github.com/OmerBart/Scrabble/blob/master/game.PNG">
+<img src="https://github.com/OmerBart/Scrabble/blob/main/game.PNG">
 
 # First MileStone 
 
