@@ -12,12 +12,27 @@ By Omer, Hadar, and Eilon
 - Server
    * Omer
 - View
-   * Hadar
+   * Eilon
 - View Model
    * Eilon
 
 # GAANT
 ![scrabble_2023-05-24_03 28pm](https://github.com/OmerBart/Scrabble/assets/121627693/6c5c61e5-6dff-4862-8587-b3091034f5ed)
+
+# Second MileStone 
+
+# TODO:
+- view 90% done 
+- VM still needs to be implemented
+- model 90% done
+
+How to run: (for now)
+- git clone the repo
+- open the project in intellij
+- run the ScrabbleGame class in the view package
+- enjoy
+
+<img src="https://github.com/OmerBart/Scrabble/blob/master/game.PNG">
 
 # First MileStone 
 
