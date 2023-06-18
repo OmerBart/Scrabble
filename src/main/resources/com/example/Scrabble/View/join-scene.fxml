@@ -8,7 +8,7 @@
 
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-    fx:controller="com.example.Scrabble.JoinGameController">
+    fx:controller="com.example.Scrabble.View.JoinGameController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>

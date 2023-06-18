@@ -3,7 +3,8 @@ module com.example.Scrabble {
     requires javafx.fxml;
     requires transitive javafx.graphics;
 
-    opens com.example.Scrabble to javafx.fxml;
+    opens com.example.Scrabble.View to javafx.fxml;
 
-    exports com.example.Scrabble;
+    exports com.example.Scrabble.View;
+
 }
