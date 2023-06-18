@@ -26,19 +26,20 @@ public class GuestPlayerTest {
 //        guest3.setServerAddress("localhost",port);
 //        guest4.setServerAddress("localhost",port);
         System.out.println("trying to join game...." + guest.joinGame());
-        sleep(1500);
+        sleep(500);
         System.out.println("guest tiles: " + guest.printTiles());
         sleep(1500);
-        //System.out.println("guest is my turn? " + guest.isMyTurn());
+        System.out.println("guest is my turn? " + guest.isMyTurn());
         if(guest.isMyTurn()){
             System.out.println(guest.getTile());
-            sleep(1500);
+            //sleep(1000);
+            System.out.println(guest.queryIO("s1.txt","s2.txt","kaka"));//18878
+            System.out.println(guest.challengeIO("s1.txt","s2.txt","18878"));//18878
             if(guest.endTurn())
                 System.out.println("turn ended");
             else
                 System.out.println("turn not ended");
-            System.out.println(guest.queryIO("s1.txt","s2.txt","kaka"));//18878
-            System.out.println(guest.challangeIO("s1.txt","s2.txt","18878"));//18878
+
 
 //            System.out.println(guest.endTurn());
 //            System.out.println(guest.endTurn());
@@ -86,11 +87,13 @@ public class GuestPlayerTest {
 
         //System.out.println(GM.printPlayers());
         //host.stopGame();
-        guest.disconnectFromServer();
+
 //        guest2.disconnectFromServer();
 //        guest3.disconnectFromServer();
 //        guest4.disconnectFromServer();
 
+        sleep(1000*3);
+        //guest.disconnectFromServer();
         System.out.println("Done!");
 
 

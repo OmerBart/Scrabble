@@ -2,53 +2,41 @@ package com.example.Scrabble.Model.Player;
 
 import com.example.Scrabble.Model.LocalServer.GameManager;
 import com.example.Scrabble.Model.LocalServer.PlayerHandler;
+import com.example.Scrabble.Model.ServerUtils.ClientHandler;
 import com.example.Scrabble.Model.ServerUtils.MyServer;
 
-// import java.util.Random;
+import java.io.IOException;
 
 public class HostPlayer extends GuestPlayer {
 
-    private final MyServer HostgameServer;
-    private GameManager GM;
-    private static HostPlayer hostPlayer_instance = null;
+    private final MyServer hostGameServer;
+    private GameManager gameManager;
+    private static HostPlayer hostPlayerInstance = null;
 
     public static HostPlayer get(Player player) {
-        if (hostPlayer_instance == null)
-            hostPlayer_instance = new HostPlayer(player);
-        return hostPlayer_instance;
+        if (hostPlayerInstance == null) {
+            hostPlayerInstance = new HostPlayer(player);
+        }
+        return hostPlayerInstance;
     }
 
     private HostPlayer(Player player) {
-
         super(player);
-
-        // Random r = new Random();
-        // int port = 6000 + r.nextInt(6000);
         int port = 65432;
-        HostgameServer = new MyServer(port, new PlayerHandler());
+        hostGameServer = new MyServer(port, new PlayerHandler());
         setServerAddress("localhost", port);
-        HostgameServer.start();
-        GM = GameManager.get();
-        GM.setHost(HostgameServer, this);
+        hostGameServer.start();
+        gameManager = GameManager.get();
+        gameManager.setHost(hostGameServer, this);
+        joinGame();
     }
 
-    public MyServer getHostgameServer() {
-        return HostgameServer;
+    public MyServer getHostGameServer() {
+        return hostGameServer;
     }
 
     public void stopGame() {
-        GM.stopGame();
-        HostgameServer.close();
+        gameManager.stopGame();
+        // hostGameServer.close();
     }
-
-    // @Override
-    // public String getName() {
-    // return this.toString();
-    // }
-
-    // @Override
-    // public String toString() {
-    // return this.getName();
-    // }
-
 }
