@@ -1,54 +1,101 @@
 package com.example.Scrabble.Model.ServerUtils;
 
+import com.example.Scrabble.Model.LocalServer.PlayerHandler;
+import com.example.Scrabble.Model.ScrabbleDictionary.IOserver.BookScrabbleHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class MyServer {
+    private final int port;
+    private volatile boolean stop;
+    private final Map<String, ClientHandler> clients;
+    private final ExecutorService threadPool;
+    private final ClientHandler clientHandler;
 
-    int port;
-    boolean stop;
-    ClientHandler ch;
-    //Socket client;
-
-    public MyServer(int port, ClientHandler ch){
+    public MyServer(int port, ClientHandler clientHandler) {
         this.port = port;
-        this.ch = ch;
+        this.clientHandler = clientHandler;
+        this.clients = new ConcurrentHashMap<>();
+        this.threadPool = Executors.newCachedThreadPool();
     }
 
-    public void start(){
+    public void start() {
         stop = false;
-        new Thread(()->startServer()).start();
+        new Thread(this::startServer).start();
     }
 
     private void startServer() {
-        try {
-            ServerSocket server = new ServerSocket(port);
+        try (ServerSocket server = new ServerSocket(port)) {
             server.setSoTimeout(1000);
-            while(!stop) {
-                try{
+            while (!stop) {
+                try {
                     Socket client = server.accept();
-                    ch.handleClient(client.getInputStream(), client.getOutputStream());
-                    ch.close();
-                    client.close();
-                }catch(SocketTimeoutException e) {}
+                    String clientKey = getClientKey(client);
+                    if (!clients.containsKey(clientKey))
+                        clients.put(clientKey, createHandler(client));
+                    threadPool.submit(() -> {
+                        try {
+                            clients.get(clientKey).handleClient(client.getInputStream(), client.getOutputStream());
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                } catch (SocketTimeoutException ignored) {
+                }
             }
-            server.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public void close(){
-        stop = true;
-    }
-    public int getPort() {
-        return port;
+
+    private String getClientKey(Socket client) {
+        return client.getInetAddress().getHostAddress() + ":" + client.getPort();
     }
 
-    public ClientHandler getCh() {
-        return ch;
+    private ClientHandler createHandler(Socket client) {
+        if (client == null)
+            throw new IllegalArgumentException("Invalid client socket");
+
+        if (clientHandler instanceof PlayerHandler)
+            return new PlayerHandler(client);
+        else if (clientHandler instanceof BookScrabbleHandler)
+            return new BookScrabbleHandler();
+        else
+            throw new IllegalArgumentException("Invalid ClientHandler");
+    }
+
+    public void sendMsg(String msg) {
+        for (ClientHandler clientHandler : clients.values()) {
+            clientHandler.sendMsg(msg);
+        }
+    }
+
+    public void close() {
+        setStop(true);
+        threadPool.shutdown();
+        try {
+            if (!threadPool.awaitTermination(60, TimeUnit.SECONDS)) {
+                threadPool.shutdownNow();
+            }
+        } catch (InterruptedException ex) {
+            threadPool.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+        for (ClientHandler clientHandler : clients.values()) {
+            clientHandler.close();
+        }
+    }
+
+    public int getPort() {
+        return port;
     }
 
     public boolean isStop() {
@@ -58,6 +105,4 @@ public class MyServer {
     public void setStop(boolean stop) {
         this.stop = stop;
     }
-
-
 }
