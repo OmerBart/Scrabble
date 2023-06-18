@@ -1,10 +1,10 @@
-package com.example.Scrabble;
+package com.example.Scrabble.View;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -13,13 +13,15 @@ import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.ResourceBundle;
 
 public class BoardController implements Initializable {
 
-    ArrayList<StackPane> tilesList = new ArrayList<>();
+    ArrayList<Tile> tilesList = new ArrayList<>();
 
     Tile selectedTile;
+    ArrayList<BoardCell> wordToSet = new ArrayList<>();
 
     @FXML
     private GridPane board;
@@ -35,8 +37,6 @@ public class BoardController implements Initializable {
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
         boardBuild();
-
-        System.out.println("here");
     }
 
     public void boardBuild() {
@@ -77,8 +77,7 @@ public class BoardController implements Initializable {
     }
 
     private void drawStar() {
-        BoardCell cell = new BoardCell("star", 8, 8);
-        board.add(cell, 8, 8);
+        newCellBuilder("star", 8, 8);
     }
 
     public void drawBonus() {
@@ -157,8 +156,8 @@ public class BoardController implements Initializable {
         board.add(cell, c, r);
     }
 
-    private void newCellBuilder(String bonus, int r, int c) {
-        BoardCell cell = new BoardCell(bonus, r, c);
+    private void newCellBuilder(String letter, int r, int c) {
+        BoardCell cell = new BoardCell(letter, r, c);
         cell.setOnMouseClicked(event -> {
             handleBoardClick(event, cell);
         });
@@ -194,31 +193,81 @@ public class BoardController implements Initializable {
     }
 
     private void handleBoardClick(Event e, BoardCell cell) {
+        tryPlaceTile(cell);
+    }
+
+    private void tryPlaceTile(BoardCell cell) {
         if (selectedTile != null && !cell.isOccupied) {
-            System.out.println("Cell is not occupied");
             BoardCell newCell = new BoardCell(selectedTile.getLetter(), cell.row, cell.col);
-            Rectangle newRectangle = new Rectangle(40, 40);
-            newRectangle.getStyleClass().add("board-cell-tile");
-            newCell.setRect(newRectangle);
+            newCell.getRect().getStyleClass().clear();
+            newCell.getRect().getStyleClass().add("board-cell-tile");
+            newCell.letter = selectedTile.getLetter();
+            newCell.bonus = cell.bonus;
+            newCell.setOnMouseClicked(event -> {
+                handleBoardClick(event, newCell);
+            });
             board.add(newCell, cell.col, cell.row);
+            wordToSet.add(newCell);
 
-            BoardCell right = (BoardCell) getCell(cell.row, cell.col + 1);
-            right.getRect().getStyleClass().clear();
-            right.getRect().getStyleClass().add("board-cell-tile");
-
-
-            
-        } else {
-            System.out.println("Cell is occupied");
+            selectedTile.selected = false;
+            selectedTile.getChildren().get(0).getStyleClass().clear();
+            selectedTile.getChildren().get(0).getStyleClass().add("tile");
+            tiles.getChildren().remove(selectedTile);
+            selectedTile = null;
         }
     }
 
-    private Node getCell(int row, int col) {
-        for (Node cell : board.getChildren()) {
-            if (GridPane.getRowIndex(cell) == row && GridPane.getColumnIndex(cell) == col) {
-                return cell;
+    public void placeWord() {
+        selectedTile = null;
+        if (isSequenceWord()) {
+            String word = "";
+            for (BoardCell cell : wordToSet) {
+                cell.getRect().getStyleClass().clear();
+                cell.getRect().getStyleClass().add("board-cell-occupied");
+                cell.isOccupied = true;
+                word += cell.letter;
+            }
+            wordToSet.clear();
+            System.out.println(word);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Word is not a sequence");
+            alert.showAndWait();
+            for (BoardCell cell : wordToSet) {
+                Tile tile = new Tile(cell.letter);
+                cell.setDefaultStyle();
+                tile.setOnMouseClicked(event -> {
+                    handleTileClick(event, tile);
+                });
+                tiles.getChildren().add(tile);
+            }
+            wordToSet.clear();
+        }
+    }
+
+    private boolean isSequenceWord() {
+        wordToSet.sort(Comparator.comparing(BoardCell::getRow).thenComparing(BoardCell::getCol));
+        boolean isSequence = false;
+        for (int i = 0; i < wordToSet.size() - 1; i++) {
+            if (wordToSet.get(i).row == wordToSet.get(i + 1).row
+                    && wordToSet.get(i).col == wordToSet.get(i + 1).col - 1) {
+                isSequence = true;
+            } else {
+                isSequence = false;
+                break;
             }
         }
-        return null;
+        if (!isSequence) {
+            for (int i = 0; i < wordToSet.size() - 1; i++) {
+                if (wordToSet.get(i).col == wordToSet.get(i + 1).col &&
+                        wordToSet.get(i).row == wordToSet.get(i + 1).row - 1) {
+                    isSequence = true;
+                } else {
+                    isSequence = false;
+                    break;
+                }
+            }
+        }
+        return isSequence;
     }
 }
