@@ -10,22 +10,29 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class ViewModel extends Observable implements Observer {
-    // Template for ViewModel(auto generated replace the bellow with your own variables and logic)
+    // Template for ViewModel(auto generated replace the bellow with your own
+    // variables and logic)
     Player player;
     public StringProperty hostPlayerName; // observable
-    public DoubleProperty dp;
-
 
     public ViewModel(Player player, StringProperty hostPlayerName, DoubleProperty dp) {
         this.player = player;
         this.hostPlayerName = hostPlayerName;
-        this.dp = dp;
     }
 
     @Override
     public void update(Observable o, Object arg) {
-//        if(o instanceof HostPlayer) {
-//            hostPlayerName.setValue(((HostPlayer) o).getName());
-//        }
+        // if(o instanceof HostPlayer) {
+        // hostPlayerName.setValue(((HostPlayer) o).getName());
+        // }
+    }
+
+    public void startGame() {
+        if (player instanceof HostPlayer) {
+            ((HostPlayer) player).startGame();
+        }
+        else {
+            System.out.println("You are not the host");
+        }
     }
 }
