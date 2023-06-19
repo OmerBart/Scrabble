@@ -23,7 +23,7 @@ public class JoinGameController {
     protected void joinGame(ActionEvent event) {
         try {
             name = gameId.getText();
-            System.out.println(ViewModel.joinGame("guest", "localhost:65432", 0));
+            System.out.println(ViewModel.joinGame(name, "localhost:65432", 0));
             Parent root = FXMLLoader.load(getClass().getResource("board-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root, 1000, 700);

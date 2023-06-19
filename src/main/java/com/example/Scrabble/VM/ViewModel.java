@@ -33,13 +33,20 @@ public class ViewModel extends Observable implements Observer {
     }
 
     public static Integer getScore(String playerName) {
-        Player player = GameManager.getPlayer(playerName);
-        if (player != null) {
-            if (player instanceof GuestPlayer) {
-                return ((GuestPlayer) player).getScore();
-            }
-        }
-        return null;
+        System.out.println("Getting score for " + playerName);
+        GuestPlayer player = GameManager.get().getPlayer(playerName);
+        return player.getScore();
     }
 
+    public static String tryPlaceWord(String playerName,String word){
+        return GameManager.get().getPlayer(playerName).placeWord(word,0,0,true);
+    }
+
+    public static String getTile(String playerName){
+        return GameManager.get().getPlayer(playerName).getTile().split(" ")[1].split("|")[1];
+    }
+
+    public static String getPlayerTiles(String playerName){
+        return GameManager.get().playerTiles(GameManager.get().getPlayer(playerName).getName());
+    }
 }

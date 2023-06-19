@@ -3,6 +3,7 @@ package com.example.Scrabble.Model.LocalServer;
 import com.example.Scrabble.Model.Game.Board;
 import com.example.Scrabble.Model.Game.Tile;
 import com.example.Scrabble.Model.Game.Word;
+import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.Player;
 import com.example.Scrabble.Model.ScrabbleDictionary.IOserver.BookScrabbleHandler;
 import com.example.Scrabble.Model.ServerUtils.MyServer;
@@ -15,7 +16,7 @@ import java.util.*;
 import static java.lang.Thread.sleep;
 
 public class GameManager {
-    private List<Player> playersList;
+    private List<GuestPlayer> playersList;
     private LinkedHashMap<String, Integer> playerScores; // key: name+ID, value: score
     private LinkedHashMap<String, List<Tile>> playerTiles; // key: name+ID, value: tiles
     private MyServer hostServer;
@@ -42,7 +43,7 @@ public class GameManager {
         playerTiles = new LinkedHashMap<>();
     }
 
-    public void setHost(MyServer hostServer, Player hostplayer) {
+    public void setHost(MyServer hostServer, GuestPlayer hostplayer) {
         this.hostServer = hostServer;
         playersList.add(hostplayer);
         playerScores.put(hostplayer.getName(), 0);
@@ -52,12 +53,12 @@ public class GameManager {
     public String playerTiles(String playerName) {
         StringBuilder tiles = new StringBuilder();
         for (Tile tile : playerTiles.get(playerName)) {
-            tiles.append(tile.toString()).append(" ");
+            tiles.append(tile.getLetter()+" ");
         }
         return tiles.toString();
     }
 
-    public String addPlayer(Player player) {
+    public String addPlayer(GuestPlayer player) {
         if (playersList.contains(player) || playersList.size() > 3) {
             return "Player already in the game or game is full!";
         } else {
@@ -68,9 +69,9 @@ public class GameManager {
         }
     }
 
-    public static Player getPlayer(String name) {
-        for (Player p : GameManager.get().playersList) {
-            if (p.getName().equals(name))
+    public GuestPlayer getPlayer(String name) {
+        for (GuestPlayer p : GameManager.get().playersList) {
+            if (p.getName().split(":")[0].equals(name))
                 return p;
         }
         return null;
@@ -170,8 +171,8 @@ public class GameManager {
 
     public String queryIOserver(String Args) {
         try (Socket socket = new Socket("localhost", IOserver.getPort());
-             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-             Scanner in = new Scanner(socket.getInputStream())) {
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                Scanner in = new Scanner(socket.getInputStream())) {
 
             out.println(Args);
             out.flush();
