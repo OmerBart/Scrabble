@@ -47,15 +47,15 @@ public class BoardController implements Initializable {
         boardBuild();
         playerName = JoinGameController.getName() != null ? JoinGameController.getName() : "Eilon";
         nameText.setText(playerName);
-        String[] initialTiles = ViewModel.getPlayerTiles(playerName).split(" ");
-        for (String letter : initialTiles) {
-            Tile tile = new Tile(letter);
-            tilesList.add(tile);
-            tiles.getChildren().add(tile);
-            tile.setOnMouseClicked(event -> {
-                handleTileClick(event, tile);
-            });
-        }
+        // String[] initialTiles = ViewModel.getPlayerTiles(playerName).split(" ");
+        // for (String letter : initialTiles) {
+        //     Tile tile = new Tile(letter);
+        //     tilesList.add(tile);
+        //     tiles.getChildren().add(tile);
+        //     tile.setOnMouseClicked(event -> {
+        //         handleTileClick(event, tile);
+        //     });
+        // }
     }
 
     public void boardBuild() {
@@ -184,6 +184,7 @@ public class BoardController implements Initializable {
     }
 
     public void getTile() {
+        System.out.println(playerName);
         String letter = ViewModel.getTile(playerName);
         System.out.println(letter);
         Tile tile = new Tile(letter);

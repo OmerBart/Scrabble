@@ -53,7 +53,7 @@ public class GameManager {
     public String playerTiles(String playerName) {
         StringBuilder tiles = new StringBuilder();
         for (Tile tile : playerTiles.get(playerName)) {
-            tiles.append(tile.getLetter()+" ");
+            tiles.append(tile.getLetter() + " ");
         }
         return tiles.toString();
     }
@@ -71,9 +71,11 @@ public class GameManager {
 
     public GuestPlayer getPlayer(String name) {
         for (GuestPlayer p : GameManager.get().playersList) {
+            System.out.println("GM: "+p.getName());
             if (p.getName().split(":")[0].equals(name))
                 return p;
         }
+        System.out.println("GM");
         return null;
     }
 

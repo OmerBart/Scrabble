@@ -43,6 +43,7 @@ public class ViewModel extends Observable implements Observer {
     }
 
     public static String getTile(String playerName){
+        System.out.println("here");
         return GameManager.get().getPlayer(playerName).getTile().split(" ")[1].split("|")[1];
     }
 
