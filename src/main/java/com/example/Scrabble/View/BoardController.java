@@ -184,8 +184,8 @@ public class BoardController implements Initializable {
     }
 
     public void getTile() {
-        System.out.println(playerName);
-        String letter = ViewModel.getTile(playerName);
+        String letter = ViewModel.getTile();
+        System.out.println(ViewModel.getPlayerTiles());
         System.out.println(letter);
         Tile tile = new Tile(letter);
         tilesList.add(tile);

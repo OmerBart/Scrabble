@@ -13,6 +13,8 @@ import java.util.Observer;
 
 public class ViewModel extends Observable implements Observer {
 
+    public static GuestPlayer guestPlayer;
+
     public ViewModel() {
     }
 
@@ -24,30 +26,33 @@ public class ViewModel extends Observable implements Observer {
     }
 
     public static void startGame(String playerName) {
-        System.out.println(HostPlayer.get(new GuestPlayer(playerName, 0)).startGame());
+        guestPlayer = new GuestPlayer(playerName, 0);
+        guestPlayer = HostPlayer.get(guestPlayer);
+        System.out.println(guestPlayer.startGame());
     }
 
     public static String joinGame(String playerName, String gameId, int playerID) {
-        GuestPlayer guestPlayer = new GuestPlayer(playerName, playerID, gameId);
+        guestPlayer = new GuestPlayer(playerName, playerID, gameId);
         return guestPlayer.joinGame();
     }
 
     public static Integer getScore(String playerName) {
-        System.out.println("Getting score for " + playerName);
-        GuestPlayer player = GameManager.get().getPlayer(playerName);
-        return player.getScore();
+        return guestPlayer.getScore();
     }
 
-    public static String tryPlaceWord(String playerName,String word){
-        return GameManager.get().getPlayer(playerName).placeWord(word,0,0,true);
+    public static String tryPlaceWord(String playerName, String word) {
+        return GameManager.get().getPlayer(playerName).placeWord(word, 0, 0, true);
     }
 
-    public static String getTile(String playerName){
-        System.out.println("here");
-        return GameManager.get().getPlayer(playerName).getTile().split(" ")[1].split("|")[1];
+    public static String getTile() {
+        return guestPlayer.getTile().split(" ")[1].split("|")[1];
     }
 
-    public static String getPlayerTiles(String playerName){
-        return GameManager.get().playerTiles(GameManager.get().getPlayer(playerName).getName());
+    public static String getPlayerTiles(){
+        String tiles = "";
+        for (String tile : guestPlayer.getPlayerTiles()) {
+            tiles += tile;
+        }
+        return tiles;
     }
 }
