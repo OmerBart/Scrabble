@@ -1,23 +1,19 @@
 package com.example.Scrabble.VM;
 
+import com.example.Scrabble.Model.LocalServer.GameManager;
+import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.HostPlayer;
 import com.example.Scrabble.Model.Player.Player;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.DoubleProperty;
+// import javafx.beans.InvalidationListener;
+// import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
 
 import java.util.Observable;
 import java.util.Observer;
 
 public class ViewModel extends Observable implements Observer {
-    // Template for ViewModel(auto generated replace the bellow with your own
-    // variables and logic)
-    Player player;
-    public StringProperty hostPlayerName; // observable
 
-    public ViewModel(Player player, StringProperty hostPlayerName, DoubleProperty dp) {
-        this.player = player;
-        this.hostPlayerName = hostPlayerName;
+    public ViewModel() {
     }
 
     @Override
@@ -27,12 +23,23 @@ public class ViewModel extends Observable implements Observer {
         // }
     }
 
-    public void startGame() {
-        if (player instanceof HostPlayer) {
-            ((HostPlayer) player).startGame();
-        }
-        else {
-            System.out.println("You are not the host");
-        }
+    public static void startGame(String playerName) {
+        System.out.println(HostPlayer.get(new GuestPlayer(playerName, 0)).startGame());
     }
+
+    public static String joinGame(String playerName, String gameId, int playerID) {
+        GuestPlayer guestPlayer = new GuestPlayer(playerName, playerID, gameId);
+        return guestPlayer.joinGame();
+    }
+
+    public static Integer getScore(String playerName) {
+        Player player = GameManager.getPlayer(playerName);
+        if (player != null) {
+            if (player instanceof GuestPlayer) {
+                return ((GuestPlayer) player).getScore();
+            }
+        }
+        return null;
+    }
+
 }

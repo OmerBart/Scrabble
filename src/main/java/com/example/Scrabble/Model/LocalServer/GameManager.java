@@ -68,6 +68,14 @@ public class GameManager {
         }
     }
 
+    public static Player getPlayer(String name) {
+        for (Player p : GameManager.get().playersList) {
+            if (p.getName().equals(name))
+                return p;
+        }
+        return null;
+    }
+
     public String getGameBoard() {
         return gameBoard.getPrintableBoard();
     }

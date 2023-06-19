@@ -16,12 +16,18 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
+import com.example.Scrabble.VM.ViewModel;
+
 public class BoardController implements Initializable {
 
     ArrayList<Tile> tilesList = new ArrayList<>();
-
     Tile selectedTile;
     ArrayList<BoardCell> wordToSet = new ArrayList<>();
+    ViewModel viewModel;
+    String playerName;
+
+    @FXML
+    Label nameText;
 
     @FXML
     private GridPane board;
@@ -37,6 +43,7 @@ public class BoardController implements Initializable {
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
         boardBuild();
+        playerName = JoinGameController.getName();
     }
 
     public void boardBuild() {
@@ -165,6 +172,7 @@ public class BoardController implements Initializable {
     }
 
     public void getTile() {
+        System.out.println(playerName + " is getting a tile");
         Tile tile = new Tile();
         tilesList.add(tile);
         tiles.getChildren().add(tile);
