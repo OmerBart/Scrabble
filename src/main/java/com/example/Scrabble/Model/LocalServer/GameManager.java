@@ -84,7 +84,8 @@ public class GameManager {
     }
 
     public String myTurn(String playerName) {
-        while (playersList.get(turn % playersList.size()).getName().contains(playerName)) {
+        System.out.println(turn + " TURN" );
+        while (playersList.get(turn % playersList.size()-1).getName().contains(playerName)) {
             try {
                 System.out.println(playerName + " is waiting for their turn");
                 sleep(1000);

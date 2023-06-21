@@ -35,7 +35,12 @@ public class ViewModel extends Observable implements Observer {
     }
 
     public static String tryPlaceWord(String playerName, String word) {
-        return guestPlayer.placeWord(word, 7, 7, true);
+        if(guestPlayer.isMyTurn())
+            return guestPlayer.placeWord(word, 7, 7, true);
+        else {
+            System.out.println("Not my Turn");
+            return "Not my Turn!";
+        }
     }
 
     public static String getTile() {
