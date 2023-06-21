@@ -69,7 +69,8 @@ public class Board {
                 else
                     s.append(tt);
             }
-            s.append("\n");
+            s.append(":");
+            //s.append(":");
         }
         return s.toString();
     }
