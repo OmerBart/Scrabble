@@ -39,7 +39,7 @@ public class LobyController {
     @FXML
     protected void onHostGameButtonClick(ActionEvent event) {
         try {
-            ViewModel.startGame("Eilon");
+            ViewModel.startGame();
             Parent root = FXMLLoader.load(getClass().getResource("board-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root, 1000, 700);

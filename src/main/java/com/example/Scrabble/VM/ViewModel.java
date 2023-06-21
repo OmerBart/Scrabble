@@ -1,43 +1,35 @@
 package com.example.Scrabble.VM;
 
-import com.example.Scrabble.Model.LocalServer.GameManager;
 import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.HostPlayer;
-import static java.lang.Thread.sleep;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
-import java.util.Observable;
-import java.util.Observer;
-
-public class ViewModel extends Observable implements Observer {
+public class ViewModel {
 
     public static GuestPlayer guestPlayer;
+    public static StringProperty playerName = new SimpleStringProperty("");
 
     public ViewModel() {
-
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-
-    }
-
-    public static void startGame(String playerName) {
-        guestPlayer = new GuestPlayer(playerName, 0);
+    public static void startGame() {
+        guestPlayer = new GuestPlayer(playerName.getValue(),0);
         guestPlayer = HostPlayer.get(guestPlayer);
         System.out.println(guestPlayer.startGame());
     }
 
-    public static String joinGame(String playerName, String gameId, int playerID) {
-        guestPlayer = new GuestPlayer(playerName, playerID, gameId);
+    public static String joinGame(String gameId, int playerID) {
+        guestPlayer = new GuestPlayer(playerName.getValue(), playerID, gameId);
         return guestPlayer.joinGame();
     }
 
-    public static Integer getScore(String playerName) {
+    public static Integer getScore() {
         return guestPlayer.getScore();
     }
 
-    public static String tryPlaceWord(String playerName, String word) {
+    public static String tryPlaceWord(String word) {
         if (guestPlayer.isMyTurn()) {
             String result = guestPlayer.placeWord(word, 7, 7, true);
             return result;
@@ -45,7 +37,8 @@ public class ViewModel extends Observable implements Observer {
             return "0";
         }
     }
-    public static String getBoard(){
+
+    public static String getBoard() {
         return guestPlayer.getCurrentBoard();
     }
 
@@ -54,11 +47,6 @@ public class ViewModel extends Observable implements Observer {
     }
 
     public static String getPlayerTiles() {
-       return guestPlayer.printTiles();
-//        String tiles = "";
-//        for (String tile : guestPlayer.getPlayerTiles()) {
-//            tiles += tile;
-//        }
-//        return tiles;
+        return guestPlayer.printTiles();
     }
 }
