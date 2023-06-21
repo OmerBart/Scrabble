@@ -33,7 +33,10 @@ How to run: (for now)
 - enjoy
 
 
+
+
 ![image](https://github.com/OmerBart/Scrabble/assets/112820943/aaac6aa7-f0d4-41bd-b62f-edf97034623a)
+
 
 
 # First MileStone 

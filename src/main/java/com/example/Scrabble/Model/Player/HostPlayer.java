@@ -25,6 +25,7 @@ public class HostPlayer extends GuestPlayer {
         int port = 65432;
         hostGameServer = new MyServer(port, new PlayerHandler());
         setServerAddress("localhost", port);
+        System.out.println("host cutr: "+this.getServerAddress());
         hostGameServer.start();
         gameManager = GameManager.get();
         gameManager.setHost(hostGameServer, this);
@@ -39,4 +40,5 @@ public class HostPlayer extends GuestPlayer {
         gameManager.stopGame();
         // hostGameServer.close();
     }
+    
 }

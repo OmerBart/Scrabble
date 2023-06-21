@@ -16,12 +16,20 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
+import com.example.Scrabble.VM.ViewModel;
+
 public class BoardController implements Initializable {
 
     ArrayList<Tile> tilesList = new ArrayList<>();
-
     Tile selectedTile;
     ArrayList<BoardCell> wordToSet = new ArrayList<>();
+    String playerName;
+
+    @FXML
+    Label scoreText;
+
+    @FXML
+    Label nameText;
 
     @FXML
     private GridPane board;
@@ -37,6 +45,17 @@ public class BoardController implements Initializable {
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
         boardBuild();
+        playerName = JoinGameController.getName() != null ? JoinGameController.getName() : "Eilon";
+        nameText.setText(playerName);
+        // String[] initialTiles = ViewModel.getPlayerTiles(playerName).split(" ");
+        // for (String letter : initialTiles) {
+        //     Tile tile = new Tile(letter);
+        //     tilesList.add(tile);
+        //     tiles.getChildren().add(tile);
+        //     tile.setOnMouseClicked(event -> {
+        //         handleTileClick(event, tile);
+        //     });
+        // }
     }
 
     public void boardBuild() {
@@ -165,7 +184,10 @@ public class BoardController implements Initializable {
     }
 
     public void getTile() {
-        Tile tile = new Tile();
+        String letter = ViewModel.getTile();
+        System.out.println(ViewModel.getPlayerTiles());
+        System.out.println(letter);
+        Tile tile = new Tile(letter);
         tilesList.add(tile);
         tiles.getChildren().add(tile);
         tile.setOnMouseClicked(event -> {
@@ -227,6 +249,7 @@ public class BoardController implements Initializable {
                 cell.isOccupied = true;
                 word += cell.letter;
             }
+            System.out.println(ViewModel.tryPlaceWord(playerName, word));
             wordToSet.clear();
             System.out.println(word);
         } else {

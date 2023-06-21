@@ -83,12 +83,12 @@ public class GuestPlayerTest {
 
     @Test
     void challangeIOTest() {
-        assertEquals(true, guestPlayer.challangeIO("s1.txt", "s2.txt", "18878"));
+        assertEquals(true, guestPlayer.challengeIO("s1.txt", "s2.txt", "18878"));
     }
 
     @Test
     void challangeIOTest2() {
-        assertEquals(false, guestPlayer.challangeIO("s1.txt", "s2.txt", "kaka"));
+        assertEquals(false, guestPlayer.challengeIO("s1.txt", "s2.txt", "kaka"));
     }
 
 }

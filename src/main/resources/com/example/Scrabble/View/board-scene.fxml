@@ -23,6 +23,7 @@
                 <Button text="Place Word" onAction="#placeWord" />
                 <Button text="Get Tile" onAction="#getTile" />
                 <Label fx:id="scoreText" text='Score: 0' />
+                <Label fx:id="nameText" text='Name:' />
                 <Label text='Tiles:' />
                 <HBox fx:id="tiles" spacing="10" />
             </VBox>
