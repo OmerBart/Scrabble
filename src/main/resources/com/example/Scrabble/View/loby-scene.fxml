@@ -13,12 +13,12 @@
 <?import javafx.scene.control.ListView?>
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-    fx:controller="com.example.Scrabble.View.lobyController">
+    fx:controller="com.example.Scrabble.View.LobyController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 
-    <Label fx:id="welcomeText" text='Game ID : ...' />
+    <Label fx:id="gameid" text='Game ID : ...' />
     <VBox fx:id="playerList" alignment="CENTER" spacing="20.0" >
         <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
