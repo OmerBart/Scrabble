@@ -45,16 +45,20 @@ public class ViewModel extends Observable implements Observer {
             return "0";
         }
     }
+    public static String getBoard(){
+        return guestPlayer.getCurrentBoard();
+    }
 
     public static String getTile() {
         return guestPlayer.getTile().split(" ")[1].split("|")[1];
     }
 
     public static String getPlayerTiles() {
-        String tiles = "";
-        for (String tile : guestPlayer.getPlayerTiles()) {
-            tiles += tile;
-        }
-        return tiles;
+       return guestPlayer.printTiles();
+//        String tiles = "";
+//        for (String tile : guestPlayer.getPlayerTiles()) {
+//            tiles += tile;
+//        }
+//        return tiles;
     }
 }
