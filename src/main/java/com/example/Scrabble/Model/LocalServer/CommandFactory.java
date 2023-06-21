@@ -215,7 +215,7 @@ public class CommandFactory {
         @Override
         public String execute() {
             GameManager GM = GameManager.get();
-            return GM.playerTiles(playerName);
+            return GM.getPlayerTiles(playerName);
         }
     }
 

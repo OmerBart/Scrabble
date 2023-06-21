@@ -50,7 +50,7 @@ public class GameManager {
         playerTiles.put(hostplayer.getName(), new ArrayList<>());
     }
 
-    public String playerTiles(String playerName) {
+    public String getPlayerTiles(String playerName) {
         StringBuilder tiles = new StringBuilder();
         for (Tile tile : playerTiles.get(playerName)) {
             tiles.append(tile.getLetter() + " ");
