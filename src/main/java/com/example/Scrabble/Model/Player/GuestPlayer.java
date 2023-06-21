@@ -115,7 +115,7 @@ public class GuestPlayer implements Player {
         if (serverSocket == null || serverSocket.isClosed()) {
             try {
                 serverSocket = new Socket(serverAddress.split(":")[0], Integer.parseInt(serverAddress.split(":")[1]));
-                serverSocket.setSoTimeout(5000);
+                serverSocket.setSoTimeout(1000*30);
                 out = new PrintWriter(serverSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
             } catch (IOException e) {
@@ -144,10 +144,8 @@ public class GuestPlayer implements Player {
             Scanner sin = new Scanner(this.in);
             while (sin.hasNextLine() && listening) {
                 String response = sin.nextLine();
-                System.out.println("Response from server: " + response);
                 if (response.contains("true")) {
                     stopListeningToServer();
-                    System.out.println("my turn now");
                     break;
                 } else if (response.contains("over!")) {
                     sin.close();

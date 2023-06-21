@@ -3,6 +3,8 @@ package com.example.Scrabble.VM;
 import com.example.Scrabble.Model.LocalServer.GameManager;
 import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.HostPlayer;
+import static java.lang.Thread.sleep;
+
 
 import java.util.Observable;
 import java.util.Observer;
@@ -12,6 +14,7 @@ public class ViewModel extends Observable implements Observer {
     public static GuestPlayer guestPlayer;
 
     public ViewModel() {
+
     }
 
     @Override
@@ -35,7 +38,12 @@ public class ViewModel extends Observable implements Observer {
     }
 
     public static String tryPlaceWord(String playerName, String word) {
-        return guestPlayer.placeWord(word, 7, 7, true);
+        if (guestPlayer.isMyTurn()) {
+            String result = guestPlayer.placeWord(word, 7, 7, true);
+            return result;
+        } else {
+            return "0";
+        }
     }
 
     public static String getTile() {

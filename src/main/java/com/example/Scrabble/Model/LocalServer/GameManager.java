@@ -24,6 +24,7 @@ public class GameManager {
     private Board gameBoard;
     private Tile.Bag bag;
     private int turn;
+    private boolean hasGameStarted;
 
     private static GameManager single_instance = null;
 
@@ -41,6 +42,7 @@ public class GameManager {
         bag = Tile.Bag.getBag();
         playerScores = new LinkedHashMap<>();
         playerTiles = new LinkedHashMap<>();
+        hasGameStarted = false;
     }
 
     public void setHost(MyServer hostServer, GuestPlayer hostplayer) {
@@ -50,7 +52,7 @@ public class GameManager {
         playerTiles.put(hostplayer.getName(), new ArrayList<>());
     }
 
-    public String playerTiles(String playerName) {
+    public String getPlayerTiles(String playerName) {
         StringBuilder tiles = new StringBuilder();
         for (Tile tile : playerTiles.get(playerName)) {
             tiles.append(tile.getLetter() + " ");
@@ -71,7 +73,7 @@ public class GameManager {
 
     public GuestPlayer getPlayer(String name) {
         for (GuestPlayer p : GameManager.get().playersList) {
-            System.out.println("GM: "+p.getName());
+            System.out.println("GM: " + p.getName());
             if (p.getName().split(":")[0].equals(name))
                 return p;
         }
@@ -84,7 +86,9 @@ public class GameManager {
     }
 
     public String myTurn(String playerName) {
-        while (playersList.get(turn % playersList.size()).getName().contains(playerName)) {
+        // System.out.println(turn + " TURN player: " + playersList.get(turn %
+        // playersList.size()).getName() );
+        while (!playersList.get(turn % playersList.size()).getName().contains(playerName)) {
             try {
                 System.out.println(playerName + " is waiting for their turn");
                 sleep(1000);
@@ -103,7 +107,8 @@ public class GameManager {
             for (Player p : playersList)
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
-        turn = 0;
+        turn = 1;
+        hasGameStarted = true;
         return "Game Started!";
     }
 
@@ -142,9 +147,9 @@ public class GameManager {
     }
 
     public String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
-        if (playerTiles.get(playerName).size() < word.length())
+        if (playerTiles.get(playerName).size() < word.length()) {
             return Integer.toString(0);
-        else {
+        } else {
             char[] carr = word.toUpperCase().toCharArray();
             Tile tmpTile;
             Tile[] wordTiles = new Tile[word.length()];
@@ -152,13 +157,12 @@ public class GameManager {
                 try {
                     tmpTile = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c).findFirst().get();
                     playerTiles.get(playerName).remove(tmpTile);
-                    wordTiles[word.indexOf(c) + 1] = tmpTile;
+                    wordTiles[word.indexOf(c)] = tmpTile;
                 } catch (NoSuchElementException e) {
-                    System.out.println("You do not have the letters for the word in your hand");
                     return Integer.toString(0);
                 }
-            }
 
+            }
             int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
             if (score <= 0) {
                 for (Tile t : wordTiles)

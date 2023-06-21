@@ -28,11 +28,15 @@ public class LocalHostServerTestMain {
             //GameManager.get().updatePlayers();
             //sleep(2000);
         }
+        else
+            System.out.println("da fuck man");
         //sleep(2000);
-
-        System.out.println("Close Host Server? (y/n)");
+        //System.out.println(hostPlayer.getPlayerTiles());
+        sleep(3000);
+        //System.out.println("Close Host Server? (y/n)");
         String input = scanner.nextLine();
-        if (input.equals("y")) {
+        System.out.println(hostPlayer.placeWord(input,7,7,true));
+         if (input.equals("y")) {
             hostPlayer.stopGame();
             scanner.close();
         }

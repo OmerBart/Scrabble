@@ -150,6 +150,7 @@ public class CommandFactory {
 
         @Override
         public String execute() {
+            System.out.println("PlaceWordCommand");
             GameManager GM = GameManager.get();
             return GM.placeWord(playerName, word, x, y, isHorizontal);
         }
@@ -214,7 +215,7 @@ public class CommandFactory {
         @Override
         public String execute() {
             GameManager GM = GameManager.get();
-            return GM.playerTiles(playerName);
+            return GM.getPlayerTiles(playerName);
         }
     }
 
