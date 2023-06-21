@@ -45,17 +45,8 @@ public class BoardController implements Initializable {
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
         boardBuild();
-        playerName = JoinGameController.getName() != null ? JoinGameController.getName() : "Eilon";
+        playerName = HomeController.getName() != null ? HomeController.getName() : "Eilon";
         nameText.setText(playerName);
-        // String[] initialTiles = ViewModel.getPlayerTiles(playerName).split(" ");
-        // for (String letter : initialTiles) {
-        // Tile tile = new Tile(letter);
-        // tilesList.add(tile);
-        // tiles.getChildren().add(tile);
-        // tile.setOnMouseClicked(event -> {
-        // handleTileClick(event, tile);
-        // });
-        // }
     }
 
     public void boardBuild() {

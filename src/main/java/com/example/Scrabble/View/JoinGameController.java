@@ -14,7 +14,7 @@ public class JoinGameController {
 
     private Stage stage;
     private Scene scene;
-    public static String name;
+    // public static String name;
 
     @FXML
     TextField gameId;
@@ -22,8 +22,8 @@ public class JoinGameController {
     @FXML
     protected void joinGame(ActionEvent event) {
         try {
-            name = gameId.getText();
-            System.out.println(ViewModel.joinGame(name, "localhost:65432", 1));
+            // name = gameId.getText();
+            System.out.println(ViewModel.joinGame(gameId.getText(), "localhost:65432", 1));
             Parent root = FXMLLoader.load(getClass().getResource("board-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root, 1000, 700);
@@ -47,7 +47,7 @@ public class JoinGameController {
         }
     }
 
-    public static String getName() {
-        return name;
-    }
+    // public static String getName() {
+    //     return name;
+    // }
 }
