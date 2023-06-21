@@ -27,14 +27,14 @@ class HostPlayerTest {
     @Test
     void getHostgameServer() {
         System.out.println("HostPlayerTest: getHostgameServer()");
-        assertNotNull(hostPlayer.getHostgameServer());
+        assertNotNull(hostPlayer.getHostGameServer());
     }
 
     @Test
     void stopGame() {
         System.out.println("HostPlayerTest: stopGame()");
         hostPlayer.stopGame();
-        assertEquals(true, hostPlayer.getHostgameServer().isStop());
+        assertEquals(true, hostPlayer.getHostGameServer().isStop());
     }
 
     @Test
