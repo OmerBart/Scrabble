@@ -144,45 +144,31 @@ public class GameManager {
     }
 
     public String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
-        System.out.println("Placing word: " + word + " at: " + x + " " + y + " " + isHorizontal);
-        // return "true";
         if (playerTiles.get(playerName).size() < word.length()) {
-            System.out.println("You do not have the letters for the word in your hand");
             return Integer.toString(0);
         } else {
-            System.out.println("you have the letters for the word in your hand");
             char[] carr = word.toUpperCase().toCharArray();
             Tile tmpTile;
             Tile[] wordTiles = new Tile[word.length()];
-            System.out.println("player tiles: " + playerTiles.get(playerName).toString());
             for (char c : carr) {
                 try {
-                    System.out.println("char: " + c);
                     tmpTile = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c).findFirst().get();
                     playerTiles.get(playerName).remove(tmpTile);
-                    System.out.println("tile: " + tmpTile.toString());
                     wordTiles[word.indexOf(c)] = tmpTile;
-                    System.out.println("word tiles: " + Arrays.toString(wordTiles));
                 } catch (NoSuchElementException e) {
-                    System.out.println("You do not have the letters for the word in your hand");
                     return Integer.toString(0);
                 }
 
             }
-            System.out.println("you had all the letters");
             int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
-            System.out.println("score: " + score);
             if (score <= 0) {
-                System.out.println("Word placement failed - returning tiles to player");
                 for (Tile t : wordTiles)
                     playerTiles.get(playerName).add(t);
             } else {
-                System.out.println("Word placement succeeded - updating player score");
                 playerScores.put(playerName, playerScores.get(playerName) + score);
                 return Integer.toString(score);
             }
         }
-        System.out.println("Word placement failed");
         return Integer.toString(0);
     }
 

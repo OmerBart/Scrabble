@@ -14,7 +14,7 @@ public class ViewModel extends Observable implements Observer {
     public static GuestPlayer guestPlayer;
 
     public ViewModel() {
-        
+
     }
 
     @Override
@@ -39,13 +39,10 @@ public class ViewModel extends Observable implements Observer {
 
     public static String tryPlaceWord(String playerName, String word) {
         if (guestPlayer.isMyTurn()) {
-            System.out.println("My Turn");
             String result = guestPlayer.placeWord(word, 7, 7, true);
-            System.out.println(result);
-            return "My Turn!";
+            return result;
         } else {
-            System.out.println("Not my Turn");
-            return "Not my Turn!";
+            return "0";
         }
     }
 

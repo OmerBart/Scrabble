@@ -94,7 +94,6 @@ public class GuestPlayer implements Player {
     }
 
     public String placeWord(String word, int x, int y, boolean isHorizontal) {
-        System.out.println("placeWord:" + name.get() + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
         openSocketIfClosed();
         return sendRequestToServer(
                 "placeWord:" + name.get() + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
@@ -128,11 +127,9 @@ public class GuestPlayer implements Player {
     private String sendRequestToServer(String request) {
         try {
             openSocketIfClosed();
-            System.out.println("Sending request to server: " + request);
             out.println(request);
             return in.readLine();
         } catch (IOException e) {
-            System.out.println("Error sending request to server: ");
             throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
         }
     }
@@ -147,10 +144,8 @@ public class GuestPlayer implements Player {
             Scanner sin = new Scanner(this.in);
             while (sin.hasNextLine() && listening) {
                 String response = sin.nextLine();
-                System.out.println("Response from server: " + response);
                 if (response.contains("true")) {
                     stopListeningToServer();
-                    System.out.println("my turn now");
                     break;
                 } else if (response.contains("over!")) {
                     sin.close();

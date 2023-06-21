@@ -49,12 +49,12 @@ public class BoardController implements Initializable {
         nameText.setText(playerName);
         // String[] initialTiles = ViewModel.getPlayerTiles(playerName).split(" ");
         // for (String letter : initialTiles) {
-        //     Tile tile = new Tile(letter);
-        //     tilesList.add(tile);
-        //     tiles.getChildren().add(tile);
-        //     tile.setOnMouseClicked(event -> {
-        //         handleTileClick(event, tile);
-        //     });
+        // Tile tile = new Tile(letter);
+        // tilesList.add(tile);
+        // tiles.getChildren().add(tile);
+        // tile.setOnMouseClicked(event -> {
+        // handleTileClick(event, tile);
+        // });
         // }
     }
 
@@ -185,8 +185,6 @@ public class BoardController implements Initializable {
 
     public void getTile() {
         String letter = ViewModel.getTile();
-        System.out.println(ViewModel.getPlayerTiles());
-        System.out.println(letter);
         Tile tile = new Tile(letter);
         tilesList.add(tile);
         tiles.getChildren().add(tile);
@@ -244,14 +242,18 @@ public class BoardController implements Initializable {
         if (isSequenceWord()) {
             String word = "";
             for (BoardCell cell : wordToSet) {
-                cell.getRect().getStyleClass().clear();
-                cell.getRect().getStyleClass().add("board-cell-occupied");
-                cell.isOccupied = true;
                 word += cell.letter;
             }
-            System.out.println(ViewModel.tryPlaceWord(playerName, word));
+            String res = ViewModel.tryPlaceWord(playerName, word);
+            System.out.println("got from server: " + res);
+            if (Integer.parseInt(res) > 0) {
+                for (BoardCell cell : wordToSet) {
+                    cell.getRect().getStyleClass().clear();
+                    cell.getRect().getStyleClass().add("board-cell-occupied");
+                    cell.isOccupied = true;
+                }
+            }
             wordToSet.clear();
-            System.out.println(word);
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Word is not a sequence");
