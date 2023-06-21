@@ -13,6 +13,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
@@ -47,15 +48,17 @@ public class BoardController implements Initializable {
         boardBuild();
         playerName = JoinGameController.getName() != null ? JoinGameController.getName() : "Eilon";
         nameText.setText(playerName);
-        // String[] initialTiles = ViewModel.getPlayerTiles(playerName).split(" ");
-        // for (String letter : initialTiles) {
-        // Tile tile = new Tile(letter);
-        // tilesList.add(tile);
-        // tiles.getChildren().add(tile);
-        // tile.setOnMouseClicked(event -> {
-        // handleTileClick(event, tile);
-        // });
-        // }
+
+
+        String[] initialTiles = ViewModel.getPlayerTiles().split(" ");
+         for (String letter : initialTiles) {
+         Tile tile = new Tile(letter);
+         tilesList.add(tile);
+         tiles.getChildren().add(tile);
+         tile.setOnMouseClicked(event -> {
+         handleTileClick(event, tile);
+         });
+         }
     }
 
     public void boardBuild() {
