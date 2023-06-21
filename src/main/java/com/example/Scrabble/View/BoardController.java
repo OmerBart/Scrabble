@@ -45,7 +45,8 @@ public class BoardController implements Initializable {
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
         boardBuild();
-        nameText.textProperty().bind(ViewModel.playerName);
+        nameText.textProperty().bind(ViewModel.playerNameProperty);
+        scoreText.textProperty().bind(ViewModel.scoreProperty);
 
         String[] initialTiles = ViewModel.getPlayerTiles().split(" ");
         for (String letter : initialTiles) {
@@ -247,13 +248,13 @@ public class BoardController implements Initializable {
             }
             String res = ViewModel.tryPlaceWord(word);
             System.out.println("got from server: " + res);
-            if (Integer.parseInt(res) > 0) {
-                for (BoardCell cell : wordToSet) {
-                    cell.getRect().getStyleClass().clear();
-                    cell.getRect().getStyleClass().add("board-cell-occupied");
-                    cell.isOccupied = true;
-                }
+            // if (Integer.parseInt(res) > 0) {
+            for (BoardCell cell : wordToSet) {
+                cell.getRect().getStyleClass().clear();
+                cell.getRect().getStyleClass().add("board-cell-occupied");
+                cell.isOccupied = true;
             }
+            // }
             wordToSet.clear();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);

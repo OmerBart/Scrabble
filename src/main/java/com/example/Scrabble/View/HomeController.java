@@ -28,9 +28,9 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ViewModel.playerName.bind(nameInput.textProperty());
+        ViewModel.playerNameProperty.bind(nameInput.textProperty());
         nameInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("View model: " + ViewModel.playerName.getValue());
+            System.out.println("View model: " + ViewModel.playerNameProperty.getValue());
         });
     }
 
@@ -45,7 +45,6 @@ public class HomeController implements Initializable {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     @FXML

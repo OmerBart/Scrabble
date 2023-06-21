@@ -9,19 +9,20 @@ import javafx.beans.property.StringProperty;
 public class ViewModel {
 
     public static GuestPlayer guestPlayer;
-    public static StringProperty playerName = new SimpleStringProperty("");
+    public static StringProperty playerNameProperty = new SimpleStringProperty("");
+    public static StringProperty scoreProperty = new SimpleStringProperty("0");
 
     public ViewModel() {
     }
 
     public static void startGame() {
-        guestPlayer = new GuestPlayer(playerName.getValue(),0);
+        guestPlayer = new GuestPlayer(playerNameProperty.getValue(), 0);
         guestPlayer = HostPlayer.get(guestPlayer);
         System.out.println(guestPlayer.startGame());
     }
 
     public static String joinGame(String gameId, int playerID) {
-        guestPlayer = new GuestPlayer(playerName.getValue(), playerID, gameId);
+        guestPlayer = new GuestPlayer(playerNameProperty.getValue(), playerID, gameId);
         return guestPlayer.joinGame();
     }
 
@@ -32,6 +33,9 @@ public class ViewModel {
     public static String tryPlaceWord(String word) {
         if (guestPlayer.isMyTurn()) {
             String result = guestPlayer.placeWord(word, 7, 7, true);
+            int score = Integer.parseInt(result);
+            score += Integer.parseInt(scoreProperty.getValue());
+            scoreProperty.setValue(String.valueOf(score));
             return result;
         } else {
             return "0";
