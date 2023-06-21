@@ -99,7 +99,7 @@ public class Board {
             if ((word.isVertical() && word.getCol() == 7 && word.getRow() <= 7 && word.getRow() >= 0
                     && word.getRow() <= 14)
                     || (!word.isVertical() && word.getRow() == 7 && word.getCol() <= 7) && word.getCol() >= 0
-                            && word.getCol() <= 14)
+                    && word.getCol() <= 14)
                 flag = (word.getRow() + x.length >= 7 && word.getRow() + x.length <= 14)
                         || (word.getCol() + x.length >= 7 && word.getCol() + x.length <= 14);
         } else {
