@@ -45,6 +45,9 @@ public class ViewModel extends Observable implements Observer {
             return "0";
         }
     }
+    public static String getBoard(){
+        return guestPlayer.getCurrentBoard();
+    }
 
     public static String getTile() {
         return guestPlayer.getTile().split(" ")[1].split("|")[1];

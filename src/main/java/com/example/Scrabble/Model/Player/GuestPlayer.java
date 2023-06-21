@@ -137,7 +137,7 @@ public class GuestPlayer implements Player {
     public String printTiles() {
         return sendRequestToServer("printTiles," + name.get() + ":" + playerID);
     }
-    public String GetCurrentBoard() {
+    public String getCurrentBoard() {
         String board;
         board = sendRequestToServer("boardState");
         return board;
