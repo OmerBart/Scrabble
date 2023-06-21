@@ -84,8 +84,8 @@ public class GameManager {
     }
 
     public String myTurn(String playerName) {
-        System.out.println(turn + " TURN" );
-        while (playersList.get(turn % playersList.size()-1).getName().contains(playerName)) {
+        //System.out.println(turn + " TURN player: " + playersList.get(turn % playersList.size()).getName() );
+        while (!playersList.get(turn % playersList.size()).getName().contains(playerName)) {
             try {
                 System.out.println(playerName + " is waiting for their turn");
                 sleep(1000);
@@ -104,7 +104,7 @@ public class GameManager {
             for (Player p : playersList)
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
-        turn = 0;
+        turn = 1;
         return "Game Started!";
     }
 

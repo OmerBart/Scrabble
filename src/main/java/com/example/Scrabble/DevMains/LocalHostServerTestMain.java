@@ -28,6 +28,8 @@ public class LocalHostServerTestMain {
             //GameManager.get().updatePlayers();
             //sleep(2000);
         }
+        else
+            System.out.println("da fuck man");
         //sleep(2000);
 
         System.out.println("Close Host Server? (y/n)");
