@@ -33,9 +33,11 @@ public class PlayerHandler implements ClientHandler {
             out = new PrintWriter(outToClient, true);
             String line;
             while (alive && (line = in.readLine()) != null) {
+                System.out.println("Received: " + line);
                 Command command = commandFactory.createCommand(line);
                 if (command != null) {
                     String result = command.execute();
+                    System.out.println("Sending: " + result);
                     out.println(result);
                     out.flush();
                 } else {

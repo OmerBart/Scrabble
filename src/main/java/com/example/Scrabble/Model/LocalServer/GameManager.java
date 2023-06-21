@@ -143,33 +143,35 @@ public class GameManager {
     }
 
     public String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
-        if (playerTiles.get(playerName).size() < word.length())
-            return Integer.toString(0);
-        else {
-            char[] carr = word.toUpperCase().toCharArray();
-            Tile tmpTile;
-            Tile[] wordTiles = new Tile[word.length()];
-            for (char c : carr) {
-                try {
-                    tmpTile = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c).findFirst().get();
-                    playerTiles.get(playerName).remove(tmpTile);
-                    wordTiles[word.indexOf(c) + 1] = tmpTile;
-                } catch (NoSuchElementException e) {
-                    System.out.println("You do not have the letters for the word in your hand");
-                    return Integer.toString(0);
-                }
-            }
+        System.out.println("Placing word: " + word + " at: " + x + " " + y + " " + isHorizontal);
+        return "true";
+        // if (playerTiles.get(playerName).size() < word.length())
+        //     return Integer.toString(0);
+        // else {
+        //     char[] carr = word.toUpperCase().toCharArray();
+        //     Tile tmpTile;
+        //     Tile[] wordTiles = new Tile[word.length()];
+        //     for (char c : carr) {
+        //         try {
+        //             tmpTile = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c).findFirst().get();
+        //             playerTiles.get(playerName).remove(tmpTile);
+        //             wordTiles[word.indexOf(c) + 1] = tmpTile;
+        //         } catch (NoSuchElementException e) {
+        //             System.out.println("You do not have the letters for the word in your hand");
+        //             return Integer.toString(0);
+        //         }
+        //     }
 
-            int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
-            if (score <= 0) {
-                for (Tile t : wordTiles)
-                    playerTiles.get(playerName).add(t);
-            } else {
-                playerScores.put(playerName, playerScores.get(playerName) + score);
-                return Integer.toString(score);
-            }
-        }
-        return Integer.toString(0);
+        //     int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
+        //     if (score <= 0) {
+        //         for (Tile t : wordTiles)
+        //             playerTiles.get(playerName).add(t);
+        //     } else {
+        //         playerScores.put(playerName, playerScores.get(playerName) + score);
+        //         return Integer.toString(score);
+        //     }
+        // }
+        // return Integer.toString(0);
     }
 
     public String queryIOserver(String Args) {
