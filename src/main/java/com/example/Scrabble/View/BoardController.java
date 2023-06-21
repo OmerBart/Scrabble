@@ -191,6 +191,7 @@ public class BoardController implements Initializable {
         tile.setOnMouseClicked(event -> {
             handleTileClick(event, tile);
         });
+
     }
 
     private void handleTileClick(Event e, Tile tile) {
@@ -268,6 +269,7 @@ public class BoardController implements Initializable {
             }
             wordToSet.clear();
         }
+        System.out.println(ViewModel.getBoard());
     }
 
     private boolean isSequenceWord() {
