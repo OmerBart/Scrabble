@@ -116,7 +116,7 @@ public class GuestPlayer implements Player {
         if (serverSocket == null || serverSocket.isClosed()) {
             try {
                 serverSocket = new Socket(serverAddress.split(":")[0], Integer.parseInt(serverAddress.split(":")[1]));
-                serverSocket.setSoTimeout(1000*15);
+                serverSocket.setSoTimeout(1000*30);
                 out = new PrintWriter(serverSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
             } catch (IOException e) {

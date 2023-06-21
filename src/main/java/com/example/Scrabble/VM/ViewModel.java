@@ -14,6 +14,7 @@ public class ViewModel extends Observable implements Observer {
     public static GuestPlayer guestPlayer;
 
     public ViewModel() {
+        
     }
 
     @Override
