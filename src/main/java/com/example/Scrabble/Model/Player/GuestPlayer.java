@@ -195,4 +195,13 @@ public class GuestPlayer implements Player {
         startListeningToServer();
         return true;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof GuestPlayer) {
+            GuestPlayer player = (GuestPlayer) obj;
+            return player.getName().equals(this.getName());
+        }
+        return false;
+    }
 }

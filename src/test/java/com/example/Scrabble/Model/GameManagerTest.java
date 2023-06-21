@@ -22,7 +22,7 @@ public class GameManagerTest {
     public static void setUp() {
         gameManager = GameManager.get();
         hostPlayer = HostPlayer.get(new GuestPlayer("test1", 1, "localhost"));
-        gameManager.setHost(hostPlayer.getHostgameServer(), hostPlayer);
+        gameManager.setHost(hostPlayer.getHostGameServer(), hostPlayer);
         guestPlayer = new GuestPlayer("test2", 2, "localhost");
         addPlayerResult = gameManager.addPlayer(guestPlayer);
     }
