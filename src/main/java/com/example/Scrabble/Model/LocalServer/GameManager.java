@@ -24,6 +24,7 @@ public class GameManager {
     private Board gameBoard;
     private Tile.Bag bag;
     private int turn;
+    private boolean hasGameStarted;
 
     private static GameManager single_instance = null;
 
@@ -41,6 +42,7 @@ public class GameManager {
         bag = Tile.Bag.getBag();
         playerScores = new LinkedHashMap<>();
         playerTiles = new LinkedHashMap<>();
+        hasGameStarted = false;
     }
 
     public void setHost(MyServer hostServer, GuestPlayer hostplayer) {
@@ -106,6 +108,7 @@ public class GameManager {
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
         turn = 1;
+        hasGameStarted = true;
         return "Game Started!";
     }
 
