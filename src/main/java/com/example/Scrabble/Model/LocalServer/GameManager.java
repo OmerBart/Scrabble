@@ -92,7 +92,7 @@ public class GameManager {
     public String myTurn(String playerName) {
         // System.out.println(turn + " TURN player: " + playersList.get(turn %
         // playersList.size()).getName() );
-        while (!playersList.get(turn % playersList.size()).getName().contains(playerName)) {
+        while (playersList.get(turn % playersList.size()).getName().contains(playerName)) {
             try {
                 System.out.println(playerName + " is waiting for their turn");
                 sleep(1000);
@@ -122,6 +122,7 @@ public class GameManager {
             return "Bag is empty!";
         else {
             playerTiles.get(playerName).add(t);
+            updatePlayers(playerName + " got a new tile: " + t.toString());
             return "Got: " + t.toString();
         }
     }
@@ -219,6 +220,10 @@ public class GameManager {
         } catch (IOException e) {
             throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
         }
+    }
+
+    private void updatePlayers(String msg){
+        hostServer.sendMsg(msg);
     }
 
     public LinkedHashMap<String, List<Tile>> getPlayerTiles() {

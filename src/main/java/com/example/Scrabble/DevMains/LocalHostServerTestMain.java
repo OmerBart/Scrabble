@@ -24,7 +24,8 @@ public class LocalHostServerTestMain {
         {
             System.out.println("Host's turn");
             System.out.println(hostPlayer.getTile());
-            //sleep(5000);
+            sleep(3000);
+            hostPlayer.endTurn();
             //GameManager.get().updatePlayers();
             //sleep(2000);
         }

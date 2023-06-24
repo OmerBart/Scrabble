@@ -151,21 +151,30 @@ public class GuestPlayer implements Player {
             Scanner sin = new Scanner(this.in);
             while (sin.hasNextLine() && listening) {
                 String response = sin.nextLine();
-                if (response.contains("true")) {
-                    stopListeningToServer();
-                    break;
-                } else if (response.contains("over!")) {
-                    sin.close();
-                    disconnectFromServer();
-                    break;
-                }
+                System.out.println("got response: " + response);
+
+//                if (response.contains("true")) {
+//                    stopListeningToServer();
+//                    break;
+//                } else if (response.contains("over!")) {
+//                    sin.close();
+//                    disconnectFromServer();
+//                    break;
+//                }
             }
+            sin.close();
         });
         listeningThread.start();
     }
 
     private void stopListeningToServer() {
         listening = false;
+    }
+    private void setListen(){
+        if(listeningThread == null || !listeningThread.isAlive())
+            startListeningToServer();
+        else
+            listening = true;
     }
 
     public boolean queryIO(String request) {
@@ -197,7 +206,7 @@ public class GuestPlayer implements Player {
     @Override
     public boolean endTurn() {
         sendRequestToServer("endTurn" + name.get() + ":" + playerID);
-        startListeningToServer();
+        setListen();
         return true;
     }
 
