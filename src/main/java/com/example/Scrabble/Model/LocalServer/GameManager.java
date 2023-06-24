@@ -1,6 +1,7 @@
 package com.example.Scrabble.Model.LocalServer;
 
 import com.example.Scrabble.Model.Game.Board;
+import com.example.Scrabble.Model.Game.BoardTmp;
 import com.example.Scrabble.Model.Game.Tile;
 import com.example.Scrabble.Model.Game.Word;
 import com.example.Scrabble.Model.Player.GuestPlayer;
@@ -21,7 +22,7 @@ public class GameManager {
     private LinkedHashMap<String, List<Tile>> playerTiles; // key: name+ID, value: tiles
     private MyServer hostServer;
     private MyServer IOserver;
-    private Board gameBoard;
+    private BoardTmp gameBoard;
     private Tile.Bag bag;
     private int turn;
     private boolean hasGameStarted;
@@ -38,14 +39,14 @@ public class GameManager {
     private GameManager() {
         Random r = new Random();
         playersList = new ArrayList<>();
-        gameBoard = Board.getBoard();
+        gameBoard = BoardTmp.getBoard();
         this.IOserver = new MyServer(6000 + r.nextInt(6000), new BookScrabbleHandler());
         bag = Tile.Bag.getBag();
         playerScores = new LinkedHashMap<>();
         playerTiles = new LinkedHashMap<>();
         hasGameStarted = false;
-        //search_books/test.txt
-        gameBooks = new String[]{"search_books/The Matrix.txt,search_books/test.txt"}; //,"search_books/pg10.txt"
+        // search_books/test.txt
+        gameBooks = new String[] { "search_books/The Matrix.txt,search_books/test.txt" }; // ,"search_books/pg10.txt"
     }
 
     public void setHost(MyServer hostServer, GuestPlayer hostplayer) {
@@ -150,32 +151,46 @@ public class GameManager {
     }
 
     public String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
-        if (playerTiles.get(playerName).size() < word.length()) {
-            return Integer.toString(0);
-        } else {
-            char[] carr = word.toUpperCase().toCharArray();
-            Tile tmpTile;
-            Tile[] wordTiles = new Tile[word.length()];
-            for (char c : carr) {
-                try {
-                    tmpTile = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c).findFirst().get();
-                    playerTiles.get(playerName).remove(tmpTile);
-                    wordTiles[word.indexOf(c)] = tmpTile;
-                } catch (NoSuchElementException e) {
-                    return Integer.toString(0);
-                }
+        System.out.println("Placing word: " + word + " at: " + x + " " + y + " " + isHorizontal);
+        char[] carr = word.toUpperCase().toCharArray();
+        Tile[] wordTiles = new Tile[word.length()];
+        for (char c : carr) {
+                wordTiles[word.indexOf(c)] = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c)
+                .findFirst().get();
+                System.out.println("Placing tile: " + wordTiles[word.indexOf(c)].toString());
+                playerTiles.get(playerName).remove(wordTiles[word.indexOf(c)]);
+            }
+        int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
+        System.out.println("Score: " + score);
+        return Integer.toString(score);
 
-            }
-            int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
-            if (score <= 0) {
-                for (Tile t : wordTiles)
-                    playerTiles.get(playerName).add(t);
-            } else {
-                playerScores.put(playerName, playerScores.get(playerName) + score);
-                return Integer.toString(score);
-            }
-        }
-        return Integer.toString(0);
+        // if (playerTiles.get(playerName).size() < word.length()) {
+        // return Integer.toString(0);
+        // } else {
+        // char[] carr = word.toUpperCase().toCharArray();
+        // Tile tmpTile;
+        // Tile[] wordTiles = new Tile[word.length()];
+        // for (char c : carr) {
+        // try {
+        // tmpTile = playerTiles.get(playerName).stream().filter(t -> t.getLetter() ==
+        // c).findFirst().get();
+        // playerTiles.get(playerName).remove(tmpTile);
+        // wordTiles[word.indexOf(c)] = tmpTile;
+        // } catch (NoSuchElementException e) {
+        // return Integer.toString(0);
+        // }
+
+        // }
+        // int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
+        // if (score <= 0) {
+        // for (Tile t : wordTiles)
+        // playerTiles.get(playerName).add(t);
+        // } else {
+        // playerScores.put(playerName, playerScores.get(playerName) + score);
+        // return Integer.toString(score);
+        // }
+        // }
+        // return Integer.toString(0);
     }
 
     public String queryIOserver(String qword) {
@@ -184,15 +199,14 @@ public class GameManager {
             Socket socket = new Socket("localhost", IOserver.getPort());
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             Scanner in = new Scanner(socket.getInputStream());
-            if(qword.startsWith("Q")) {
+            if (qword.startsWith("Q")) {
                 String args = "Q,";
                 for (String book : gameBooks)
                     args += book + ",";
                 System.out.println("wowowo " + args + qword.split(":")[1]);
                 out.println(args + qword.split(":")[1]);
                 out.flush();
-            }
-            else if(qword.startsWith("C")){
+            } else if (qword.startsWith("C")) {
                 String args = "C,";
                 for (String book : gameBooks)
                     args += book + ",";

@@ -45,14 +45,17 @@ public class ViewModel {
         return guestPlayer.getScore();
     }
 
-    public String tryPlaceWord(String word) {
+    public String tryPlaceWord(String word, int x, int y, boolean isHorizontal) {
+        System.out.println("word: " + word + " x: " + x + " y: " + y + " isHorizontal: " + isHorizontal);
         if (guestPlayer.isMyTurn()) {
-            String result = guestPlayer.placeWord(word, 7, 7, true);
+            String result = guestPlayer.placeWord(word, x-1, y-1, isHorizontal);
+            System.out.println("new score: " + result);
             int score = Integer.parseInt(result);
             score += Integer.parseInt(scoreProperty.getValue());
             scoreProperty.setValue(String.valueOf(score));
             return result;
         } else {
+            System.out.println("not my turn");
             return scoreProperty.getValue();
         }
     }
