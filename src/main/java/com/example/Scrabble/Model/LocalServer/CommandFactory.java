@@ -38,9 +38,11 @@ public class CommandFactory {
             return new IsTurnCommand(playerName);
 
         } else if (request.contains("Q")) {
+            //String rq = request.split(":")[1];
             return new QueryCommand(request);
 
         } else if (request.contains("C")) {
+            //String rq = request.split(":")[1];
             return new ChallengeCommand(request);
 
         }

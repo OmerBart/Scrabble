@@ -43,8 +43,9 @@ public class CacheManager {
         } else {
             cachedWords.remove(cachePolicy.remove());
         }
-        cachePolicy.add(word);
-        cachedWords.add(word);
+        cachePolicy.add(word.trim());
+        cachedWords.add(word.trim());
+        //System.out.println("Added " + word.trim() + " to cache");
 
     }
 

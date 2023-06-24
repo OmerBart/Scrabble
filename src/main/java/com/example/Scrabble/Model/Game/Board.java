@@ -124,9 +124,9 @@ public class Board {
     }
 
     public boolean dictionaryLegal(Word word) {
-//        GameManager gm = GameManager.get();
-//        return Boolean.parseBoolean(gm.queryIOserver(word.toString())); // send to IO server
-        return true;
+        GameManager gm = GameManager.get();
+        return Boolean.parseBoolean(gm.queryIOserver("Q:"+word.toString())); // send to IO server
+        //return true;
     }
 
     private Word getFull(Word word, int index, int adj) {

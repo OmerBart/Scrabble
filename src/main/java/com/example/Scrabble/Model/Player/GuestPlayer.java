@@ -167,14 +167,14 @@ public class GuestPlayer implements Player {
         listening = false;
     }
 
-    public boolean queryIO(String... Args) {
-        String request = String.join(",", Args);
-        return Boolean.parseBoolean(sendRequestToServer("Q," + request));
+    public boolean queryIO(String request) {
+        //String request = String.join(",", Args);
+        return Boolean.parseBoolean(sendRequestToServer("Q:" + request));
     }
 
-    public boolean challengeIO(String... Args) {
-        String request = String.join(",", Args);
-        return Boolean.parseBoolean(sendRequestToServer("C," + request));
+    public boolean challengeIO(String request) {
+        //String request = String.join(",", Args);
+        return Boolean.parseBoolean(sendRequestToServer("C:" + request));
     }
 
     public boolean isMyTurn() {

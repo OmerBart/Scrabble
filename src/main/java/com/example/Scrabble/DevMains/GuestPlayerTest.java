@@ -33,8 +33,8 @@ public class GuestPlayerTest {
         if(guest.isMyTurn()){
             System.out.println(guest.getTile());
             //sleep(1000);
-            System.out.println(guest.queryIO("search_books/s1.txt","search_books/s2.txt","kaka"));//18878
-            System.out.println(guest.challengeIO("search_books/s1.txt","search_books/s2.txt","18878"));//18878
+            System.out.println(guest.queryIO("Men"));//18878
+            System.out.println(guest.challengeIO("kaka"));//18878
             if(guest.endTurn())
                 System.out.println("turn ended");
             else
