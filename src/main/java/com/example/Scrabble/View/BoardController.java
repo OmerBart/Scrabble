@@ -42,14 +42,19 @@ public class BoardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Get ViewModel instance
         viewModel = ViewModel.get();
         
+        // Set welcome text and build board
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
         boardBuild();
+
+        // Bindings
         nameText.textProperty().bind(viewModel.playerNameProperty);
         scoreText.textProperty().bind(viewModel.scoreProperty);
 
+        // Set first 7 tiles
         String[] initialTiles = viewModel.getPlayerTiles().split(" ");
         for (String letter : initialTiles) {
             Tile tile = new Tile(letter);

@@ -11,6 +11,8 @@ public class ViewModel {
     public GuestPlayer guestPlayer;
     public StringProperty playerNameProperty;
     public StringProperty scoreProperty;
+    public StringProperty boardProperty;
+    public StringProperty playersProperty;
 
     private static ViewModel viewModelInstance = null;
 
@@ -23,7 +25,9 @@ public class ViewModel {
 
     public ViewModel() {
         playerNameProperty = new SimpleStringProperty("");
-        scoreProperty = new SimpleStringProperty("");
+        scoreProperty = new SimpleStringProperty("0");
+        boardProperty = new SimpleStringProperty("");
+        playersProperty = new SimpleStringProperty("");
     }
 
     public void startGame() {
@@ -49,7 +53,7 @@ public class ViewModel {
             scoreProperty.setValue(String.valueOf(score));
             return result;
         } else {
-            return "0";
+            return scoreProperty.getValue();
         }
     }
 
@@ -58,7 +62,8 @@ public class ViewModel {
     }
 
     public String getTile() {
-        return guestPlayer.getTile().split(" ")[1].split("|")[1];
+        String result = guestPlayer.getTile();
+        return result.split(" ")[1];
     }
 
     public String getPlayerTiles() {
