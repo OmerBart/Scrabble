@@ -35,7 +35,7 @@ public class PlayerHandlerTest {
             Socket socket = new Socket("localhost", server.getPort());
             PrintWriter out = new PrintWriter(socket.getOutputStream());
             Scanner in = new Scanner(socket.getInputStream());
-            out.println("joinGame,test:1");
+            out.println("joinGame,test.txt:1");
             out.flush();
             String result = in.nextLine();
             assertEquals("Player added to game successfully", result);

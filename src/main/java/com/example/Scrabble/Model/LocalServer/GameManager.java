@@ -44,6 +44,8 @@ public class GameManager {
         playerScores = new LinkedHashMap<>();
         playerTiles = new LinkedHashMap<>();
         hasGameStarted = false;
+        //search_books/test.txt
+        gameBooks = new String[]{"search_books/The Matrix.txt,search_books/test.txt"}; //,"search_books/pg10.txt"
     }
 
     public void setHost(MyServer hostServer, GuestPlayer hostplayer) {
@@ -176,13 +178,27 @@ public class GameManager {
         return Integer.toString(0);
     }
 
-    public String queryIOserver(String Args) {
-        try (Socket socket = new Socket("localhost", IOserver.getPort());
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                Scanner in = new Scanner(socket.getInputStream())) {
+    public String queryIOserver(String qword) {
+        try {
 
-            out.println(Args);
-            out.flush();
+            Socket socket = new Socket("localhost", IOserver.getPort());
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            Scanner in = new Scanner(socket.getInputStream());
+            if(qword.startsWith("Q")) {
+                String args = "Q,";
+                for (String book : gameBooks)
+                    args += book + ",";
+                System.out.println("wowowo " + args + qword.split(":")[1]);
+                out.println(args + qword.split(":")[1]);
+                out.flush();
+            }
+            else if(qword.startsWith("C")){
+                String args = "C,";
+                for (String book : gameBooks)
+                    args += book + ",";
+                out.println(args + qword.split(":")[1]);
+                out.flush();
+            }
 
             String res = in.nextLine();
             return res;

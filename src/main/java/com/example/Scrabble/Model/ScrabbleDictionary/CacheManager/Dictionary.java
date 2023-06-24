@@ -10,11 +10,12 @@ public class Dictionary {
     CacheManager oldCache;
     BloomFilter bf;
     String[] filenames = null;
-//
+
+    //
     public Dictionary(String... fileNames) {
         newCache = new CacheManager(400, new LRU());
         oldCache = new CacheManager(100, new LFU());
-        bf = new BloomFilter(256,"MD5","SHA1");
+        bf = new BloomFilter(32768, "MD5", "SHA1", "SHA-256", "SHA-512");
         this.filenames = fileNames;
 
         for (String s : fileNames) {
@@ -25,7 +26,8 @@ public class Dictionary {
                 scanner.useDelimiter(" ");
                 //now read the file line by line...
                 while (scanner.hasNext()) {
-                    String word = scanner.next();
+                    String word = scanner.next().toLowerCase().trim();
+                    //System.out.println("from dicts word: " + word);
                     newCache.add(word);
                     bf.add(word);
 
@@ -41,11 +43,11 @@ public class Dictionary {
     public boolean challenge(String word) {
         try {
 
-            if (!IOSearcher.search(word,filenames)) {
-                oldCache.add(word);
+            if (!IOSearcher.search(word.trim(), filenames)) {
+                oldCache.add(word.trim());
                 return false;
             } else {
-                newCache.add(word);
+                newCache.add(word.trim());
                 return true;
             }
         } catch (Exception e) {
@@ -56,20 +58,20 @@ public class Dictionary {
     }
 
     public boolean query(String word) {
-        if(newCache.query(word))
+        //System.out.println("from dicts word: " + word);
+        if (newCache.query(word.trim()))
             return true;
-        else if(oldCache.query(word))
+        else if (oldCache.query(word.trim()))
             return false;
-        else {
-            if(!bf.contains(word)) {
-                oldCache.add(word);
-                return false;
-            }
-            else {
-                newCache.add(word);
-                return true;
-            }
+
+        if (!bf.contains(word.trim())) {
+            oldCache.add(word.trim());
+            return false;
+        } else {
+            newCache.add(word.trim());
+            return true;
         }
+
 
     }
 }
