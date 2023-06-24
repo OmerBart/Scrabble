@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
@@ -22,11 +23,33 @@ public class LobyController implements Initializable {
 
     @FXML
     Label player1Name;
+    
+    @FXML
+    Label player2Name;
+
+    @FXML
+    Label player3Name;
+
+    @FXML
+    Label player4Name;
+
+    @FXML
+    Button player1Button;
+
+    @FXML
+    Button player2Button;
+
+    @FXML
+    Button player3Button;
+
+    @FXML
+    Button player4Button;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         viewModel = ViewModel.get();
         player1Name.textProperty().bind(viewModel.playerNameProperty);
+        player1Button.getStyleClass().add("not-ready-button");
     }
 
     @FXML
@@ -45,7 +68,8 @@ public class LobyController implements Initializable {
     @FXML
     protected void onReadyButtonClick(ActionEvent event) {
         try {
-            System.out.println("ready");
+            player1Button.getStyleClass().remove("not-ready-button");
+            player1Button.getStyleClass().add("ready-button");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

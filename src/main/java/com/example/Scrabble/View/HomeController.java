@@ -29,6 +29,7 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // welcomeText.setVisible(false);
         viewModel = ViewModel.get();
         viewModel.playerNameProperty.bind(nameInput.textProperty());
         nameInput.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -39,6 +40,10 @@ public class HomeController implements Initializable {
     @FXML
     protected void onJoinGameButtonClick(ActionEvent event) {
         try {
+            if (viewModel.playerNameProperty.getValue().equals("")) {
+                welcomeText.setText("Please enter a name");
+                return;
+            }
             Parent root = FXMLLoader.load(getClass().getResource("join-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root, 1000, 700);
@@ -52,6 +57,10 @@ public class HomeController implements Initializable {
     @FXML
     protected void onHostGameButtonClick(ActionEvent event) {
         try {
+            if (viewModel.playerNameProperty.getValue().equals("")) {
+                welcomeText.setText("Please enter a name");
+                return;
+            }
             Parent root = FXMLLoader.load(getClass().getResource("loby-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root, 1000, 700);

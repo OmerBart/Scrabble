@@ -115,7 +115,7 @@ public class GuestPlayer implements Player {
         if (serverSocket == null || serverSocket.isClosed()) {
             try {
                 serverSocket = new Socket(serverAddress.split(":")[0], Integer.parseInt(serverAddress.split(":")[1]));
-                serverSocket.setSoTimeout(1000*30);
+                serverSocket.setSoTimeout(1000 * 30);
                 out = new PrintWriter(serverSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
             } catch (IOException e) {
@@ -137,10 +137,11 @@ public class GuestPlayer implements Player {
     public String printTiles() {
         return sendRequestToServer("printTiles," + name.get() + ":" + playerID);
     }
+
     public String getCurrentBoard() {
         String s = sendRequestToServer("boardState");
-        //System.out.println("got board: " + s);
-        return  s;
+        // System.out.println("got board: " + s);
+        return s;
 
     }
 
@@ -168,12 +169,12 @@ public class GuestPlayer implements Player {
     }
 
     public boolean queryIO(String request) {
-        //String request = String.join(",", Args);
+        // String request = String.join(",", Args);
         return Boolean.parseBoolean(sendRequestToServer("Q:" + request));
     }
 
     public boolean challengeIO(String request) {
-        //String request = String.join(",", Args);
+        // String request = String.join(",", Args);
         return Boolean.parseBoolean(sendRequestToServer("C:" + request));
     }
 
