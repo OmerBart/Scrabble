@@ -25,6 +25,7 @@ public class GameManager {
     private Tile.Bag bag;
     private int turn;
     private boolean hasGameStarted;
+    private String[] gameBooks;
 
     private static GameManager single_instance = null;
 

@@ -21,6 +21,7 @@ public class BookScrabbleHandler implements ClientHandler {
             String line = in.readLine();
             if(line.startsWith("Q")){
                 String[] arg = line.split(",",2);
+                System.out.printf("from scrabblehandler: " + arg[1]);
                 out.println(dm.query(arg[1].split(",")));
             }
             else if(line.startsWith("C")){

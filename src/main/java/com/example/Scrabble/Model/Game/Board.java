@@ -1,5 +1,7 @@
 package com.example.Scrabble.Model.Game;
 
+import com.example.Scrabble.Model.LocalServer.GameManager;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -123,7 +125,9 @@ public class Board {
     }
 
     public boolean dictionaryLegal(Word word) {
-        return true; // send to IO server
+//        GameManager gm = GameManager.get();
+//        return Boolean.parseBoolean(gm.queryIOserver(word.toString())); // send to IO server
+        return true;
     }
 
     private Word getFull(Word word, int index, int adj) {
