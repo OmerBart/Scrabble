@@ -47,6 +47,7 @@ public class GameManager {
         hasGameStarted = false;
         // search_books/test.txt
         gameBooks = new String[] { "search_books/The Matrix.txt,search_books/test.txt" }; // ,"search_books/pg10.txt"
+        turn = 1;
     }
 
     public void setHost(MyServer hostServer, GuestPlayer hostplayer) {
@@ -118,7 +119,7 @@ public class GameManager {
             for (Player p : playersList)
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
-        turn = 1;
+
         hasGameStarted = true;
         return "Game Started!";
     }
@@ -129,14 +130,14 @@ public class GameManager {
             return "Bag is empty!";
         else {
             playerTiles.get(playerName).add(t);
-            updatePlayers(playerName + " got a new tile: " + t.toString());
+//            updatePlayers(playerName + " got a new tile: " + t.toString());
             return "Got: " + t.toString();
         }
     }
 
-    public boolean endTurn() {
+    public void endTurn() {
         turn++;
-        return true;
+        updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn!");
     }
 
     public void stopGame() {

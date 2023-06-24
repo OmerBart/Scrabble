@@ -24,7 +24,7 @@ public class LocalHostServerTestMain {
         {
             System.out.println("Host's turn");
             System.out.println(hostPlayer.getTile());
-            sleep(3000);
+            sleep(1000);
             hostPlayer.endTurn();
             //GameManager.get().updatePlayers();
             //sleep(2000);
@@ -33,10 +33,11 @@ public class LocalHostServerTestMain {
             System.out.println("da fuck man");
         //sleep(2000);
         //System.out.println(hostPlayer.getPlayerTiles());
-        sleep(3000);
+        sleep(2000);
         //System.out.println("Close Host Server? (y/n)");
         String input = scanner.nextLine();
-        System.out.println(hostPlayer.placeWord(input,7,7,true));
+        System.out.println("y to end?");
+       // System.out.println(hostPlayer.placeWord(input,7,7,true));
          if (input.equals("y")) {
             hostPlayer.stopGame();
             scanner.close();

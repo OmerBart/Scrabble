@@ -26,15 +26,18 @@ public class GuestPlayerTest {
 //        guest3.setServerAddress("localhost",port);
 //        guest4.setServerAddress("localhost",port);
         System.out.println("trying to join game...." + guest.joinGame());
-        sleep(500);
-        System.out.println("guest tiles: " + guest.printTiles());
-        sleep(1500);
-        System.out.println("guest is my turn? " + guest.isMyTurn());
+        //guest.joinGame();
+       // sleep(2000);
+        guest.printTiles();
+        //System.out.println("guest tiles: " + guest.printTiles());
+        //sleep(4000);
+        //System.out.println("guest is my turn? " + guest.isMyTurn());
         if(guest.isMyTurn()){
             System.out.println(guest.getTile());
-            //sleep(1000);
-            System.out.println(guest.queryIO("Men"));//18878
-            System.out.println(guest.challengeIO("kaka"));//18878
+            sleep(1000);
+            //System.out.println(guest.getTile());
+            //System.out.println(guest.queryIO("Men"));//18878
+           // System.out.println(guest.challengeIO("kaka"));//18878
             if(guest.endTurn())
                 System.out.println("turn ended");
             else

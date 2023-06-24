@@ -162,7 +162,7 @@ public class GuestPlayer implements Player {
     private void ListeningToServer() {
         listeningThread = new Thread(() -> {
             Scanner sin = new Scanner(this.in);
-            while (sin.hasNextLine() && listening) {
+            while (listening && sin.hasNextLine()) {
                 String response = sin.nextLine();
                 System.out.println("got response: " + response);
 
@@ -175,13 +175,15 @@ public class GuestPlayer implements Player {
 //                    break;
 //                }
             }
-            sin.close();
+            //sin.close();
         });
 
     }
 
     private void stopListeningToServer() {
         listening = false;
+//        if(listeningThread != null && listeningThread.isAlive())
+//            listeningThread.stop();
     }
     private void setListen(){
         if(listeningThread == null || !listeningThread.isAlive())
@@ -202,8 +204,8 @@ public class GuestPlayer implements Player {
 
     public boolean isMyTurn() {
         boolean turn = Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name.get() + ":" + playerID));
-       // if (turn)
-            //stopListeningToServer();
+        if (turn)
+            stopListeningToServer();
         return turn;
     }
 
@@ -219,7 +221,7 @@ public class GuestPlayer implements Player {
     @Override
     public boolean endTurn() {
         sendRequestToServer("endTurn" + name.get() + ":" + playerID);
-        //setListen();
+        setListen();
         return true;
     }
 
