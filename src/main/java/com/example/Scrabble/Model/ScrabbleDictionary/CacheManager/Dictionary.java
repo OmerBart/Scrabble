@@ -28,6 +28,7 @@ public class Dictionary {
                 while (scanner.hasNext()) {
                     String word = scanner.next().toLowerCase().trim();
                     //System.out.println("from dicts word: " + word);
+                    word = word.toLowerCase().trim();
                     newCache.add(word);
                     bf.add(word);
 
@@ -42,6 +43,7 @@ public class Dictionary {
 
     public boolean challenge(String word) {
         try {
+            word = word.toLowerCase().trim();
 
             if (!IOSearcher.search(word.trim(), filenames)) {
                 oldCache.add(word.trim());
@@ -58,17 +60,18 @@ public class Dictionary {
     }
 
     public boolean query(String word) {
+        word = word.toLowerCase().trim();
         //System.out.println("from dicts word: " + word);
-        if (newCache.query(word.trim()))
+        if (newCache.query(word))
             return true;
-        else if (oldCache.query(word.trim()))
+        else if (oldCache.query(word))
             return false;
 
-        if (!bf.contains(word.trim())) {
-            oldCache.add(word.trim());
+        if (!bf.contains(word)) {
+            oldCache.add(word);
             return false;
         } else {
-            newCache.add(word.trim());
+            newCache.add(word);
             return true;
         }
 
