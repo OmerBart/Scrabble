@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,8 @@ public class GuestPlayer implements Player {
     private PrintWriter out;
     private BufferedReader in;
     private Thread listeningThread;
+    private InetAddress localIP;
+    private int localPort;
 
     public GuestPlayer(Player player) {
         this.name = new SimpleStringProperty();
@@ -65,9 +68,10 @@ public class GuestPlayer implements Player {
 
         if (!(this instanceof HostPlayer)) {
             response = sendRequestToServer("joinGame," + name.get() + ":" + playerID);
-            if (!isMyTurn()) {
+            setID(Integer.parseInt(response.split(":")[1].trim()));
+           // if (!isMyTurn()) {
                 startListeningToServer();
-            }
+           // }
         } else {
             response = "Connected to server";
         }
@@ -100,7 +104,7 @@ public class GuestPlayer implements Player {
     }
 
     public void disconnectFromServer() {
-        stopListeningToServer();
+        //stopListeningToServer();
         if (serverSocket != null && !serverSocket.isClosed()) {
             try {
                 listeningThread.interrupt();
@@ -118,11 +122,16 @@ public class GuestPlayer implements Player {
                 serverSocket.setSoTimeout(1000 * 30);
                 out = new PrintWriter(serverSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+//                localIP = serverSocket.getInetAddress();
+//                localPort = serverSocket.getPort();
             } catch (IOException e) {
                 throw new RuntimeException("Error opening socket: " + e.getMessage(), e);
             }
         }
     }
+//    public String getSocketkey(){
+//        return localIP + ":" + localPort;
+//    }
 
     private String sendRequestToServer(String request) {
         try {
@@ -144,9 +153,13 @@ public class GuestPlayer implements Player {
         return s;
 
     }
-
-    private void startListeningToServer() {
+    private void startListeningToServer(){
         listening = true;
+        ListeningToServer();
+        listeningThread.start();
+    }
+
+    private void ListeningToServer() {
         listeningThread = new Thread(() -> {
             Scanner sin = new Scanner(this.in);
             while (sin.hasNextLine() && listening) {
@@ -164,7 +177,7 @@ public class GuestPlayer implements Player {
             }
             sin.close();
         });
-        listeningThread.start();
+
     }
 
     private void stopListeningToServer() {
@@ -189,8 +202,8 @@ public class GuestPlayer implements Player {
 
     public boolean isMyTurn() {
         boolean turn = Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name.get() + ":" + playerID));
-        if (turn)
-            stopListeningToServer();
+       // if (turn)
+            //stopListeningToServer();
         return turn;
     }
 
@@ -206,7 +219,7 @@ public class GuestPlayer implements Player {
     @Override
     public boolean endTurn() {
         sendRequestToServer("endTurn" + name.get() + ":" + playerID);
-        setListen();
+        //setListen();
         return true;
     }
 
@@ -217,5 +230,10 @@ public class GuestPlayer implements Player {
             return player.getName().equals(this.getName());
         }
         return false;
+    }
+    @Override
+    public void setID(int ID) {
+        this.playerID = ID;
+
     }
 }

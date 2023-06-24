@@ -68,11 +68,18 @@ public class GameManager {
         if (playersList.contains(player) || playersList.size() > 3) {
             return "Player already in the game or game is full!";
         } else {
+            player.setID(generateUniqueID());
             playersList.add(player);
             playerScores.put(player.getName(), 0);
             playerTiles.put(player.getName(), new ArrayList<>());
-            return "Player added to the game successfully";
+
+            return "Player added to the game successfully with ID: " + player.getPlayerID();
         }
+    }
+    private int generateUniqueID() {
+        Random r = new Random();
+        int id = r.nextInt(1000+playersList.size());
+        return id;
     }
 
     public GuestPlayer getPlayer(String name) {
@@ -133,7 +140,7 @@ public class GameManager {
     }
 
     public void stopGame() {
-        hostServer.sendMsg("Game is over! from MEEE");
+        //hostServer.sendMsg("Game is over! from MEEE");
         try {
             sleep(1000);
         } catch (InterruptedException e) {
@@ -223,7 +230,7 @@ public class GameManager {
     }
 
     private void updatePlayers(String msg){
-        hostServer.sendMsg(msg);
+        hostServer.sendMsg(msg, playersList.size()%turn);
     }
 
     public LinkedHashMap<String, List<Tile>> getPlayerTiles() {

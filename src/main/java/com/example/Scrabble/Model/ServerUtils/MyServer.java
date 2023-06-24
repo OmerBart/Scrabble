@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -19,12 +21,16 @@ public class MyServer {
     private final Map<String, ClientHandler> clients;
     private final ExecutorService threadPool;
     private final ClientHandler clientHandler;
+    private int count;
+    private List<String> playerNames;
 
     public MyServer(int port, ClientHandler clientHandler) {
         this.port = port;
+        playerNames = new ArrayList<>();
         this.clientHandler = clientHandler;
         this.clients = new ConcurrentHashMap<>();
         this.threadPool = Executors.newCachedThreadPool();
+        this.count = 0;
     }
 
     public void start() {
@@ -39,8 +45,11 @@ public class MyServer {
                 try {
                     Socket client = server.accept();
                     String clientKey = getClientKey(client);
-                    if (!clients.containsKey(clientKey))
+                    if (!clients.containsKey(clientKey)) {
                         clients.put(clientKey, createHandler(client));
+                        count++;
+                        playerNames.add(clientKey);
+                    }
                     threadPool.submit(() -> {
                         try {
                             clients.get(clientKey).handleClient(client.getInputStream(), client.getOutputStream());
@@ -72,10 +81,17 @@ public class MyServer {
             throw new IllegalArgumentException("Invalid ClientHandler");
     }
 
-    public void sendMsg(String msg) {
-        for (ClientHandler clientHandler : clients.values()) {
-            clientHandler.sendMsg(msg);
+    public void sendMsg(String msg, int clientKey) //send msg to everyone cept a specific client
+    {
+        for(String key : clients.keySet())
+        {
+            if(!key.equals(playerNames.get(clientKey)))
+            {
+                clients.get(key).sendMsg(msg);
+            }
         }
+
+
     }
 
     public void close() {
