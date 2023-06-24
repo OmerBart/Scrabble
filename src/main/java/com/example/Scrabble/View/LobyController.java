@@ -1,18 +1,31 @@
 package com.example.Scrabble.View;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.example.Scrabble.VM.ViewModel;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-public class LobyController {
+public class LobyController implements Initializable {
 
     private Stage stage;
     private Scene scene;
+
+    @FXML
+    Label player1Name;
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        player1Name.textProperty().bind(ViewModel.playerNameProperty);
+    }
 
     @FXML
     protected void onBackButtonClick(ActionEvent event) {
