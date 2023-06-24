@@ -18,13 +18,15 @@ public class LobyController implements Initializable {
 
     private Stage stage;
     private Scene scene;
+    private ViewModel viewModel;
 
     @FXML
     Label player1Name;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        player1Name.textProperty().bind(ViewModel.playerNameProperty);
+        viewModel = ViewModel.get();
+        player1Name.textProperty().bind(viewModel.playerNameProperty);
     }
 
     @FXML
@@ -52,7 +54,7 @@ public class LobyController implements Initializable {
     @FXML
     protected void onHostGameButtonClick(ActionEvent event) {
         try {
-            ViewModel.startGame();
+            viewModel.startGame();
             Parent root = FXMLLoader.load(getClass().getResource("board-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root, 1000, 700);

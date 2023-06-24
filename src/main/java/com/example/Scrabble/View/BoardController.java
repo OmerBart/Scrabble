@@ -23,7 +23,7 @@ public class BoardController implements Initializable {
     ArrayList<Tile> tilesList = new ArrayList<>();
     Tile selectedTile;
     ArrayList<BoardCell> wordToSet = new ArrayList<>();
-    String playerName;
+    ViewModel viewModel;    
 
     @FXML
     Label scoreText;
@@ -42,13 +42,15 @@ public class BoardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        viewModel = ViewModel.get();
+        
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
         boardBuild();
-        nameText.textProperty().bind(ViewModel.playerNameProperty);
-        scoreText.textProperty().bind(ViewModel.scoreProperty);
+        nameText.textProperty().bind(viewModel.playerNameProperty);
+        scoreText.textProperty().bind(viewModel.scoreProperty);
 
-        String[] initialTiles = ViewModel.getPlayerTiles().split(" ");
+        String[] initialTiles = viewModel.getPlayerTiles().split(" ");
         for (String letter : initialTiles) {
             Tile tile = new Tile(letter);
             tilesList.add(tile);
@@ -185,7 +187,7 @@ public class BoardController implements Initializable {
     }
 
     public void getTile() {
-        String letter = ViewModel.getTile();
+        String letter = viewModel.getTile();
         Tile tile = new Tile(letter);
         tilesList.add(tile);
         tiles.getChildren().add(tile);
@@ -246,7 +248,7 @@ public class BoardController implements Initializable {
             for (BoardCell cell : wordToSet) {
                 word += cell.letter;
             }
-            String res = ViewModel.tryPlaceWord(word);
+            String res = viewModel.tryPlaceWord(word);
             System.out.println("got from server: " + res);
             // if (Integer.parseInt(res) > 0) {
             for (BoardCell cell : wordToSet) {
@@ -270,7 +272,7 @@ public class BoardController implements Initializable {
             }
             wordToSet.clear();
         }
-        System.out.println(ViewModel.getBoard());
+        System.out.println(viewModel.getBoard());
     }
 
     private boolean isSequenceWord() {

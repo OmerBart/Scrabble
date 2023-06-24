@@ -2,10 +2,8 @@ package com.example.Scrabble.Model.Player;
 
 import com.example.Scrabble.Model.LocalServer.GameManager;
 import com.example.Scrabble.Model.LocalServer.PlayerHandler;
-import com.example.Scrabble.Model.ServerUtils.ClientHandler;
 import com.example.Scrabble.Model.ServerUtils.MyServer;
 
-import java.io.IOException;
 
 public class HostPlayer extends GuestPlayer {
 

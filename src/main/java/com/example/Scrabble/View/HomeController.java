@@ -19,6 +19,7 @@ public class HomeController implements Initializable {
 
     private Stage stage;
     private Scene scene;
+    private ViewModel viewModel;
 
     @FXML
     private Label welcomeText;
@@ -28,9 +29,10 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ViewModel.playerNameProperty.bind(nameInput.textProperty());
+        viewModel = ViewModel.get();
+        viewModel.playerNameProperty.bind(nameInput.textProperty());
         nameInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("View model: " + ViewModel.playerNameProperty.getValue());
+            System.out.println("View model: " + viewModel.playerNameProperty.getValue());
         });
     }
 

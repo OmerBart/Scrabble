@@ -8,29 +8,40 @@ import javafx.beans.property.StringProperty;
 
 public class ViewModel {
 
-    public static GuestPlayer guestPlayer;
-    public static StringProperty playerNameProperty = new SimpleStringProperty("");
-    public static StringProperty scoreProperty = new SimpleStringProperty("0");
+    public GuestPlayer guestPlayer;
+    public StringProperty playerNameProperty;
+    public StringProperty scoreProperty;
 
-    public ViewModel() {
+    private static ViewModel viewModelInstance = null;
+
+    public static ViewModel get() {
+        if (viewModelInstance == null) {
+            viewModelInstance = new ViewModel();
+        }
+        return viewModelInstance;
     }
 
-    public static void startGame() {
+    public ViewModel() {
+        playerNameProperty = new SimpleStringProperty("");
+        scoreProperty = new SimpleStringProperty("");
+    }
+
+    public void startGame() {
         guestPlayer = new GuestPlayer(playerNameProperty.getValue(), 0);
         guestPlayer = HostPlayer.get(guestPlayer);
         System.out.println(guestPlayer.startGame());
     }
 
-    public static String joinGame(String gameId, int playerID) {
+    public String joinGame(String gameId, int playerID) {
         guestPlayer = new GuestPlayer(playerNameProperty.getValue(), playerID, gameId);
         return guestPlayer.joinGame();
     }
 
-    public static Integer getScore() {
+    public Integer getScore() {
         return guestPlayer.getScore();
     }
 
-    public static String tryPlaceWord(String word) {
+    public String tryPlaceWord(String word) {
         if (guestPlayer.isMyTurn()) {
             String result = guestPlayer.placeWord(word, 7, 7, true);
             int score = Integer.parseInt(result);
@@ -42,15 +53,15 @@ public class ViewModel {
         }
     }
 
-    public static String getBoard() {
+    public String getBoard() {
         return guestPlayer.getCurrentBoard();
     }
 
-    public static String getTile() {
+    public String getTile() {
         return guestPlayer.getTile().split(" ")[1].split("|")[1];
     }
 
-    public static String getPlayerTiles() {
+    public String getPlayerTiles() {
         return guestPlayer.printTiles();
     }
 }
