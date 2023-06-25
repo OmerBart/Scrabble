@@ -14,7 +14,6 @@
 
     <Label fx:id="welcomeText" text='Welcome To Scrabble' />
     <TextField fx:id="nameInput" promptText="Enter Your Name" focusTraversable="false" />
-    
     <Button text="Join Game" onAction="#onJoinGameButtonClick" />
     <Button text="Host Game" onAction="#onHostGameButtonClick" />
 

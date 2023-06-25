@@ -3,6 +3,8 @@ package com.example.Scrabble.Model.Game;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.example.Scrabble.Model.LocalServer.GameManager;
+
 public class Board {
     @Override
     public boolean equals(Object o) {
@@ -123,7 +125,9 @@ public class Board {
     }
 
     public boolean dictionaryLegal(Word word) {
-        return true; // send to IO server
+         GameManager gm = GameManager.get();
+         return Boolean.parseBoolean(gm.queryIOserver("Q:"+word.toString())); // send to IO server
+        //return true;
     }
 
     private Word getFull(Word word, int index, int adj) {

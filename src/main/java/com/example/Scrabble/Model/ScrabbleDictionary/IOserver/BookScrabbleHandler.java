@@ -4,6 +4,7 @@ package com.example.Scrabble.Model.ScrabbleDictionary.IOserver;
 import com.example.Scrabble.Model.ServerUtils.ClientHandler;
 
 import java.io.*;
+import java.util.Arrays;
 
 //class that handles the client request
 public class BookScrabbleHandler implements ClientHandler {
@@ -21,6 +22,8 @@ public class BookScrabbleHandler implements ClientHandler {
             String line = in.readLine();
             if(line.startsWith("Q")){
                 String[] arg = line.split(",",2);
+                //String[] arg = line.split(",");
+                //System.out.println("from scrabblehandler: " + Arrays.toString(arg[1].split(",")));
                 out.println(dm.query(arg[1].split(",")));
             }
             else if(line.startsWith("C")){

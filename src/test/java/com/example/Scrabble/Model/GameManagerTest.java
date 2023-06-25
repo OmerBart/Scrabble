@@ -62,7 +62,7 @@ public class GameManagerTest {
     @Test
     public void testStartGame() {
         gameManager.startGame("");
-        // problem with this test host gets 14 tiles and guest gets 7
+        // problem with this test.txt host gets 14 tiles and guest gets 7
         // assertEquals(7, gameManager.getPlayerTiles().get("test1:1").size());
         assertEquals(7, gameManager.getPlayerTiles().get("test2:2").size());
     }

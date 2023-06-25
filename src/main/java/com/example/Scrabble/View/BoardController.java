@@ -13,7 +13,6 @@ import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
@@ -24,7 +23,7 @@ public class BoardController implements Initializable {
     ArrayList<Tile> tilesList = new ArrayList<>();
     Tile selectedTile;
     ArrayList<BoardCell> wordToSet = new ArrayList<>();
-    String playerName;
+    ViewModel viewModel;
 
     @FXML
     Label scoreText;
@@ -43,22 +42,28 @@ public class BoardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Get ViewModel instance
+        viewModel = ViewModel.get();
+
+        // Set welcome text and build board
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
         boardBuild();
-        playerName = HomeController.getName() != null ? HomeController.getName() : "Eilon";
-        nameText.setText(playerName);
 
+        // Bindings
+        nameText.textProperty().bind(viewModel.playerNameProperty);
+        scoreText.textProperty().bind(viewModel.scoreProperty);
 
-        String[] initialTiles = ViewModel.getPlayerTiles().split(" ");
-         for (String letter : initialTiles) {
-         Tile tile = new Tile(letter);
-         tilesList.add(tile);
-         tiles.getChildren().add(tile);
-         tile.setOnMouseClicked(event -> {
-         handleTileClick(event, tile);
-         });
-         }
+        // Set first 7 tiles
+        String[] initialTiles = viewModel.getPlayerTiles().split(" ");
+        for (String letter : initialTiles) {
+            Tile tile = new Tile(letter);
+            tilesList.add(tile);
+            tiles.getChildren().add(tile);
+            tile.setOnMouseClicked(event -> {
+                handleTileClick(event, tile);
+            });
+        }
     }
 
     public void boardBuild() {
@@ -187,7 +192,7 @@ public class BoardController implements Initializable {
     }
 
     public void getTile() {
-        String letter = ViewModel.getTile();
+        String letter = viewModel.getTile();
         Tile tile = new Tile(letter);
         tilesList.add(tile);
         tiles.getChildren().add(tile);
@@ -221,12 +226,18 @@ public class BoardController implements Initializable {
     }
 
     private void tryPlaceTile(BoardCell cell) {
+        if (cell.isOccupied) {
+            System.out.println("Cell is occupied but you can use it to bulid a word");
+            wordToSet.add(cell);
+        }
         if (selectedTile != null && !cell.isOccupied) {
             BoardCell newCell = new BoardCell(selectedTile.getLetter(), cell.row, cell.col);
             newCell.getRect().getStyleClass().clear();
             newCell.getRect().getStyleClass().add("board-cell-tile");
             newCell.letter = selectedTile.getLetter();
             newCell.bonus = cell.bonus;
+            newCell.isStar = cell.isStar;
+            // newCell.isOccupied = true;
             newCell.setOnMouseClicked(event -> {
                 handleBoardClick(event, newCell);
             });
@@ -244,19 +255,33 @@ public class BoardController implements Initializable {
     public void placeWord() {
         selectedTile = null;
         if (isSequenceWord()) {
+            Boolean starOrOcupied = false;
             String word = "";
             for (BoardCell cell : wordToSet) {
-                word += cell.letter;
+                if (cell.isOccupied)
+                    starOrOcupied = true;
+                else if (cell.isStar) {
+                    starOrOcupied = true;
+                    word += cell.letter;
+                } else
+                    word += cell.letter;
             }
-            String res = ViewModel.tryPlaceWord(playerName, word);
-            System.out.println("got from server: " + res);
-            if (Integer.parseInt(res) > 0) {
-                for (BoardCell cell : wordToSet) {
-                    cell.getRect().getStyleClass().clear();
-                    cell.getRect().getStyleClass().add("board-cell-occupied");
-                    cell.isOccupied = true;
-                }
+            if (!starOrOcupied) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Word must be placed on star or use occupied cell");
+                alert.showAndWait();
+                return;
             }
+            Boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row ? true : false;
+            String res = viewModel.tryPlaceWord(word, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
+            // if (Integer.parseInt(res) > 0) {
+            for (BoardCell cell : wordToSet) {
+                cell.isOccupied = true;
+                cell.getRect().getStyleClass().clear();
+                cell.getRect().getStyleClass().add("board-cell-occupied");
+                cell.isOccupied = true;
+            }
+            // }
             wordToSet.clear();
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -272,7 +297,7 @@ public class BoardController implements Initializable {
             }
             wordToSet.clear();
         }
-        System.out.println(ViewModel.getBoard());
+        System.out.println(viewModel.getBoard());
     }
 
     private boolean isSequenceWord() {

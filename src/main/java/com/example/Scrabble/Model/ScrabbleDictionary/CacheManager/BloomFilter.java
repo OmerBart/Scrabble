@@ -87,7 +87,7 @@ public class BloomFilter {
 
 }
 
-// package test;
+// package test.txt;
 // import java.math.BigInteger;
 // import java.security.MessageDigest;
 // import java.security.NoSuchAlgorithmException;
