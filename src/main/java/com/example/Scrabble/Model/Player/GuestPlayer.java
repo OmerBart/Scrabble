@@ -31,9 +31,9 @@ public class GuestPlayer implements Player {
         this.playerID = playerID;
     }
 
-    public GuestPlayer(String name, int playerID, String serverAddress) {
+    public GuestPlayer(String name, String serverAddress) {
         this.name = name;
-        this.playerID = playerID;
+        //this.playerID = 0;
         this.serverAddress = serverAddress;
     }
 
