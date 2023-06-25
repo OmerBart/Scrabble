@@ -14,7 +14,7 @@ public class GuestPlayerTest {
         }
 
         //HostPlayer host = new HostPlayer(new GuestPlayer("TheHost", 1));
-        GuestPlayer guest = new GuestPlayer("TheGuest", 2);
+        GuestPlayer guest = new GuestPlayer("TheGuest");
 //        GuestPlayer guest2 = new GuestPlayer("TheGuest2", 3);
 //        GuestPlayer guest3 = new GuestPlayer("TheGuest3", 4);
 //        GuestPlayer guest4 = new GuestPlayer("TheGuest4", 5);

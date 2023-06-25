@@ -11,7 +11,7 @@ import static java.lang.Thread.sleep;
 public class LocalHostServerTestMain {
     public static void main(String[] args) throws InterruptedException {
         //System.out.println("i am ");
-        HostPlayer hostPlayer = HostPlayer.get(new GuestPlayer("Host", 1));
+        HostPlayer hostPlayer = HostPlayer.get(new GuestPlayer("Host"));
         Scanner scanner = new Scanner(System.in);
 
 
