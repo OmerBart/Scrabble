@@ -8,18 +8,18 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GuestPlayer implements Player {
-    private String name;
-    private int playerID;
-    private String serverAddress; // format "ip:port"
-    private Socket serverSocket;
-    private List<String> playerTiles;
+    private volatile String name;
+    private volatile int playerID;
+    private volatile String serverAddress; // format "ip:port"
+    private volatile Socket serverSocket;
+    private volatile List<String> playerTiles;
     private volatile boolean listening;
-    private PrintWriter out;
-    private BufferedReader in;
-    private Thread listeningThread;
+    private volatile PrintWriter out;
+    private volatile BufferedReader in;
+    private volatile Thread listeningThread;
     private InetAddress localIP;
     private int localPort;
-    private boolean isMyTurn;
+    private volatile boolean isMyTurn;
 
     public GuestPlayer(Player player) {
         this.name = player.getName().split(":")[0];
@@ -151,6 +151,7 @@ public class GuestPlayer implements Player {
             openSocketIfClosed();
             BufferedReader listenerIn = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
             listeningThread = new Thread(() -> listeningToServer(listenerIn));
+            //listening = true;
             listeningThread.start();
         } catch (IOException e) {
             throw new RuntimeException("Error setting up listening thread: " + e.getMessage(), e);
@@ -165,9 +166,10 @@ public class GuestPlayer implements Player {
                     System.out.println("Got update from server: " + response);
                     // Process the update received from the server
                     // ...
-                    if(response.startsWith("T:t")){
+                    if(response.contains("T:t")){
                         System.out.println("Its my turn!");
                         setTurn(true);
+                        break;
                     }
                 }
             }
@@ -197,11 +199,7 @@ public class GuestPlayer implements Player {
     }
     private void setTurn(boolean turn){
         isMyTurn = turn;
-        if(isMyTurn)
-            stopListeningToServer();
-        else
-            startListeningToServer();
-
+        setListening(!turn);
     }
 
     public boolean isMyTurn() {

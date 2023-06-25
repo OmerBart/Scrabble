@@ -127,15 +127,15 @@ public class GameManager {
             return "Bag is empty!";
         else {
             playerTiles.get(playerName).add(t);
-            updatePlayers(playerName + " got a new tile: " + t.toString());
-            return "Got: " + t.toString();
+            updatePlayers(playerName + " got a new tile: " + t);
+            return "Got: " + t;
         }
     }
 
-    public synchronized void endTurn() {
-        //System.out.println(playersList.get((turn) % playersList.size()).getName() + "'s turn ended");
+    public void endTurn() {
+        System.out.println(playersList.get((turn) % playersList.size()).getName() + "'s turn ended");
         turn++;
-        updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn starts now!");
+        //updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn starts now!");
         myTurn();
 
     }
@@ -204,23 +204,12 @@ public class GameManager {
     }
 
     private void updatePlayer(String msg, int playerKeyIndex) {
-        String playerKey = hostServer.getPlayerNames().get(playerKeyIndex);
-        ClientHandler clientHandler = hostServer.getClients().get(playerKey);
-        if (clientHandler != null) {
-            clientHandler.sendMsg(msg);
-        }
+        hostServer.sendToOne(msg, hostServer.getPlayerNames().get(playerKeyIndex));
+
     }
 
     private void updatePlayers(String msg) {
-        Map<String, ClientHandler> clientHandlers = hostServer.getClients();
-        List<String> keys = hostServer.getPlayerNames();
-        keys.remove(turn % playersList.size());
-        for (String key : keys) {
-            ClientHandler clientHandler = clientHandlers.get(key);
-            if (clientHandler != null) {
-                clientHandler.sendMsg(msg);
-            }
-        }
+        hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn % playersList.size()));
     }
 
     public synchronized LinkedHashMap<String, List<Tile>> getPlayerTiles() {

@@ -4,6 +4,7 @@ import com.example.Scrabble.Model.Player.GuestPlayer;
 
 import java.util.Scanner;
 
+import static java.lang.Thread.onSpinWait;
 import static java.lang.Thread.sleep;
 
 public class GuestPlayerTest {
@@ -26,33 +27,29 @@ public class GuestPlayerTest {
         sleep(1000);
         int count = 0;
         // Game loop
-        while (true) {
+        do {
             // Guest player's turn
 
-                if (guestPlayer.isMyTurn()) {
-                    System.out.println("Guest's turn");
-                    System.out.println("Guest tiles: " + guestPlayer.printTiles());
-                    System.out.println("Guest getting new Tile: " + guestPlayer.getTile());
-                    System.out.println("Placing word...");
-                    // Place word logic here
-                    System.out.println("Enter word to place: word,x,y,isHorizontal");
-                    String input = scanner.nextLine();
-                    String[] inputArray = input.split(",");
-                    System.out.println("For word: " +
-                            inputArray[0] +
-                            " Got " +
-                            guestPlayer.placeWord(inputArray[0], Integer.parseInt(inputArray[1]), Integer.parseInt(inputArray[2]), Boolean.parseBoolean(inputArray[3]))
-                            + " points!");
+            if (guestPlayer.isMyTurn()) {
+                System.out.println("Guest's turn");
+                System.out.println("Guest tiles: " + guestPlayer.printTiles());
+                System.out.println("Guest getting new Tile: " + guestPlayer.getTile());
+                System.out.println("Placing word...");
+                // Place word logic here
+                System.out.println("Enter word to place: word,x,y,isHorizontal");
+                String input = scanner.nextLine();
+                String[] inputArray = input.split(",");
+                System.out.println("For word: " +
+                        inputArray[0] +
+                        " Got " +
+                        guestPlayer.placeWord(inputArray[0], Integer.parseInt(inputArray[1]), Integer.parseInt(inputArray[2]), Boolean.parseBoolean(inputArray[3]))
+                        + " points!");
 
-                    guestPlayer.endTurn();
-                    count++;
-                }
-
-                if(count >1)
-                    break;
-
-
-        }
+                guestPlayer.endTurn();
+                count++;
+            }
+                onSpinWait();
+        } while (count <= 1);
 
         // Close the game
         guestPlayer.disconnectFromServer();

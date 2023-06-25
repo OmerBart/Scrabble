@@ -84,15 +84,16 @@ public class MyServer {
             throw new IllegalArgumentException("Invalid ClientHandler");
     }
 
-    public void sendMsg(String msg, int clientKey) //send msg to everyone cept a specific client
+    public void sendToOne(String msg, String clientKey) //send msg to a specific client
     {
-        for(String key : clients.keySet())
-        {
-            if(!key.equals(playerNames.get(clientKey)))
-            {
+        clients.get(clientKey).sendMsg(msg);
+    }
+
+    public void sendToAllButOne(String msg, String clientKey) //send msg to everyone cept a specific client
+    {
+        for (String key : clients.keySet())
+            if (!key.equals(clientKey))
                 clients.get(key).sendMsg(msg);
-            }
-        }
 
 
     }
@@ -124,12 +125,15 @@ public class MyServer {
     public void setStop(boolean stop) {
         this.stop = stop;
     }
+
     public ClientHandler getClientHandler(String playerName) {
         return clients.get(playerName);
     }
+
     public Map<String, ClientHandler> getClients() {
         return clients;
     }
+
     public List<String> getPlayerNames() {
         return playerNames;
     }
