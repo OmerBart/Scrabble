@@ -50,11 +50,11 @@ public class GameManager {
         turn = 1;
     }
 
-    public void setHost(MyServer hostServer, GuestPlayer hostplayer) {
+    public void setHost(MyServer hostServer) {
         this.hostServer = hostServer;
-        playersList.add(hostplayer);
-        playerScores.put(hostplayer.getName(), 0);
-        playerTiles.put(hostplayer.getName(), new ArrayList<>());
+//        playersList.add(hostplayer);
+//        playerScores.put(hostplayer.getName(), 0);
+//        playerTiles.put(hostplayer.getName(), new ArrayList<>());
     }
 
     public String getPlayerTiles(String playerName) {
@@ -98,17 +98,15 @@ public class GameManager {
     }
 
     public String myTurn(String playerName) {
-        // System.out.println(turn + " TURN player: " + playersList.get(turn %
-        // playersList.size()).getName() );
         while (playersList.get(turn % playersList.size()).getName().contains(playerName)) {
             try {
                 System.out.println(playerName + " is waiting for their turn");
                 sleep(1000);
             } catch (InterruptedException e) {
-                return "false";
+                return "T:false";
             }
         }
-        return "true";
+        return "T:true";
     }
 
     public String startGame(String playerName) {
@@ -130,14 +128,14 @@ public class GameManager {
             return "Bag is empty!";
         else {
             playerTiles.get(playerName).add(t);
-//            updatePlayers(playerName + " got a new tile: " + t.toString());
+            updatePlayers(playerName + " got a new tile: " + t.toString());
             return "Got: " + t.toString();
         }
     }
 
     public void endTurn() {
         turn++;
-        updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn!");
+        //updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn!");
     }
 
     public void stopGame() {

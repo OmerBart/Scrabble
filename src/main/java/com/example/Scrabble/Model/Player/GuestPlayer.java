@@ -1,8 +1,5 @@
 package com.example.Scrabble.Model.Player;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -11,33 +8,38 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GuestPlayer implements Player {
-    private StringProperty name;
+    private String name;
     private int playerID;
     private String serverAddress; // format "ip:port"
     private Socket serverSocket;
     private List<String> playerTiles;
-    private boolean listening;
+    private volatile boolean listening;
     private PrintWriter out;
     private BufferedReader in;
     private Thread listeningThread;
     private InetAddress localIP;
     private int localPort;
+    private boolean isMyTurn;
 
     public GuestPlayer(Player player) {
-        this.name = new SimpleStringProperty();
-        this.name.set(player.getName().split(":")[0]);
+        this.name = player.getName().split(":")[0];
         this.playerID = player.getPlayerID();
     }
 
     public GuestPlayer(String name, int playerID) {
-        this.name = new SimpleStringProperty(name);
+        this.name = name;
         this.playerID = playerID;
     }
 
     public GuestPlayer(String name, int playerID, String serverAddress) {
-        this.name = new SimpleStringProperty(name);
+        this.name = name;
         this.playerID = playerID;
         this.serverAddress = serverAddress;
+    }
+
+    public GuestPlayer(String name) {
+        this.name = name;
+        this.playerID = 0;
     }
 
     public void setServerAddress(String serverAddress, int port) {
@@ -50,7 +52,7 @@ public class GuestPlayer implements Player {
 
     @Override
     public String getName() {
-        return name.get() + ":" + playerID;
+        return name + ":" + playerID;
     }
 
     @Override
@@ -65,30 +67,29 @@ public class GuestPlayer implements Player {
     public String joinGame() {
         String response;
         openSocketIfClosed();
-
+        response = sendRequestToServer("joinGame," + name + ":" + playerID);
+        setID(Integer.parseInt(response.split(":")[1].trim()));
         if (!(this instanceof HostPlayer)) {
-            response = sendRequestToServer("joinGame," + name.get() + ":" + playerID);
-            setID(Integer.parseInt(response.split(":")[1].trim()));
-           // if (!isMyTurn()) {
-                startListeningToServer();
-           // }
+            setTurn(false);
+            setListening(true);
         } else {
-            response = "Connected to server";
+            setTurn(true);
+            setListening(false);
         }
-
+        startListeningToServer();
         return response;
     }
 
     public int getScore() {
         openSocketIfClosed();
-        return Integer.parseInt(sendRequestToServer("getScore:" + name.get() + ":" + playerID));
+        return Integer.parseInt(sendRequestToServer("getScore:" + name + ":" + playerID));
     }
 
     public String getTile() {
         openSocketIfClosed();
         if (playerTiles == null)
             playerTiles = new ArrayList<>();
-        String tile = sendRequestToServer("getTile:" + name.get() + ":" + playerID);
+        String tile = sendRequestToServer("getTile:" + name + ":" + playerID);
         playerTiles.add(tile);
         return tile;
     }
@@ -100,14 +101,13 @@ public class GuestPlayer implements Player {
     public String placeWord(String word, int x, int y, boolean isHorizontal) {
         openSocketIfClosed();
         return sendRequestToServer(
-                "placeWord:" + name.get() + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
+                "placeWord:" + name + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
     }
 
     public void disconnectFromServer() {
-        //stopListeningToServer();
+        stopListeningToServer();
         if (serverSocket != null && !serverSocket.isClosed()) {
             try {
-                listeningThread.interrupt();
                 serverSocket.close();
             } catch (IOException e) {
                 throw new RuntimeException("Error closing socket: " + e.getMessage(), e);
@@ -122,16 +122,11 @@ public class GuestPlayer implements Player {
                 serverSocket.setSoTimeout(1000 * 30);
                 out = new PrintWriter(serverSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
-//                localIP = serverSocket.getInetAddress();
-//                localPort = serverSocket.getPort();
             } catch (IOException e) {
                 throw new RuntimeException("Error opening socket: " + e.getMessage(), e);
             }
         }
     }
-//    public String getSocketkey(){
-//        return localIP + ":" + localPort;
-//    }
 
     private String sendRequestToServer(String request) {
         try {
@@ -144,85 +139,96 @@ public class GuestPlayer implements Player {
     }
 
     public String printTiles() {
-        return sendRequestToServer("printTiles," + name.get() + ":" + playerID);
+        return sendRequestToServer("printTiles," + name + ":" + playerID);
     }
 
     public String getCurrentBoard() {
-        String s = sendRequestToServer("boardState");
-        // System.out.println("got board: " + s);
-        return s;
-
-    }
-    private void startListeningToServer(){
-        listening = true;
-        ListeningToServer();
-        listeningThread.start();
+        return sendRequestToServer("boardState");
     }
 
-    private void ListeningToServer() {
-        listeningThread = new Thread(() -> {
-            Scanner sin = new Scanner(this.in);
-            while (listening && sin.hasNextLine()) {
-                String response = sin.nextLine();
-                System.out.println("got response: " + response);
+    private void startListeningToServer() {
+        //listening = false;
+        try {
+            openSocketIfClosed();
+            BufferedReader listenerIn = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+            listeningThread = new Thread(() -> listeningToServer(listenerIn));
+            listeningThread.start();
+        } catch (IOException e) {
+            throw new RuntimeException("Error setting up listening thread: " + e.getMessage(), e);
+        }
+    }
 
-//                if (response.contains("true")) {
-//                    stopListeningToServer();
-//                    break;
-//                } else if (response.contains("over!")) {
-//                    sin.close();
-//                    disconnectFromServer();
-//                    break;
-//                }
+    private void listeningToServer(BufferedReader listenerIn) {
+        try {
+            while (listening) {
+                String response = listenerIn.readLine();
+                if (response != null) {
+                    System.out.println("Got update from server: " + response);
+                    // Process the update received from the server
+                    // ...
+                    if(response.startsWith("T:t")){
+                        System.out.println("Its my turn!");
+                        setTurn(true);
+                    }
+                }
             }
-            //sin.close();
-        });
-
+        } catch (IOException e) {
+            System.err.println("Error reading server update: " + e.getMessage());
+        }
     }
 
     private void stopListeningToServer() {
         listening = false;
-//        if(listeningThread != null && listeningThread.isAlive())
-//            listeningThread.stop();
-    }
-    private void setListen(){
-        if(listeningThread == null || !listeningThread.isAlive())
-            startListeningToServer();
-        else
-            listening = true;
+        if (listeningThread != null) {
+            try {
+                listeningThread.join();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                System.err.println("Error stopping listening thread: " + e.getMessage());
+            }
+        }
     }
 
     public boolean queryIO(String request) {
-        // String request = String.join(",", Args);
         return Boolean.parseBoolean(sendRequestToServer("Q:" + request));
     }
 
     public boolean challengeIO(String request) {
-        // String request = String.join(",", Args);
         return Boolean.parseBoolean(sendRequestToServer("C:" + request));
+    }
+    private void setTurn(boolean turn){
+        if(turn)
+            setListening(false);
+        isMyTurn = turn;
     }
 
     public boolean isMyTurn() {
-        boolean turn = Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name.get() + ":" + playerID));
-        if (turn)
-            stopListeningToServer();
-        return turn;
+        return isMyTurn;
+
+//        boolean turn = Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name + ":" + playerID));
+//        if (turn)
+//            stopListeningToServer();
+//        return turn;
     }
 
     public String startGame() {
-        return sendRequestToServer("startGame," + name.get() + ":" + playerID);
+        return sendRequestToServer("startGame," + name + ":" + playerID);
     }
 
     @Override
     public String toString() {
-        return name.get() + ":" + playerID;
+        return name + ":" + playerID;
     }
 
     @Override
     public boolean endTurn() {
-        sendRequestToServer("endTurn" + name.get() + ":" + playerID);
-        setListen();
+        sendRequestToServer("endTurn" + name + ":" + playerID);
+        setListening(true);
         return true;
+    }
+
+    private void setListening(boolean listening) {
+        this.listening = listening;
     }
 
     @Override
@@ -233,9 +239,9 @@ public class GuestPlayer implements Player {
         }
         return false;
     }
+
     @Override
     public void setID(int ID) {
         this.playerID = ID;
-
     }
 }
