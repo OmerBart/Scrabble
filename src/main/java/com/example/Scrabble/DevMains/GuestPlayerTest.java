@@ -28,7 +28,7 @@ public class GuestPlayerTest {
         // Game loop
         while (true) {
             // Guest player's turn
-            try {
+
                 if (guestPlayer.isMyTurn()) {
                     System.out.println("Guest's turn");
                     System.out.println("Guest tiles: " + guestPlayer.printTiles());
@@ -45,23 +45,18 @@ public class GuestPlayerTest {
                             + " points!");
 
                     guestPlayer.endTurn();
+                    count++;
                 }
-            } catch (Exception e) {
-                guestPlayer.disconnectFromServer();
-                scanner.close();
-                System.out.println("Error: " + e);
-            }
 
-            // Check if the game is over
-//            if (count > 4) {
-//                System.out.println("Game over!");
-//                break;
-//            }
-//            count++;
+                if(count >1)
+                    break;
+
+
         }
 
         // Close the game
-        //gameManager.stopGame();
+        guestPlayer.disconnectFromServer();
+        scanner.close();
 
 
 

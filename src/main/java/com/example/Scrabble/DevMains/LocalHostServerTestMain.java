@@ -4,6 +4,7 @@ import com.example.Scrabble.Model.LocalServer.GameManager;
 import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.HostPlayer;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 import static java.lang.Thread.sleep;
@@ -22,10 +23,12 @@ public class LocalHostServerTestMain {
         sleep(1000);
         // Start the game
         System.out.println("Start game? (y/n)");
-        if(scanner.nextLine() == "y")
+        if(Objects.equals(scanner.nextLine(), "y")) {
+            System.out.println("Starting game...");
             System.out.println(hostPlayer.startGame());
+        }
         int count = 0;
-
+        sleep(1000);
         // Game loop
         while (true) {
             // Host player's turn
@@ -35,6 +38,7 @@ public class LocalHostServerTestMain {
                 System.out.println(hostPlayer.getTile());
                 //System.out.println("Placing word...");
                 // Place word logic here
+               // sleep(1000);
                 hostPlayer.endTurn();
                 count++;
             }

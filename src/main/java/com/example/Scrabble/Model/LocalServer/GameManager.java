@@ -1,6 +1,5 @@
 package com.example.Scrabble.Model.LocalServer;
 
-import com.example.Scrabble.Model.Game.Board;
 import com.example.Scrabble.Model.Game.BoardTmp;
 import com.example.Scrabble.Model.Game.Tile;
 import com.example.Scrabble.Model.Game.Word;
@@ -14,8 +13,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.*;
-
-import static java.lang.Thread.sleep;
 
 public class GameManager {
     private List<GuestPlayer> playersList;
@@ -46,24 +43,24 @@ public class GameManager {
         playerScores = new LinkedHashMap<>();
         playerTiles = new LinkedHashMap<>();
         hasGameStarted = false;
-        // search_books/test.txt
-        gameBooks = new String[]{"search_books/The Matrix.txt,search_books/test.txt"}; // ,"search_books/pg10.txt"
+        gameBooks = new String[]{"search_books/The Matrix.txt,search_books/test.txt"};
         turn = 0;
     }
 
-    public void setHost(MyServer hostServer) {
+    public synchronized void setHost(MyServer hostServer) {
         this.hostServer = hostServer;
     }
 
-    public String getPlayerTiles(String playerName) {
+    public synchronized String getPlayerTiles(String playerName) {
         StringBuilder tiles = new StringBuilder();
         for (Tile tile : playerTiles.get(playerName)) {
-            tiles.append(tile.getLetter()).append(" ");
+            //System.out.println("Tile: " + tile + "Player: " + playerName);
+            tiles.append(tile).append(" ");
         }
         return tiles.toString();
     }
 
-    public String addPlayer(GuestPlayer player) {
+    public synchronized String addPlayer(GuestPlayer player) {
         if (playersList.contains(player) || playersList.size() > 3) {
             return "Player already in the game or game is full!";
         } else {
@@ -77,12 +74,12 @@ public class GameManager {
         }
     }
 
-    private int generateUniqueID() {
+    private synchronized int generateUniqueID() {
         Random r = new Random();
         return r.nextInt(1000 + playersList.size());
     }
 
-    public GuestPlayer getPlayer(String name) {
+    public synchronized GuestPlayer getPlayer(String name) {
         for (GuestPlayer p : GameManager.get().playersList) {
             if (p.getName().split(":")[0].equals(name))
                 return p;
@@ -90,23 +87,28 @@ public class GameManager {
         return null;
     }
 
-    public String getGameBoard() {
+    public synchronized String getGameBoard() {
         return gameBoard.getPrintableBoard();
     }
 
-    public String myTurn(String playerName) {
-        while (playersList.get(turn % playersList.size()).getName().contains(playerName)) {
-            try {
-                System.out.println(playerName + " is waiting for their turn");
-                sleep(1000);
-            } catch (InterruptedException e) {
-                return "T:false";
-            }
-        }
-        return "T:true";
+    public synchronized void myTurn(){
+        updatePlayer("T:true",turn % playersList.size());
     }
 
-    public String startGame(String playerName) {
+//    public synchronized String myTurn(String playerName) {
+//        while (!playersList.get(turn % playersList.size()).getName().contains(playerName)) {
+//            try {
+//                System.out.println(playerName + " is waiting for their turn");
+//                wait(1000);
+//            } catch (InterruptedException e) {
+//                return "T:false";
+//            }
+//        }
+//        System.out.println(playerName + " is playing");
+//        return "T:true";
+//    }
+
+    public synchronized String startGame(String playerName) {
         IOserver.start();
         System.out.println("IO server started successfully at: " + IOserver.getPort());
         System.out.println("Number of players: " + playersList.size());
@@ -119,7 +121,7 @@ public class GameManager {
         return "Game Started!";
     }
 
-    public String getTilefromBag(String playerName) {
+    public synchronized String getTilefromBag(String playerName) {
         Tile t = bag.getRand();
         if (t == null)
             return "Bag is empty!";
@@ -130,15 +132,17 @@ public class GameManager {
         }
     }
 
-    public void endTurn() {
-        System.out.println(playersList.get(turn % playersList.size()).getName() + "'s turn ended");
+    public synchronized void endTurn() {
+        //System.out.println(playersList.get((turn) % playersList.size()).getName() + "'s turn ended");
         turn++;
         updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn starts now!");
+        myTurn();
+
     }
 
-    public void stopGame() {
+    public synchronized void stopGame() {
         try {
-            sleep(1000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -146,15 +150,15 @@ public class GameManager {
         IOserver.close();
     }
 
-    public String printPlayers() {
+    public synchronized String printPlayers() {
         return playersList.toString();
     }
 
-    public String getScore(String playerName) {
+    public synchronized String getScore(String playerName) {
         return Integer.toString(playerScores.getOrDefault(playerName, 0));
     }
 
-    public String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
+    public synchronized String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
         System.out.println("Placing word: " + word + " at: " + x + " " + y + " " + isHorizontal);
         char[] carr = word.toUpperCase().toCharArray();
         Tile[] wordTiles = new Tile[word.length()];
@@ -172,7 +176,7 @@ public class GameManager {
         return Integer.toString(score);
     }
 
-    public String queryIOserver(String qword) {
+    public synchronized String queryIOserver(String qword) {
         try {
             Socket socket = new Socket("localhost", IOserver.getPort());
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -199,11 +203,16 @@ public class GameManager {
         }
     }
 
-    //    private void updatePlayers(String msg) {
-//        hostServer.sendMsg(msg, turn % playersList.size());
-//    }
+    private void updatePlayer(String msg, int playerKeyIndex) {
+        String playerKey = hostServer.getPlayerNames().get(playerKeyIndex);
+        ClientHandler clientHandler = hostServer.getClients().get(playerKey);
+        if (clientHandler != null) {
+            clientHandler.sendMsg(msg);
+        }
+    }
+
     private void updatePlayers(String msg) {
-        Map<String,ClientHandler> clientHandlers = hostServer.getClients();
+        Map<String, ClientHandler> clientHandlers = hostServer.getClients();
         List<String> keys = hostServer.getPlayerNames();
         keys.remove(turn % playersList.size());
         for (String key : keys) {
@@ -212,19 +221,9 @@ public class GameManager {
                 clientHandler.sendMsg(msg);
             }
         }
-
-
-
     }
-//        for (GuestPlayer player : playersList) {
-//            ClientHandler clientHandler = hostServer.getClientHandler(player.getName());
-//            if (clientHandler != null) {
-//                clientHandler.sendMsg(msg);
-//            }
-//        }
 
-
-    public LinkedHashMap<String, List<Tile>> getPlayerTiles() {
+    public synchronized LinkedHashMap<String, List<Tile>> getPlayerTiles() {
         return playerTiles;
     }
 }

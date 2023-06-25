@@ -119,7 +119,6 @@ public class GuestPlayer implements Player {
         if (serverSocket == null || serverSocket.isClosed()) {
             try {
                 serverSocket = new Socket(serverAddress.split(":")[0], Integer.parseInt(serverAddress.split(":")[1]));
-                serverSocket.setSoTimeout(1000 * 30);
                 out = new PrintWriter(serverSocket.getOutputStream(), true);
                 in = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
             } catch (IOException e) {
@@ -197,9 +196,12 @@ public class GuestPlayer implements Player {
         return Boolean.parseBoolean(sendRequestToServer("C:" + request));
     }
     private void setTurn(boolean turn){
-        if(turn)
-            stopListeningToServer();
         isMyTurn = turn;
+        if(isMyTurn)
+            stopListeningToServer();
+        else
+            startListeningToServer();
+
     }
 
     public boolean isMyTurn() {
@@ -224,8 +226,7 @@ public class GuestPlayer implements Player {
     public boolean endTurn() {
         sendRequestToServer("endTurn" + name + ":" + playerID);
         setTurn(false);
-        //setListening(true);
-        startListeningToServer();
+
         return true;
     }
 
