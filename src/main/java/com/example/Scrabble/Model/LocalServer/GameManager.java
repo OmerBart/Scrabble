@@ -71,6 +71,7 @@ public class GameManager {
             playersList.add(player);
             playerScores.put(player.getName(), 0);
             playerTiles.put(player.getName(), new ArrayList<>());
+            System.out.println("Player added to the game successfully with ID: " + player.getPlayerID());
 
             return "Player added to the game successfully with ID: " + player.getPlayerID();
         }

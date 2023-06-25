@@ -21,7 +21,9 @@ public class LocalHostServerTestMain {
         System.out.println("Waiting for players to join...");
         sleep(1000);
         // Start the game
-        System.out.println(hostPlayer.startGame());
+        System.out.println("Start game? (y/n)");
+        if(scanner.nextLine() == "y")
+            System.out.println(hostPlayer.startGame());
         int count = 0;
 
         // Game loop
@@ -31,9 +33,9 @@ public class LocalHostServerTestMain {
                 System.out.println("Host's turn");
                 System.out.println("Host tiles: " + hostPlayer.printTiles());
                 System.out.println(hostPlayer.getTile());
-                System.out.println("Placing word...");
+                //System.out.println("Placing word...");
                 // Place word logic here
-                gameManager.endTurn();
+                hostPlayer.endTurn();
                 count++;
             }
 
