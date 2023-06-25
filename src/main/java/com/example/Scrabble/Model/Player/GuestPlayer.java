@@ -69,12 +69,13 @@ public class GuestPlayer implements Player {
         openSocketIfClosed();
         response = sendRequestToServer("joinGame," + name + ":" + playerID);
         setID(Integer.parseInt(response.split(":")[1].trim()));
+
         if (!(this instanceof HostPlayer)) {
             setTurn(false);
-            setListening(true);
+            //setListening(true);
         } else {
             setTurn(true);
-            setListening(false);
+           // setListening(false);
         }
         startListeningToServer();
         return response;
@@ -100,8 +101,7 @@ public class GuestPlayer implements Player {
 
     public String placeWord(String word, int x, int y, boolean isHorizontal) {
         openSocketIfClosed();
-        return sendRequestToServer(
-                "placeWord:" + name + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
+        return sendRequestToServer("placeWord:" + name + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
     }
 
     public void disconnectFromServer() {
@@ -169,7 +169,7 @@ public class GuestPlayer implements Player {
                     if(response.contains("T:t")){
                         System.out.println("Its my turn!");
                         setTurn(true);
-                        break;
+                        //break;
                     }
                 }
             }
@@ -224,6 +224,7 @@ public class GuestPlayer implements Player {
     public boolean endTurn() {
         sendRequestToServer("endTurn" + name + ":" + playerID);
         setTurn(false);
+        startListeningToServer();
 
         return true;
     }
