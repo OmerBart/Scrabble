@@ -7,6 +7,7 @@ import com.example.Scrabble.Model.Game.Word;
 import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.Player;
 import com.example.Scrabble.Model.ScrabbleDictionary.IOserver.BookScrabbleHandler;
+import com.example.Scrabble.Model.ServerUtils.ClientHandler;
 import com.example.Scrabble.Model.ServerUtils.MyServer;
 
 import java.io.IOException;
@@ -46,21 +47,18 @@ public class GameManager {
         playerTiles = new LinkedHashMap<>();
         hasGameStarted = false;
         // search_books/test.txt
-        gameBooks = new String[] { "search_books/The Matrix.txt,search_books/test.txt" }; // ,"search_books/pg10.txt"
-        turn = 1;
+        gameBooks = new String[]{"search_books/The Matrix.txt,search_books/test.txt"}; // ,"search_books/pg10.txt"
+        turn = 0;
     }
 
     public void setHost(MyServer hostServer) {
         this.hostServer = hostServer;
-//        playersList.add(hostplayer);
-//        playerScores.put(hostplayer.getName(), 0);
-//        playerTiles.put(hostplayer.getName(), new ArrayList<>());
     }
 
     public String getPlayerTiles(String playerName) {
         StringBuilder tiles = new StringBuilder();
         for (Tile tile : playerTiles.get(playerName)) {
-            tiles.append(tile.getLetter() + " ");
+            tiles.append(tile.getLetter()).append(" ");
         }
         return tiles.toString();
     }
@@ -77,19 +75,17 @@ public class GameManager {
             return "Player added to the game successfully with ID: " + player.getPlayerID();
         }
     }
+
     private int generateUniqueID() {
         Random r = new Random();
-        int id = r.nextInt(1000+playersList.size());
-        return id;
+        return r.nextInt(1000 + playersList.size());
     }
 
     public GuestPlayer getPlayer(String name) {
         for (GuestPlayer p : GameManager.get().playersList) {
-            System.out.println("GM: " + p.getName());
             if (p.getName().split(":")[0].equals(name))
                 return p;
         }
-        System.out.println("GM");
         return null;
     }
 
@@ -134,12 +130,12 @@ public class GameManager {
     }
 
     public void endTurn() {
+        System.out.println(playersList.get(turn % playersList.size()).getName() + "'s turn ended");
         turn++;
-        //updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn!");
+        updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn starts now!");
     }
 
     public void stopGame() {
-        //hostServer.sendMsg("Game is over! from MEEE");
         try {
             sleep(1000);
         } catch (InterruptedException e) {
@@ -162,47 +158,21 @@ public class GameManager {
         char[] carr = word.toUpperCase().toCharArray();
         Tile[] wordTiles = new Tile[word.length()];
         for (char c : carr) {
-                wordTiles[word.indexOf(c)] = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c)
-                .findFirst().get();
-                System.out.println("Placing tile: " + wordTiles[word.indexOf(c)].toString());
-                playerTiles.get(playerName).remove(wordTiles[word.indexOf(c)]);
-            }
+            wordTiles[word.indexOf(c)] = playerTiles.get(playerName)
+                    .stream()
+                    .filter(t -> t.getLetter() == c)
+                    .findFirst()
+                    .orElseThrow(NoSuchElementException::new);
+            System.out.println("Placing tile: " + wordTiles[word.indexOf(c)].toString());
+            playerTiles.get(playerName).remove(wordTiles[word.indexOf(c)]);
+        }
         int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
         System.out.println("Score: " + score);
         return Integer.toString(score);
-
-        // if (playerTiles.get(playerName).size() < word.length()) {
-        // return Integer.toString(0);
-        // } else {
-        // char[] carr = word.toUpperCase().toCharArray();
-        // Tile tmpTile;
-        // Tile[] wordTiles = new Tile[word.length()];
-        // for (char c : carr) {
-        // try {
-        // tmpTile = playerTiles.get(playerName).stream().filter(t -> t.getLetter() ==
-        // c).findFirst().get();
-        // playerTiles.get(playerName).remove(tmpTile);
-        // wordTiles[word.indexOf(c)] = tmpTile;
-        // } catch (NoSuchElementException e) {
-        // return Integer.toString(0);
-        // }
-
-        // }
-        // int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
-        // if (score <= 0) {
-        // for (Tile t : wordTiles)
-        // playerTiles.get(playerName).add(t);
-        // } else {
-        // playerScores.put(playerName, playerScores.get(playerName) + score);
-        // return Integer.toString(score);
-        // }
-        // }
-        // return Integer.toString(0);
     }
 
     public String queryIOserver(String qword) {
         try {
-
             Socket socket = new Socket("localhost", IOserver.getPort());
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             Scanner in = new Scanner(socket.getInputStream());
@@ -228,9 +198,30 @@ public class GameManager {
         }
     }
 
-    private void updatePlayers(String msg){
-        hostServer.sendMsg(msg, playersList.size()%turn);
+    //    private void updatePlayers(String msg) {
+//        hostServer.sendMsg(msg, turn % playersList.size());
+//    }
+    private void updatePlayers(String msg) {
+        Map<String,ClientHandler> clientHandlers = hostServer.getClients();
+        List<String> keys = hostServer.getPlayerNames();
+        keys.remove(turn % playersList.size());
+        for (String key : keys) {
+            ClientHandler clientHandler = clientHandlers.get(key);
+            if (clientHandler != null) {
+                clientHandler.sendMsg(msg);
+            }
+        }
+
+
+
     }
+//        for (GuestPlayer player : playersList) {
+//            ClientHandler clientHandler = hostServer.getClientHandler(player.getName());
+//            if (clientHandler != null) {
+//                clientHandler.sendMsg(msg);
+//            }
+//        }
+
 
     public LinkedHashMap<String, List<Tile>> getPlayerTiles() {
         return playerTiles;

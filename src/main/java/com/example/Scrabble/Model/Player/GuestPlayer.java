@@ -198,7 +198,7 @@ public class GuestPlayer implements Player {
     }
     private void setTurn(boolean turn){
         if(turn)
-            setListening(false);
+            stopListeningToServer();
         isMyTurn = turn;
     }
 
@@ -223,7 +223,9 @@ public class GuestPlayer implements Player {
     @Override
     public boolean endTurn() {
         sendRequestToServer("endTurn" + name + ":" + playerID);
-        setListening(true);
+        setTurn(false);
+        //setListening(true);
+        startListeningToServer();
         return true;
     }
 

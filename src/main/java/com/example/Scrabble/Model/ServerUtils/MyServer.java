@@ -23,6 +23,7 @@ public class MyServer {
     private final ClientHandler clientHandler;
     private int count;
     private List<String> playerNames;
+    //private final Map<String, ClientHandler> playerClientMap;
 
     public MyServer(int port, ClientHandler clientHandler) {
         this.port = port;
@@ -31,6 +32,8 @@ public class MyServer {
         this.clients = new ConcurrentHashMap<>();
         this.threadPool = Executors.newCachedThreadPool();
         this.count = 0;
+        //this.playerClientMap = new ConcurrentHashMap<>();
+
     }
 
     public void start() {
@@ -120,5 +123,14 @@ public class MyServer {
 
     public void setStop(boolean stop) {
         this.stop = stop;
+    }
+    public ClientHandler getClientHandler(String playerName) {
+        return clients.get(playerName);
+    }
+    public Map<String, ClientHandler> getClients() {
+        return clients;
+    }
+    public List<String> getPlayerNames() {
+        return playerNames;
     }
 }

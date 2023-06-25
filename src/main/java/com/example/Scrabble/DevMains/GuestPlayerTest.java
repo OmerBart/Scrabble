@@ -2,106 +2,61 @@ package com.example.Scrabble.DevMains;
 
 import com.example.Scrabble.Model.Player.GuestPlayer;
 
+import java.util.Scanner;
+
 import static java.lang.Thread.sleep;
 
 public class GuestPlayerTest {
     public static void main(String[] args) throws InterruptedException {
         int port = 65432;
-        try {
-            sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        Scanner scanner = new Scanner(System.in);
+
+        // Create guest player
+        GuestPlayer guestPlayer = new GuestPlayer("Guest");
+
+        // Set server address
+        guestPlayer.setServerAddress("localhost", port);
+
+        // Join the game
+        System.out.println("Joining game..." + guestPlayer.joinGame());
+
+        // Wait for game to start
+        System.out.println("Waiting for game to start...");
+        sleep(1000);
+        int count = 0;
+        // Game loop
+        while (true) {
+            // Guest player's turn
+            if (guestPlayer.isMyTurn()) {
+                System.out.println("Guest's turn");
+                System.out.println("Guest tiles: " + guestPlayer.printTiles());
+                System.out.println("Guest getting new Tile: " + guestPlayer.getTile());
+                System.out.println("Placing word...");
+                // Place word logic here
+                System.out.println("Enter word to place: word,x,y,isHorizontal");
+                String input = scanner.nextLine();
+                String[] inputArray = input.split(",");
+                System.out.println("For word: " +
+                        inputArray[0] +
+                        " Got " +
+                        guestPlayer.placeWord(inputArray[0], Integer.parseInt(inputArray[1]), Integer.parseInt(inputArray[2]), Boolean.parseBoolean(inputArray[3]))
+                        + " points!");
+
+                guestPlayer.endTurn();
+            }
+
+            // Check if the game is over
+            if (count == 1) {
+                System.out.println("Game over!");
+                break;
+            }
+            count++;
         }
 
-        //HostPlayer host = new HostPlayer(new GuestPlayer("TheHost", 1));
-        GuestPlayer guest = new GuestPlayer("TheGuest");
-//        GuestPlayer guest2 = new GuestPlayer("TheGuest2", 3);
-//        GuestPlayer guest3 = new GuestPlayer("TheGuest3", 4);
-//        GuestPlayer guest4 = new GuestPlayer("TheGuest4", 5);
-        //GameManager GM = GameManager.get();
-
-
-        guest.setServerAddress("localhost",port);
-//        guest2.setServerAddress("localhost",port);
-//        guest3.setServerAddress("localhost",port);
-//        guest4.setServerAddress("localhost",port);
-        //sleep(2000);
-        System.out.println("trying to join game...." + guest.joinGame());
-        //guest.joinGame();
-        sleep(6000);
-        //guest.printTiles();
-        //System.out.println("guest tiles: " + guest.printTiles());
-        //sleep(4000);
-        //System.out.println("guest is my turn? " + guest.isMyTurn());
-        if(guest.isMyTurn()){
-            sleep(1500);
-            System.out.println("guest tiles: " + guest.printTiles());
-            //System.out.println(guest.getTile());
-            sleep(1000);
-            System.out.println(guest.getTile());
-            System.out.println(guest.queryIO("Men"));//18878
-            System.out.println(guest.challengeIO("kaka"));//18878
-            if(guest.endTurn())
-                System.out.println("turn ended");
-            else
-                System.out.println("turn not ended");
-
-
-//            System.out.println(guest.endTurn());
-//            System.out.println(guest.endTurn());
-
-
-        }
-//        System.out.println("trying to join game...." + guest2.joinGame());
-//        System.out.println("trying to join game...." + guest3.joinGame());
-//        System.out.println("trying to join game...." + guest4.joinGame());
-        //System.out.println(guest3.getScore());
-        // System.out.println(host.startGame());
-
-
-//            System.out.println("giving each player 7 tiles");
-//            for(int i = 0; i<7;i++){
-//                host.getTile();
-//                guest.getTile();
-//                guest2.getTile();
-//                guest3.getTile();
-//            }
-//            System.out.println(host.printTiles());
-//            System.out.println(guest.printTiles());
-//            System.out.println(guest2.printTiles());
-//            System.out.println(guest3.printTiles());
-//            System.out.println(guest.queryIO("s1.txt","s2.txt","kaka"));//18878
-//            System.out.println(guest.challangeIO("s1.txt","s2.txt","18878"));//18878
-
-//            int x,y;
-//            boolean ishorizontal;
-//
-//            Scanner myObj = new Scanner(System.in);  // Create a Scanner object
-//            System.out.println("word to place");
-//            String wordtoplace = myObj.nextLine();
-
-//            System.out.println("x:");// Read user input
-//            x = myObj.nextInt();  // Read user input
-//            System.out.println("y:");
-//            y = myObj.nextInt();  // Read user input
-//            System.out.println("ishorizontal:");
-//            ishorizontal = myObj.nextBoolean();  // Read user input
-//            //System.out.println("word to place: " + wordtoplace +" x " + x + " y " + y + " ishorizontal " + ishorizontal  );  // Output user input
-//            System.out.println(guest.placeWord(wordtoplace,x,y,ishorizontal));
-
-
-
-        //System.out.println(GM.printPlayers());
-        //host.stopGame();
-
-//        guest2.disconnectFromServer();
-//        guest3.disconnectFromServer();
-//        guest4.disconnectFromServer();
-
-        sleep(1000*3);
-        //guest.disconnectFromServer();
-        System.out.println("Done!");
-
+        // Close the game
+        //gameManager.stopGame();
+        guestPlayer.disconnectFromServer();
+        scanner.close();
 
 
     }
