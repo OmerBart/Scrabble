@@ -42,20 +42,21 @@ public class GuestPlayerTest {
                 System.out.println("For word: " +
                         inputArray[0] +
                         " Got " +
-                        guestPlayer.placeWord(inputArray[0], Integer.parseInt(inputArray[1]), Integer.parseInt(inputArray[2]), Boolean.parseBoolean(inputArray[3]))
+                        guestPlayer.placeWord(inputArray[0], Integer.parseInt(inputArray[1]),
+                                Integer.parseInt(inputArray[2]), Boolean.parseBoolean(inputArray[3]))
                         + " points!");
 
                 guestPlayer.endTurn();
                 count++;
+            } else {
+                System.out.println("Not my turn");
             }
-                onSpinWait();
+            onSpinWait();
         } while (count <= 1);
 
         // Close the game
         guestPlayer.disconnectFromServer();
         scanner.close();
-
-
 
     }
 }

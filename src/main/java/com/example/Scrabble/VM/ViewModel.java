@@ -1,18 +1,32 @@
 package com.example.Scrabble.VM;
 
+import java.util.Observer;
+
 import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.HostPlayer;
+import com.example.Scrabble.View.ScrabbleGame;
 
+import javafx.application.Platform;
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-public class ViewModel {
+public class ViewModel implements Observer {
 
     public GuestPlayer guestPlayer;
     public StringProperty playerNameProperty;
     public StringProperty scoreProperty;
     public StringProperty boardProperty;
     public StringProperty playersProperty;
+    private Stage stage;
+    private Scene scene;
+
+    @FXML
 
     private static ViewModel viewModelInstance = null;
 
@@ -24,20 +38,48 @@ public class ViewModel {
     }
 
     public ViewModel() {
+        System.out.println(
+                "VM: ViewModel created " + getClass().getResource("/com/example/Scrabble/View/home-scene.fxml"));
         playerNameProperty = new SimpleStringProperty("");
         scoreProperty = new SimpleStringProperty("0");
         boardProperty = new SimpleStringProperty("");
         playersProperty = new SimpleStringProperty("");
     }
 
-    public void startGame() {
+    @Override
+    public void update(java.util.Observable o, Object arg) {
+        System.out.println("VM: Player has been updated");
+        if (arg instanceof String) {
+            if (arg.equals("update:game started!")) {
+                try {
+                    Parent root = FXMLLoader
+                            .load(getClass().getResource("/com/example/Scrabble/View/board-scene.fxml"));
+                    scene = new Scene(root, 1000, 700);
+                    scene.getStylesheets()
+                            .add(getClass().getResource("/com/example/Scrabble/View/style.css").toExternalForm());
+                    Platform.runLater(() -> {
+                        stage.setScene(scene);
+                    });
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+    }
+
+    public void hostGame() {
         guestPlayer = new GuestPlayer(playerNameProperty.getValue());
         guestPlayer = HostPlayer.get(guestPlayer);
+        guestPlayer.addObserver(this);
+    }
+
+    public void startGame() {
         System.out.println(guestPlayer.startGame());
     }
 
     public String joinGame(String gameId, int playerID) {
         guestPlayer = new GuestPlayer(playerNameProperty.getValue(), gameId);
+        guestPlayer.addObserver(this);
         return guestPlayer.joinGame();
     }
 
@@ -48,7 +90,7 @@ public class ViewModel {
     public String tryPlaceWord(String word, int x, int y, boolean isHorizontal) {
         System.out.println("word: " + word + " x: " + x + " y: " + y + " isHorizontal: " + isHorizontal);
         if (guestPlayer.isMyTurn()) {
-            String result = guestPlayer.placeWord(word, x-1, y-1, isHorizontal);
+            String result = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
             System.out.println("new score: " + result);
             int score = Integer.parseInt(result);
             score += Integer.parseInt(scoreProperty.getValue());
@@ -72,5 +114,21 @@ public class ViewModel {
 
     public String getPlayerTiles() {
         return guestPlayer.printTiles();
+    }
+
+    public void setScene(Scene scene) {
+        this.scene = scene;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Scene getScene() {
+        return this.scene;
+    }
+
+    public Stage getStage() {
+        return this.stage;
     }
 }

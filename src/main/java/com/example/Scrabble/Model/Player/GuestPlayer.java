@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class GuestPlayer implements Player {
+import javafx.beans.Observable;
+import javafx.event.Event;
+
+public class GuestPlayer extends java.util.Observable implements Player {
     private volatile String name;
     private volatile int playerID;
     private volatile String serverAddress; // format "ip:port"
@@ -17,9 +20,10 @@ public class GuestPlayer implements Player {
     private volatile PrintWriter out;
     private volatile BufferedReader in;
     private volatile Thread listeningThread;
-    private InetAddress localIP;
-    private int localPort;
+    // private InetAddress localIP;
+    // private int localPort;
     private volatile boolean isMyTurn;
+    public volatile boolean gameStarted;
 
     public GuestPlayer(Player player) {
         this.name = player.getName().split(":")[0];
@@ -33,7 +37,7 @@ public class GuestPlayer implements Player {
 
     public GuestPlayer(String name, String serverAddress) {
         this.name = name;
-        //this.playerID = 0;
+        // this.playerID = 0;
         this.serverAddress = serverAddress;
     }
 
@@ -42,6 +46,7 @@ public class GuestPlayer implements Player {
         this.playerID = 0;
     }
 
+    
     public void setServerAddress(String serverAddress, int port) {
         this.serverAddress = serverAddress + ":" + port;
     }
@@ -72,10 +77,10 @@ public class GuestPlayer implements Player {
 
         if (!(this instanceof HostPlayer)) {
             setTurn(false);
-            //setListening(true);
+            // setListening(true);
         } else {
             setTurn(true);
-           // setListening(false);
+            // setListening(false);
         }
         startListeningToServer();
         return response;
@@ -102,7 +107,8 @@ public class GuestPlayer implements Player {
 
     public String placeWord(String word, int x, int y, boolean isHorizontal) {
         openSocketIfClosed();
-        return sendRequestToServer("placeWord:" + name + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
+        return sendRequestToServer(
+                "placeWord:" + name + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
     }
 
     public void disconnectFromServer() {
@@ -147,12 +153,12 @@ public class GuestPlayer implements Player {
     }
 
     private void startListeningToServer() {
-        //listening = false;
+        // listening = false;
         try {
             openSocketIfClosed();
             BufferedReader listenerIn = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
             listeningThread = new Thread(() -> listeningToServer(listenerIn));
-            //listening = true;
+            // listening = true;
             listeningThread.start();
         } catch (IOException e) {
             throw new RuntimeException("Error setting up listening thread: " + e.getMessage(), e);
@@ -165,12 +171,12 @@ public class GuestPlayer implements Player {
                 String response = listenerIn.readLine();
                 if (response != null) {
                     System.out.println("Got update from server: " + response);
-                    // Process the update received from the server
-                    // ...
-                    if(response.contains("T:t")){
-                        System.out.println("Its my turn!");
-                        setTurn(true);
-                        //break;
+                    // create an event and notify the observers
+                    setChanged();
+                    notifyObservers(response);
+                    clearChanged();
+                    if (response.contains("game started")) {
+                        this.gameStarted = true;
                     }
                 }
             }
@@ -198,7 +204,8 @@ public class GuestPlayer implements Player {
     public boolean challengeIO(String request) {
         return Boolean.parseBoolean(sendRequestToServer("C:" + request));
     }
-    private void setTurn(boolean turn){
+
+    private void setTurn(boolean turn) {
         isMyTurn = turn;
         setListening(!turn);
     }
@@ -206,10 +213,11 @@ public class GuestPlayer implements Player {
     public boolean isMyTurn() {
         return isMyTurn;
 
-//        boolean turn = Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name + ":" + playerID));
-//        if (turn)
-//            stopListeningToServer();
-//        return turn;
+        // boolean turn = Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name +
+        // ":" + playerID));
+        // if (turn)
+        // stopListeningToServer();
+        // return turn;
     }
 
     public String startGame() {

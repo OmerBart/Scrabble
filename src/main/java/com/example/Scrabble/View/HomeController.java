@@ -29,12 +29,8 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // welcomeText.setVisible(false);
         viewModel = ViewModel.get();
         viewModel.playerNameProperty.bind(nameInput.textProperty());
-        nameInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("View model: " + viewModel.playerNameProperty.getValue());
-        });
     }
 
     @FXML
@@ -46,8 +42,10 @@ public class HomeController implements Initializable {
             }
             Parent root = FXMLLoader.load(getClass().getResource("join-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            viewModel.setStage(stage);
             scene = new Scene(root, 1000, 700);
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            viewModel.setScene(scene);
             stage.setScene(scene);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -61,10 +59,13 @@ public class HomeController implements Initializable {
                 welcomeText.setText("Please enter a name");
                 return;
             }
+            viewModel.hostGame();
             Parent root = FXMLLoader.load(getClass().getResource("loby-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root, 1000, 700);
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+            viewModel.setScene(scene);
+            viewModel.setStage(stage);
             stage.setScene(scene);
         } catch (Exception e) {
             System.out.println(e.getMessage());

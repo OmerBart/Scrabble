@@ -44,7 +44,7 @@ public class GameManager {
         playerScores = new LinkedHashMap<>();
         playerTiles = new LinkedHashMap<>();
         hasGameStarted = false;
-        gameBooks = new String[]{"search_books/The Matrix.txt,search_books/test.txt"};
+        gameBooks = new String[] { "search_books/The Matrix.txt,search_books/test.txt" };
         turn = 0;
     }
 
@@ -55,7 +55,7 @@ public class GameManager {
     public synchronized String getPlayerTiles(String playerName) {
         StringBuilder tiles = new StringBuilder();
         for (Tile tile : playerTiles.get(playerName)) {
-            //System.out.println("Tile: " + tile + "Player: " + playerName);
+            // System.out.println("Tile: " + tile + "Player: " + playerName);
             tiles.append(tile).append(" ");
         }
         return tiles.toString();
@@ -69,9 +69,11 @@ public class GameManager {
             playersList.add(player);
             playerScores.put(player.getName(), 0);
             playerTiles.put(player.getName(), new ArrayList<>());
-            if (playersList.size() > 1)
+            if (playersList.size() > 1) {
                 System.out.println("Player added to the game successfully with ID: " + player.getPlayerID());
-
+                // updatePlayers("playerAdded:" + player.getName() + ":" +
+                // player.getPlayerID());
+            }
             return "Player added to the game successfully with ID: " + player.getPlayerID();
         }
     }
@@ -97,18 +99,19 @@ public class GameManager {
         updatePlayer("T:true", turn % playersList.size());
     }
 
-//    public synchronized String myTurn(String playerName) {
-//        while (!playersList.get(turn % playersList.size()).getName().contains(playerName)) {
-//            try {
-//                System.out.println(playerName + " is waiting for their turn");
-//                wait(1000);
-//            } catch (InterruptedException e) {
-//                return "T:false";
-//            }
-//        }
-//        System.out.println(playerName + " is playing");
-//        return "T:true";
-//    }
+    // public synchronized String myTurn(String playerName) {
+    // while (!playersList.get(turn %
+    // playersList.size()).getName().contains(playerName)) {
+    // try {
+    // System.out.println(playerName + " is waiting for their turn");
+    // wait(1000);
+    // } catch (InterruptedException e) {
+    // return "T:false";
+    // }
+    // }
+    // System.out.println(playerName + " is playing");
+    // return "T:true";
+    // }
 
     public synchronized String startGame(String playerName) {
         IOserver.start();
@@ -118,7 +121,7 @@ public class GameManager {
             for (Player p : playersList)
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
-
+        updatePlayers("game started!");
         hasGameStarted = true;
         return "Game Started!";
     }
@@ -138,7 +141,8 @@ public class GameManager {
     public void endTurn() {
         System.out.println(playersList.get((turn) % playersList.size()).getName() + "'s turn ended");
         turn++;
-        //updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn starts now!");
+        // updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn
+        // starts now!");
         myTurn();
 
     }
@@ -167,17 +171,14 @@ public class GameManager {
         Tile[] wordTiles = new Tile[word.length()];
         int index = 0;
         for (char c : carr) {
-                wordTiles[word.indexOf(c)] = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c)
-                .findFirst().get();
-                System.out.println("Placing tile: " + wordTiles[word.indexOf(c)].toString());
-                playerTiles.get(playerName).remove(wordTiles[word.indexOf(c)]);
-            }
+            wordTiles[word.indexOf(c)] = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c)
+                    .findFirst().get();
+            System.out.println("Placing tile: " + wordTiles[word.indexOf(c)].toString());
+            playerTiles.get(playerName).remove(wordTiles[word.indexOf(c)]);
+        }
         int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
         return Integer.toString(score);
     }
-
-
-
 
     public synchronized String queryIOserver(String qword) {
         try {
