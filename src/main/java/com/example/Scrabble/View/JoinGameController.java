@@ -52,9 +52,6 @@ public class JoinGameController implements Initializable {
             scene = new Scene(root, 1000, 700);
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
  
-            viewModel.setScene(scene);
-            viewModel.setStage(stage);
-
             stage.setScene(scene);
         } catch (Exception e) {
             System.out.println(e.getMessage());

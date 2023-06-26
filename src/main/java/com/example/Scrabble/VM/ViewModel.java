@@ -4,10 +4,8 @@ import java.util.Observer;
 
 import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.HostPlayer;
-import com.example.Scrabble.View.ScrabbleGame;
 
 import javafx.application.Platform;
-import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
@@ -25,8 +23,6 @@ public class ViewModel implements Observer {
     public StringProperty playersProperty;
     private Stage stage;
     private Scene scene;
-
-    @FXML
 
     private static ViewModel viewModelInstance = null;
 
@@ -88,10 +84,15 @@ public class ViewModel implements Observer {
         return guestPlayer.getScore();
     }
 
-    public String tryPlaceWord(String word, int x, int y, boolean isHorizontal) {
-        System.out.println("word: " + word + " x: " + x + " y: " + y + " isHorizontal: " + isHorizontal);
+    public String tryPlaceWord(Character[] word, int x, int y, boolean isHorizontal) {
         if (guestPlayer.isMyTurn()) {
-            String result = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
+
+            // TODO: omer from here im passing the word as a char array, you need to change the
+            // placeWord function to accept a char array instead of a string
+
+            // String result = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
+
+            String result ="0";
             System.out.println("new score: " + result);
             int score = Integer.parseInt(result);
             score += Integer.parseInt(scoreProperty.getValue());
@@ -117,19 +118,8 @@ public class ViewModel implements Observer {
         return guestPlayer.printTiles();
     }
 
-    public void setScene(Scene scene) {
-        this.scene = scene;
-    }
-
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
-    public Scene getScene() {
-        return this.scene;
-    }
-
-    public Stage getStage() {
-        return this.stage;
-    }
 }
