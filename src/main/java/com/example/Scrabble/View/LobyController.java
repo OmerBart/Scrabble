@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
@@ -28,11 +29,16 @@ public class LobyController implements Initializable {
     @FXML
     Button startGameButton;
 
+    @FXML
+    ComboBox<String> numberOfRounds;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         viewModel = ViewModel.get();
         if (viewModel.guestPlayer instanceof HostPlayer) {
             waitingText.setVisible(false);
+            numberOfRounds.setVisible(true);
+            numberOfRounds.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
         } else {
             waitingText.setVisible(true);
             startGameButton.setVisible(false);
