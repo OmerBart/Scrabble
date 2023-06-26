@@ -9,6 +9,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
 
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
@@ -22,10 +25,20 @@
                 <Label fx:id="welcomeText" text='Welcome To Scrabble!!!!!!' />
                 <Button text="Place Word" onAction="#placeWord" />
                 <Button text="Get Tile" onAction="#getTile" />
-                <Label fx:id="scoreText" text='Score: 0' />
                 <Label fx:id="nameText" text='Name:' />
+                <Label fx:id="scoreText" text='Score: 0' />
                 <Label text='Tiles:' />
                 <HBox fx:id="tiles" spacing="10" />
+                <Label text="Word:" />
+                <StackPane fx:id="wordPane" prefHeight="50.0" prefWidth="200.0" alignment="center">
+                    <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0"
+                            stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                        <Label fx:id="wordText" text="" />
+                    </children>
+                </StackPane>
+                <Button text="Querry" onAction="#getTile" />
+                <Button text="Challenge" onAction="#getTile" />
             </VBox>
         </AnchorPane>
         <AnchorPane>

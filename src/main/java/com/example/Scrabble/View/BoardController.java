@@ -1,5 +1,7 @@
 package com.example.Scrabble.View;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,12 +26,19 @@ public class BoardController implements Initializable {
     Tile selectedTile;
     ArrayList<BoardCell> wordToSet = new ArrayList<>();
     ViewModel viewModel;
+    StringProperty wordToCheck;
+
+    @FXML
+    StackPane wordPane;
 
     @FXML
     Label scoreText;
 
     @FXML
     Label nameText;
+
+    @FXML
+    Label wordText;
 
     @FXML
     private GridPane board;
@@ -48,6 +57,8 @@ public class BoardController implements Initializable {
         // Set welcome text and build board
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
+        wordToCheck = new SimpleStringProperty("");
+        wordText.textProperty().bind(wordToCheck);
         boardBuild();
 
         // Bindings
@@ -244,6 +255,7 @@ public class BoardController implements Initializable {
             });
             board.add(newCell, cell.col, cell.row);
             wordToSet.add(newCell);
+            wordToCheck.setValue(wordToCheck.getValue() + newCell.letter);
 
             selectedTile.selected = false;
             selectedTile.getChildren().get(0).getStyleClass().clear();
