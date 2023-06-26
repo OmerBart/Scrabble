@@ -26,8 +26,9 @@ public class HostPlayer extends GuestPlayer {
         System.out.println("host cutr: "+this.getServerAddress());
         hostGameServer.start();
         gameManager = GameManager.get();
-        gameManager.setHost(hostGameServer, this);
-        joinGame();
+        gameManager.setHost(hostGameServer);
+        System.out.println(joinGame());
+
     }
 
     public MyServer getHostGameServer() {

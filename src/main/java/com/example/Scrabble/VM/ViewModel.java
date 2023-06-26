@@ -31,13 +31,13 @@ public class ViewModel {
     }
 
     public void startGame() {
-        guestPlayer = new GuestPlayer(playerNameProperty.getValue(), 0);
+        guestPlayer = new GuestPlayer(playerNameProperty.getValue());
         guestPlayer = HostPlayer.get(guestPlayer);
         System.out.println(guestPlayer.startGame());
     }
 
     public String joinGame(String gameId, int playerID) {
-        guestPlayer = new GuestPlayer(playerNameProperty.getValue(), playerID, gameId);
+        guestPlayer = new GuestPlayer(playerNameProperty.getValue(), gameId);
         return guestPlayer.joinGame();
     }
 
