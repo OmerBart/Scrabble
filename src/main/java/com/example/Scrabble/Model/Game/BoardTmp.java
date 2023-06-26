@@ -227,11 +227,12 @@ public class BoardTmp {
            for(BoardBox bb : abb){
                t = bb.tile;
                if(t == null)
-                   stringBuilder.append(" |~| ");
+                   stringBuilder.append("|~|");
                else
                    stringBuilder.append(t);
            }
-           stringBuilder.append("\n");
+           //stringBuilder.append(System.getProperty("line.separator"));
+           stringBuilder.append(":");
        }
        return stringBuilder.toString();
    }

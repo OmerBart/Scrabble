@@ -42,9 +42,12 @@ public class GuestPlayerTest {
                 System.out.println("For word: " +
                         inputArray[0] +
                         " Got " +
-                        guestPlayer.placeWord(inputArray[0], Integer.parseInt(inputArray[1]), Integer.parseInt(inputArray[2]), Boolean.parseBoolean(inputArray[3]))
-                        + " points!");
-
+                        guestPlayer.placeWord(inputArray[0], Integer.parseInt(inputArray[1]), Integer.parseInt(inputArray[2]), Boolean.parseBoolean(inputArray[3])));
+                String[] tsa = guestPlayer.getCurrentBoard().split(":");
+                for(String s: tsa) {
+                    System.out.println(s);
+                }
+               // System.out.println(guestPlayer.getCurrentBoard());
                 guestPlayer.endTurn();
                 count++;
             }

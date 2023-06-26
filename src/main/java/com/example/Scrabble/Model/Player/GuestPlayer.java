@@ -20,6 +20,7 @@ public class GuestPlayer implements Player {
     private InetAddress localIP;
     private int localPort;
     private volatile boolean isMyTurn;
+    private String gameBoardStatus;
 
     public GuestPlayer(Player player) {
         this.name = player.getName().split(":")[0];
@@ -75,7 +76,7 @@ public class GuestPlayer implements Player {
             //setListening(true);
         } else {
             setTurn(true);
-           // setListening(false);
+            // setListening(false);
         }
         startListeningToServer();
         return response;
@@ -145,6 +146,16 @@ public class GuestPlayer implements Player {
         return sendRequestToServer("boardState");
     }
 
+    private void printBoard() {
+        if(gameBoardStatus == null){
+            gameBoardStatus = getCurrentBoard();
+        }
+        String[] tsa = gameBoardStatus.split(":");
+        for(String s : tsa){
+            System.out.println(s);
+        }
+    }
+
     private void startListeningToServer() {
         //listening = false;
         try {
@@ -163,13 +174,16 @@ public class GuestPlayer implements Player {
             while (listening) {
                 String response = listenerIn.readLine();
                 if (response != null) {
-                    System.out.println("Got update from server: " + response);
                     // Process the update received from the server
                     // ...
-                    if(response.contains("T:t")){
+                    if (response.contains("T:t")) {
                         System.out.println("Its my turn!");
                         setTurn(true);
                         //break;
+                    } else if (response.contains("BU,")) {
+                        //System.out.println("Board update received");
+                        this.gameBoardStatus = response.split(",")[1];
+                        printBoard();
                     }
                 }
             }
@@ -197,7 +211,8 @@ public class GuestPlayer implements Player {
     public boolean challengeIO(String request) {
         return Boolean.parseBoolean(sendRequestToServer("C:" + request));
     }
-    private void setTurn(boolean turn){
+
+    private void setTurn(boolean turn) {
         isMyTurn = turn;
         setListening(!turn);
     }
