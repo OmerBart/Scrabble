@@ -3,7 +3,7 @@ package com.example.Scrabble.Model.LocalServer;
 import com.example.Scrabble.Model.Player.GuestPlayer;
 
 public class CommandFactory {
-    public Command createCommand(String request) {
+    public synchronized Command createCommand(String request) {
         if (request.contains("getTile:")) {
             String playerName = request.split("getTile:")[1];
             return new GetTileCommand(playerName);
@@ -60,7 +60,7 @@ public class CommandFactory {
         return null;
     }
 
-    private class GetTileCommand implements Command {
+    private static class GetTileCommand implements Command {
         private String playerName;
 
         public GetTileCommand(String playerName) {
@@ -74,7 +74,7 @@ public class CommandFactory {
         }
     }
 
-    private class BoardStateCommand implements Command {
+    private static class BoardStateCommand implements Command {
         @Override
         public String execute() {
             GameManager GM = GameManager.get();
@@ -82,7 +82,7 @@ public class CommandFactory {
         }
     }
 
-    private class JoinCommand implements Command {
+    private static class JoinCommand implements Command {
         private String playerName;
         private int playerID;
 
@@ -98,7 +98,7 @@ public class CommandFactory {
         }
     }
 
-    private class StartGameCommand implements Command {
+    private static class StartGameCommand implements Command {
         private String playerName;
 
         public StartGameCommand(String playerName) {
@@ -112,7 +112,7 @@ public class CommandFactory {
         }
     }
 
-    private class StopGameCommand implements Command {
+    private static class StopGameCommand implements Command {
         @Override
         public String execute() {
             GameManager GM = GameManager.get();
@@ -121,7 +121,7 @@ public class CommandFactory {
         }
     }
 
-    private class GetScoreCommand implements Command {
+    private static class GetScoreCommand implements Command {
         private String playerName;
 
         public GetScoreCommand(String playerName) {
@@ -135,7 +135,7 @@ public class CommandFactory {
         }
     }
 
-    private class PlaceWordCommand implements Command {
+    private static class PlaceWordCommand implements Command {
         private String playerName;
         private String word;
         private int x;
@@ -158,7 +158,7 @@ public class CommandFactory {
         }
     }
 
-    private class QueryCommand implements Command {
+    private static class QueryCommand implements Command {
         private String query;
 
         public QueryCommand(String query) {
@@ -172,7 +172,7 @@ public class CommandFactory {
         }
     }
 
-    private class ErrorCommand implements Command {
+    private static class ErrorCommand implements Command {
         private String Error;
 
         public ErrorCommand(String Error) {
@@ -185,7 +185,7 @@ public class CommandFactory {
         }
     }
 
-    private class IsTurnCommand implements Command {
+    private static class IsTurnCommand implements Command {
         private String playerName;
 
         public IsTurnCommand(String playerName) {
@@ -195,19 +195,20 @@ public class CommandFactory {
         @Override
         public String execute() {
             GameManager GM = GameManager.get();
-            return GM.myTurn(playerName);
+            return "I used to call to : GM.myTurn(playerName)";
         }
     }
 
-    private class EndTurnCommand implements Command {
+    private static class EndTurnCommand implements Command {
         @Override
         public String execute() {
             GameManager GM = GameManager.get();
-            return String.valueOf(GM.endTurn());
+            GM.endTurn();
+            return "";
         }
     }
 
-    private class PrintTilesCommand implements Command {
+    private static class PrintTilesCommand implements Command {
         private String playerName;
 
         public PrintTilesCommand(String playerName) {
@@ -221,7 +222,7 @@ public class CommandFactory {
         }
     }
 
-    private class ChallengeCommand implements Command {
+    private static class ChallengeCommand implements Command {
         private String query;
 
         public ChallengeCommand(String query) {
