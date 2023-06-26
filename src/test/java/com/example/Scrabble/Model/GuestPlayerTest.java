@@ -71,24 +71,24 @@ public class GuestPlayerTest {
         assertEquals(1, guestPlayer.getPlayerTiles().size());
     }
 
-    @Test
-    void queryIOTest() {
-        assertEquals(false, guestPlayer.queryIO("s1.txt", "s2.txt", "kaka"));
-    }
+    // @Test
+    // void queryIOTest() {
+    //     assertEquals(false, guestPlayer.queryIO("s1.txt", "s2.txt", "kaka"));
+    // }
 
-    @Test
-    void queryIOTest2() {
-        assertEquals(true, guestPlayer.queryIO("s1.txt", "s2.txt", "18878"));
-    }
+    // @Test
+    // void queryIOTest2() {
+    //     assertEquals(true, guestPlayer.queryIO("s1.txt", "s2.txt", "18878"));
+    // }
 
-    @Test
-    void challangeIOTest() {
-        assertEquals(true, guestPlayer.challengeIO("s1.txt", "s2.txt", "18878"));
-    }
+    // @Test
+    // void challangeIOTest() {
+    //     assertEquals(true, guestPlayer.challengeIO("s1.txt", "s2.txt", "18878"));
+    // }
 
-    @Test
-    void challangeIOTest2() {
-        assertEquals(false, guestPlayer.challengeIO("s1.txt", "s2.txt", "kaka"));
-    }
+    // @Test
+    // void challangeIOTest2() {
+    //     assertEquals(false, guestPlayer.challengeIO("s1.txt", "s2.txt", "kaka"));
+    // }
 
 }

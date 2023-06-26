@@ -4,7 +4,6 @@ package com.example.Scrabble.Model.ScrabbleDictionary.IOserver;
 import com.example.Scrabble.Model.ServerUtils.ClientHandler;
 
 import java.io.*;
-import java.util.Arrays;
 
 //class that handles the client request
 public class BookScrabbleHandler implements ClientHandler {

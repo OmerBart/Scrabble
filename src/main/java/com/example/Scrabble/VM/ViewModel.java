@@ -66,6 +66,7 @@ public class ViewModel {
 
     public String getTile() {
         String result = guestPlayer.getTile();
+        System.out.println(result);
         return result.split(" ")[1];
     }
 

@@ -81,6 +81,7 @@ public class GuestPlayer implements Player {
     }
 
     public String getTile() {
+        System.out.println("getTile:: guest player");
         openSocketIfClosed();
         if (playerTiles == null)
             playerTiles = new ArrayList<>();

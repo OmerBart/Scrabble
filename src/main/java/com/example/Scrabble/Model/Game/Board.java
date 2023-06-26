@@ -3,7 +3,6 @@ package com.example.Scrabble.Model.Game;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.example.Scrabble.Model.LocalServer.GameManager;
 
 public class Board {
     @Override

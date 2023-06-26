@@ -193,6 +193,7 @@ public class BoardController implements Initializable {
 
     public void getTile() {
         String letter = viewModel.getTile();
+        System.out.println(letter);
         Tile tile = new Tile(letter);
         tilesList.add(tile);
         tiles.getChildren().add(tile);
@@ -274,6 +275,7 @@ public class BoardController implements Initializable {
             }
             Boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row ? true : false;
             String res = viewModel.tryPlaceWord(word, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
+            System.out.println(res);
             // if (Integer.parseInt(res) > 0) {
             for (BoardCell cell : wordToSet) {
                 cell.isOccupied = true;

@@ -1,7 +1,7 @@
 package com.example.Scrabble.Model.LocalServer;
 
 import com.example.Scrabble.Model.Game.Board;
-import com.example.Scrabble.Model.Game.BoardTmp;
+// import com.example.Scrabble.Model.Game.BoardTmp;
 import com.example.Scrabble.Model.Game.Tile;
 import com.example.Scrabble.Model.Game.Word;
 import com.example.Scrabble.Model.Player.GuestPlayer;
@@ -22,7 +22,7 @@ public class GameManager {
     private LinkedHashMap<String, List<Tile>> playerTiles; // key: name+ID, value: tiles
     private MyServer hostServer;
     private MyServer IOserver;
-    private BoardTmp gameBoard;
+    private Board gameBoard;
     private Tile.Bag bag;
     private int turn;
     private boolean hasGameStarted;
@@ -39,7 +39,7 @@ public class GameManager {
     private GameManager() {
         Random r = new Random();
         playersList = new ArrayList<>();
-        gameBoard = BoardTmp.getBoard();
+        gameBoard = Board.getBoard();
         this.IOserver = new MyServer(6000 + r.nextInt(6000), new BookScrabbleHandler());
         bag = Tile.Bag.getBag();
         playerScores = new LinkedHashMap<>();
@@ -117,10 +117,12 @@ public class GameManager {
     }
 
     public String getTilefromBag(String playerName) {
+        System.out.println("Getting tile from bag :: GM");
         Tile t = bag.getRand();
-        if (t == null)
+        if (t == null) {
+            System.out.println("Bag is empty!");
             return "Bag is empty!";
-        else {
+        } else {
             playerTiles.get(playerName).add(t);
             return "Got: " + t.toString();
         }
@@ -151,17 +153,15 @@ public class GameManager {
     }
 
     public String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
-        System.out.println("Placing word: " + word + " at: " + x + " " + y + " " + isHorizontal);
         char[] carr = word.toUpperCase().toCharArray();
         Tile[] wordTiles = new Tile[word.length()];
         for (char c : carr) {
-                wordTiles[word.indexOf(c)] = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c)
-                .findFirst().get();
-                System.out.println("Placing tile: " + wordTiles[word.indexOf(c)].toString());
-                playerTiles.get(playerName).remove(wordTiles[word.indexOf(c)]);
-            }
+            wordTiles[word.indexOf(c)] = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c)
+                    .findFirst().get();
+            System.out.println("Placing tile: " + wordTiles[word.indexOf(c)].toString());
+            playerTiles.get(playerName).remove(wordTiles[word.indexOf(c)]);
+        }
         int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
-        System.out.println("Score: " + score);
         return Integer.toString(score);
 
         // if (playerTiles.get(playerName).size() < word.length()) {
