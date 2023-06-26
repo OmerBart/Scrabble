@@ -44,7 +44,7 @@ public class GameManager {
         playerScores = new LinkedHashMap<>();
         playerTiles = new LinkedHashMap<>();
         hasGameStarted = false;
-        gameBooks = new String[] { "search_books/The Matrix.txt,search_books/test.txt" };
+        gameBooks = new String[]{"search_books/The Matrix.txt,search_books/test.txt"};
         turn = 0;
     }
 
@@ -70,8 +70,8 @@ public class GameManager {
             playerScores.put(player.getName(), 0);
             playerTiles.put(player.getName(), new ArrayList<>());
             if (playersList.size() > 1) {
-                //System.out.println("Player added to the game successfully with ID: " + player.getPlayerID());
-                 updatePlayers("player added with ID: " + player.getPlayerID());
+                System.out.println("Player added to the game successfully with ID: " + player.getPlayerID());
+                updatePlayers("player added with ID: " + player.getPlayerID());
             }
             return "Player added to the game successfully with ID: " + player.getPlayerID();
         }
