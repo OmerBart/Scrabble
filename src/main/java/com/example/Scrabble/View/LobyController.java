@@ -3,6 +3,7 @@ package com.example.Scrabble.View;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.example.Scrabble.Model.Player.HostPlayer;
 import com.example.Scrabble.VM.ViewModel;
 
 import javafx.event.ActionEvent;
@@ -22,34 +23,20 @@ public class LobyController implements Initializable {
     private ViewModel viewModel;
 
     @FXML
-    Label player1Name;
-    
-    @FXML
-    Label player2Name;
+    Label waitingText;
 
     @FXML
-    Label player3Name;
-
-    @FXML
-    Label player4Name;
-
-    @FXML
-    Button player1Button;
-
-    @FXML
-    Button player2Button;
-
-    @FXML
-    Button player3Button;
-
-    @FXML
-    Button player4Button;
+    Button startGameButton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         viewModel = ViewModel.get();
-        player1Name.textProperty().bind(viewModel.playerNameProperty);
-        player1Button.getStyleClass().add("not-ready-button");
+        if (viewModel.guestPlayer instanceof HostPlayer) {
+            waitingText.setVisible(false);
+        } else {
+            waitingText.setVisible(true);
+            startGameButton.setVisible(false);
+        }
     }
 
     @FXML
@@ -67,16 +54,10 @@ public class LobyController implements Initializable {
 
     @FXML
     protected void onReadyButtonClick(ActionEvent event) {
-        try {
-            player1Button.getStyleClass().remove("not-ready-button");
-            player1Button.getStyleClass().add("ready-button");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     @FXML
-    protected void onHostGameButtonClick(ActionEvent event) {
+    protected void onStartGameButtonClick(ActionEvent event) {
         try {
             viewModel.startGame();
             Parent root = FXMLLoader.load(getClass().getResource("board-scene.fxml"));

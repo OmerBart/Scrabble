@@ -38,8 +38,6 @@ public class ViewModel implements Observer {
     }
 
     public ViewModel() {
-        System.out.println(
-                "VM: ViewModel created " + getClass().getResource("/com/example/Scrabble/View/home-scene.fxml"));
         playerNameProperty = new SimpleStringProperty("");
         scoreProperty = new SimpleStringProperty("0");
         boardProperty = new SimpleStringProperty("");
@@ -50,7 +48,7 @@ public class ViewModel implements Observer {
     public void update(java.util.Observable o, Object arg) {
         System.out.println("VM: Player has been updated");
         if (arg instanceof String) {
-            if (arg.equals("update:game started!")) {
+            if (arg.equals("game started!")) {
                 try {
                     Parent root = FXMLLoader
                             .load(getClass().getResource("/com/example/Scrabble/View/board-scene.fxml"));
@@ -63,6 +61,8 @@ public class ViewModel implements Observer {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
+            } else {
+                System.out.println("VM: " + arg);
             }
         }
     }
@@ -77,7 +77,7 @@ public class ViewModel implements Observer {
         System.out.println(guestPlayer.startGame());
     }
 
-    public String joinGame(String gameId, int playerID) {
+    public String joinGame(String gameId) {
         guestPlayer = new GuestPlayer(playerNameProperty.getValue(), gameId);
         guestPlayer.addObserver(this);
         return guestPlayer.joinGame();
