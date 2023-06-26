@@ -15,7 +15,7 @@ public class Tile {
 
     @Override
     public String toString() {
-        return "|" + letter + "|" + score; // changed from " |" + letter + score + "| "
+        return String.valueOf(letter); // changed from " |" + letter + score + "| "
     }
 
     @Override

@@ -15,7 +15,7 @@ class HostPlayerTest {
 
     @BeforeAll
     static void setUpAll() {
-        hostPlayer = HostPlayer.get(new GuestPlayer("test", 1));
+        hostPlayer = HostPlayer.get(new GuestPlayer("test.txt", 1));
         hostPlayer.startGame();
     }
 
@@ -40,6 +40,6 @@ class HostPlayerTest {
     @Test
     void testToString() {
         System.out.println("HostPlayerTest: testToString()");
-        assertEquals("test:1", hostPlayer.toString());
+        assertEquals("test.txt:1", hostPlayer.toString());
     }
 }

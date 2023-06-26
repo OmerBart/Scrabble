@@ -4,16 +4,13 @@ import com.example.Scrabble.Model.ServerUtils.ClientHandler;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class PlayerHandler implements ClientHandler {
-    private BufferedReader in;
-    private PrintWriter out;
+    private BufferedReader reader;
+    private PrintWriter writer;
     private CommandFactory commandFactory;
     private Socket clientSocket;
     private boolean alive;
-    //private ExecutorService threadPool;
 
     public PlayerHandler() {
         commandFactory = new CommandFactory();
@@ -23,24 +20,23 @@ public class PlayerHandler implements ClientHandler {
         this();
         this.clientSocket = client;
         this.alive = true;
-        //this.threadPool = Executors.newCachedThreadPool();
     }
 
     @Override
     public void handleClient(InputStream inFromClient, OutputStream outToClient) {
         try {
-            in = new BufferedReader(new InputStreamReader(inFromClient));
-            out = new PrintWriter(outToClient, true);
+            reader = new BufferedReader(new InputStreamReader(inFromClient));
+            writer = new PrintWriter(outToClient, true);
             String line;
-            while (alive && (line = in.readLine()) != null) {
+            while (alive && (line = reader.readLine()) != null) {
                 Command command = commandFactory.createCommand(line);
                 if (command != null) {
                     String result = command.execute();
-                    out.println(result);
-                    out.flush();
+                    writer.println(result);
+                    writer.flush();
                 } else {
-                    out.println("Invalid command");
-                    out.flush();
+                    writer.println("Invalid command");
+                    writer.flush();
                 }
             }
         } catch (IOException e) {
@@ -49,9 +45,9 @@ public class PlayerHandler implements ClientHandler {
     }
 
     public void sendMsg(String msg) {
-        if (out != null) {
-            out.println("update:" + msg);
-            out.flush();
+        if (writer != null) {
+            writer.println("update:" + msg);
+            writer.flush();
         }
     }
 
@@ -59,21 +55,18 @@ public class PlayerHandler implements ClientHandler {
     public void close() {
         alive = false;
         try {
-            if (in != null)
-                in.close();
-            if (out != null)
-                out.close();
+            if (reader != null)
+                reader.close();
+            if (writer != null)
+                writer.close();
             if (clientSocket != null)
                 clientSocket.close();
-//            if (threadPool != null)
-//                threadPool.shutdown();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public boolean isClosed() {
-        return in == null && out == null && clientSocket == null ;
-        //&& (threadPool == null || threadPool.isShutdown())
+        return reader == null && writer == null && clientSocket == null;
     }
 }

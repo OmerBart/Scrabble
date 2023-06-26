@@ -50,5 +50,15 @@ public class Word {
         return row == word.row && col == word.col && vertical == word.vertical && Arrays.equals(tiles, word.tiles);
     }
 
-
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        boolean isFirst = true;
+        for(Tile t : tiles) {
+            sb.append(isFirst ? t : t.toString().toLowerCase());
+            isFirst = false;
+        }
+        //System.out.println("From Word class toString(): " +sb.toString());
+        return  sb.toString();
+    }
 }

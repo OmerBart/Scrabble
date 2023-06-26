@@ -3,6 +3,8 @@ package com.example.Scrabble.Model.Game;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.example.Scrabble.Model.LocalServer.GameManager;
+
 public class Board {
     @Override
     public boolean equals(Object o) {
@@ -69,7 +71,8 @@ public class Board {
                 else
                     s.append(tt);
             }
-            s.append("\n");
+            s.append(":");
+            //s.append(":");
         }
         return s.toString();
     }
@@ -99,7 +102,7 @@ public class Board {
             if ((word.isVertical() && word.getCol() == 7 && word.getRow() <= 7 && word.getRow() >= 0
                     && word.getRow() <= 14)
                     || (!word.isVertical() && word.getRow() == 7 && word.getCol() <= 7) && word.getCol() >= 0
-                            && word.getCol() <= 14)
+                    && word.getCol() <= 14)
                 flag = (word.getRow() + x.length >= 7 && word.getRow() + x.length <= 14)
                         || (word.getCol() + x.length >= 7 && word.getCol() + x.length <= 14);
         } else {
@@ -122,7 +125,9 @@ public class Board {
     }
 
     public boolean dictionaryLegal(Word word) {
-        return true; // send to IO server
+         GameManager gm = GameManager.get();
+         return Boolean.parseBoolean(gm.queryIOserver("Q:"+word.toString())); // send to IO server
+        //return true;
     }
 
     private Word getFull(Word word, int index, int adj) {

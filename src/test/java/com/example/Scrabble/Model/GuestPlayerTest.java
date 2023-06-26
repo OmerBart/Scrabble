@@ -17,8 +17,8 @@ public class GuestPlayerTest {
     @BeforeAll
     static void setUpAll() {
         System.out.println("GuestPlayerTest.setUpAll() 1");
-        hostPlayer = HostPlayer.get(new GuestPlayer("test", 1));
-        guestPlayer = new GuestPlayer("test", 1, "localhost:8080");
+        hostPlayer = HostPlayer.get(new GuestPlayer("test.txt", 1));
+        guestPlayer = new GuestPlayer("test.txt", 1, "localhost:8080");
         guestPlayer.setServerAddress("localhost", 65432);
         joinGameResult = guestPlayer.joinGame();
         hostPlayer.startGame();
@@ -42,7 +42,7 @@ public class GuestPlayerTest {
 
     @Test
     void getName() {
-        assertEquals("test:1", guestPlayer.getName());
+        assertEquals("test.txt:1", guestPlayer.getName());
     }
 
     @Test
@@ -52,7 +52,7 @@ public class GuestPlayerTest {
 
     @Test
     void testToString() {
-        assertEquals("test:1", guestPlayer.toString());
+        assertEquals("test.txt:1", guestPlayer.toString());
     }
 
     @Test
