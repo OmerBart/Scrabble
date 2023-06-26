@@ -71,7 +71,7 @@ public class GameManager {
             playerTiles.put(player.getName(), new ArrayList<>());
             if (playersList.size() > 1) {
                 System.out.println("Player added to the game successfully with ID: " + player.getPlayerID());
-                updatePlayers(player.getName());
+                // updatePlayers("player added");
             }
             return "Player added to the game successfully with ID: " + player.getPlayerID();
         }
