@@ -48,9 +48,9 @@ public class GuestPlayerTest {
 
                 guestPlayer.endTurn();
                 count++;
-            } else {
-                System.out.println("Not my turn");
             }
+//            else
+//                System.out.println("Not my turn");
             onSpinWait();
         } while (count <= 1);
 

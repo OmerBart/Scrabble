@@ -75,13 +75,14 @@ public class GuestPlayer extends java.util.Observable implements Player {
         response = sendRequestToServer("joinGame," + name + ":" + playerID);
         setID(Integer.parseInt(response.split(":")[1].trim()));
 
-        if (!(this instanceof HostPlayer)) {
+        if (!(this instanceof HostPlayer))
             setTurn(false);
-            // setListening(true);
-        } else {
+        else {
             setTurn(true);
-            // setListening(false);
+            setListening(false);
+
         }
+
         startListeningToServer();
         return response;
     }
@@ -221,6 +222,11 @@ public class GuestPlayer extends java.util.Observable implements Player {
     }
 
     public String startGame() {
+
+        if(this instanceof HostPlayer) {
+            setListening(false);
+        }
+
         return sendRequestToServer("startGame," + name + ":" + playerID);
     }
 
