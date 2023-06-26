@@ -204,7 +204,6 @@ public class GameManager {
                 String args = "Q,";
                 for (String book : gameBooks)
                     args += book + ",";
-                System.out.println("wowowo " + args + qword.split(":")[1]);
                 out.println(args + qword.split(":")[1]);
                 out.flush();
             } else if (qword.startsWith("C")) {
