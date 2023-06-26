@@ -1,12 +1,11 @@
 package com.example.Scrabble.Model.LocalServer;
 
-import com.example.Scrabble.Model.Game.BoardTmp;
+import com.example.Scrabble.Model.Game.Board;
 import com.example.Scrabble.Model.Game.Tile;
 import com.example.Scrabble.Model.Game.Word;
 import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.Player;
 import com.example.Scrabble.Model.ScrabbleDictionary.IOserver.BookScrabbleHandler;
-import com.example.Scrabble.Model.ServerUtils.ClientHandler;
 import com.example.Scrabble.Model.ServerUtils.MyServer;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class GameManager {
     private LinkedHashMap<String, List<Tile>> playerTiles; // key: name+ID, value: tiles
     private MyServer hostServer;
     private MyServer IOserver;
-    private BoardTmp gameBoard;
+    private Board gameBoard;
     private Tile.Bag bag;
     private int turn;
     private boolean hasGameStarted;
@@ -37,7 +36,7 @@ public class GameManager {
     private GameManager() {
         Random r = new Random();
         playersList = new ArrayList<>();
-        gameBoard = BoardTmp.getBoard();
+        gameBoard = Board.getBoard();
         this.IOserver = new MyServer(6000 + r.nextInt(6000), new BookScrabbleHandler());
         bag = Tile.Bag.getBag();
         playerScores = new LinkedHashMap<>();

@@ -1,17 +1,15 @@
 package com.example.Scrabble.Model.Game;
 
-import com.example.Scrabble.Model.Game.Word;
-
 import java.util.ArrayList;
 
 // singltone class
-public class BoardTmp {
-   private static BoardTmp instance;
+public class Board {
+   private static Board instance;
    private BoardBox[][] board = new BoardBox[15][15];
    private static boolean isStarBonusHasBeenUsed = false;
    private static ArrayList<Word> allWords = new ArrayList<Word>();
 
-   private BoardTmp() {
+   private Board() {
        for (int i = 0; i < 15; i++) {
            for (int j = 0; j < 15; j++) {
                board[i][j] = new BoardBox();
@@ -19,9 +17,9 @@ public class BoardTmp {
        }
    }
 
-   public static BoardTmp getBoard() {
+   public static Board getBoard() {
        if (instance == null) {
-           instance = new BoardTmp();
+           instance = new Board();
        }
 
        return instance;
