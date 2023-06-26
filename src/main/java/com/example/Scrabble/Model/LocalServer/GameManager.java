@@ -165,19 +165,32 @@ public class GameManager {
         Tile[] wordTiles = new Tile[word.length()];
         int index = 0;
         for (char c : carr) {
-            System.out.println("Looking for tile: " + c );
-            wordTiles[index] = playerTiles.get(playerName)
-                    .stream()
-                    .filter(t -> t.getLetter() == c)
-                    .findFirst()
-                    .orElseThrow(NoSuchElementException::new);
+            //System.out.println("Looking for tile: " + c );
+            try {
+                wordTiles[index] = playerTiles.get(playerName)
+                        .stream()
+                        .filter(t -> t.getLetter() == c)
+                        .findFirst()
+                        .orElseThrow(NoSuchElementException::new);
+            } catch (NoSuchElementException e) {
+                return "You don't have these Tiles!";
+            }
             System.out.println("Placing tile: " + wordTiles[index].toString());
             playerTiles.get(playerName).remove(wordTiles[index]);
             index++;
         }
         int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
-        System.out.println("Score: " + score);
-        return Integer.toString(score);
+        if(score > 0){
+            System.out.println("Score: " + score);
+            updatePlayers("BU,"+getGameBoard());
+            return Integer.toString(score);
+        }
+        // Word placement failed, returning tiles to player
+        else {
+            for (Tile t : wordTiles)
+                playerTiles.get(playerName).add(t);
+            return "Word placement failed!";
+        }
     }
 
 
