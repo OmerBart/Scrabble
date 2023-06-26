@@ -68,7 +68,7 @@ public class GameManager {
             playersList.add(player);
             playerScores.put(player.getName(), 0);
             playerTiles.put(player.getName(), new ArrayList<>());
-            if(playersList.size() > 1)
+            if (playersList.size() > 1)
                 System.out.println("Player added to the game successfully with ID: " + player.getPlayerID());
 
             return "Player added to the game successfully with ID: " + player.getPlayerID();
@@ -92,8 +92,8 @@ public class GameManager {
         return gameBoard.getPrintableBoard();
     }
 
-    public synchronized void myTurn(){
-        updatePlayer("T:true",turn % playersList.size());
+    public synchronized void myTurn() {
+        updatePlayer("T:true", turn % playersList.size());
     }
 
 //    public synchronized String myTurn(String playerName) {
@@ -163,19 +163,25 @@ public class GameManager {
         System.out.println("Placing word: " + word + " at: " + x + " " + y + " " + isHorizontal);
         char[] carr = word.toUpperCase().toCharArray();
         Tile[] wordTiles = new Tile[word.length()];
+        int index = 0;
         for (char c : carr) {
-            wordTiles[word.indexOf(c)] = playerTiles.get(playerName)
+            System.out.println("Looking for tile: " + c );
+            wordTiles[index] = playerTiles.get(playerName)
                     .stream()
                     .filter(t -> t.getLetter() == c)
                     .findFirst()
                     .orElseThrow(NoSuchElementException::new);
-            System.out.println("Placing tile: " + wordTiles[word.indexOf(c)].toString());
-            playerTiles.get(playerName).remove(wordTiles[word.indexOf(c)]);
+            System.out.println("Placing tile: " + wordTiles[index].toString());
+            playerTiles.get(playerName).remove(wordTiles[index]);
+            index++;
         }
         int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
         System.out.println("Score: " + score);
         return Integer.toString(score);
     }
+
+
+
 
     public synchronized String queryIOserver(String qword) {
         try {
