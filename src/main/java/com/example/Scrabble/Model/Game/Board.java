@@ -1,5 +1,7 @@
 package com.example.Scrabble.Model.Game;
 
+import com.example.Scrabble.Model.LocalServer.GameManager;
+
 import java.util.ArrayList;
 
 // singltone class
@@ -56,8 +58,8 @@ public class Board {
    }
 
    public boolean dictionaryLegal(Word word) {
-       // return true for now
-       return true;
+       GameManager gm = GameManager.get();
+       return Boolean.parseBoolean(gm.queryIOserver("Q:"+word.toString())); // send to IO server
    }
 
    // check if adding the word to the board creates other words
