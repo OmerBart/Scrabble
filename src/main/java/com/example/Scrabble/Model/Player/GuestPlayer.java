@@ -10,6 +10,8 @@ import java.util.Scanner;
 import javafx.beans.Observable;
 import javafx.event.Event;
 
+import static java.lang.Thread.sleep;
+
 public class GuestPlayer extends java.util.Observable implements Player {
     private volatile String name;
     private volatile int playerID;
@@ -46,7 +48,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
         this.playerID = 0;
     }
 
-    
+
     public void setServerAddress(String serverAddress, int port) {
         this.serverAddress = serverAddress + ":" + port;
     }
@@ -75,13 +77,8 @@ public class GuestPlayer extends java.util.Observable implements Player {
         response = sendRequestToServer("joinGame," + name + ":" + playerID);
         setID(Integer.parseInt(response.split(":")[1].trim()));
 
-        if (!(this instanceof HostPlayer))
-            setTurn(false);
-        else {
-            setTurn(true);
-            setListening(false);
+        setTurn(false);
 
-        }
 
         startListeningToServer();
         return response;
@@ -176,8 +173,12 @@ public class GuestPlayer extends java.util.Observable implements Player {
                     setChanged();
                     notifyObservers(response);
                     clearChanged();
-                    if (response.contains("game started")) {
+                    if (response.contains("Started")) {
+//                        if(this instanceof HostPlayer) {
+//                            setTurn(true);
+//                        }
                         this.gameStarted = true;
+
                     }
                 }
             }
@@ -222,9 +223,9 @@ public class GuestPlayer extends java.util.Observable implements Player {
     }
 
     public String startGame() {
-
-        if(this instanceof HostPlayer) {
-            setListening(false);
+        if (this instanceof HostPlayer) {
+            //stopListeningToServer();
+            setTurn(true);
         }
 
         return sendRequestToServer("startGame," + name + ":" + playerID);

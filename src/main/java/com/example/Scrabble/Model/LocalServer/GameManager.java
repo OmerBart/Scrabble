@@ -70,8 +70,8 @@ public class GameManager {
             playerScores.put(player.getName(), 0);
             playerTiles.put(player.getName(), new ArrayList<>());
             if (playersList.size() > 1) {
-                System.out.println("Player added to the game successfully with ID: " + player.getPlayerID());
-                updatePlayers("player added with ID: " + player.getPlayerID());
+                //System.out.println("Player added to the game successfully with ID: " + player.getPlayerID());
+                updatePlayer("player added with ID: " + player.getPlayerID(),0);
             }
             return "Player added to the game successfully with ID: " + player.getPlayerID();
         }
@@ -121,6 +121,7 @@ public class GameManager {
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
         updatePlayers("game started!");
+
         hasGameStarted = true;
         return "Game Started!";
     }
@@ -212,7 +213,11 @@ public class GameManager {
     }
 
     private void updatePlayers(String msg) {
-        hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn % playersList.size()));
+        System.out.println(turn % playersList.size());
+//        if(turn == 0)
+//            hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn+1 % playersList.size()));
+//        else
+            hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn % playersList.size()));
     }
 
     public synchronized LinkedHashMap<String, List<Tile>> getPlayerTiles() {
