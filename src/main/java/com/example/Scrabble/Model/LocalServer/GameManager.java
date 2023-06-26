@@ -1,12 +1,11 @@
 package com.example.Scrabble.Model.LocalServer;
 
-import com.example.Scrabble.Model.Game.BoardTmp;
+import com.example.Scrabble.Model.Game.Board;
 import com.example.Scrabble.Model.Game.Tile;
 import com.example.Scrabble.Model.Game.Word;
 import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.Player;
 import com.example.Scrabble.Model.ScrabbleDictionary.IOserver.BookScrabbleHandler;
-import com.example.Scrabble.Model.ServerUtils.ClientHandler;
 import com.example.Scrabble.Model.ServerUtils.MyServer;
 
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class GameManager {
     private LinkedHashMap<String, List<Tile>> playerTiles; // key: name+ID, value: tiles
     private MyServer hostServer;
     private MyServer IOserver;
-    private BoardTmp gameBoard;
+    private Board gameBoard;
     private Tile.Bag bag;
     private int turn;
     private boolean hasGameStarted;
@@ -37,7 +36,7 @@ public class GameManager {
     private GameManager() {
         Random r = new Random();
         playersList = new ArrayList<>();
-        gameBoard = BoardTmp.getBoard();
+        gameBoard = Board.getBoard();
         this.IOserver = new MyServer(6000 + r.nextInt(6000), new BookScrabbleHandler());
         bag = Tile.Bag.getBag();
         playerScores = new LinkedHashMap<>();
@@ -165,19 +164,32 @@ public class GameManager {
         Tile[] wordTiles = new Tile[word.length()];
         int index = 0;
         for (char c : carr) {
-            System.out.println("Looking for tile: " + c );
-            wordTiles[index] = playerTiles.get(playerName)
-                    .stream()
-                    .filter(t -> t.getLetter() == c)
-                    .findFirst()
-                    .orElseThrow(NoSuchElementException::new);
+            //System.out.println("Looking for tile: " + c );
+            try {
+                wordTiles[index] = playerTiles.get(playerName)
+                        .stream()
+                        .filter(t -> t.getLetter() == c)
+                        .findFirst()
+                        .orElseThrow(NoSuchElementException::new);
+            } catch (NoSuchElementException e) {
+                return "You don't have these Tiles!";
+            }
             System.out.println("Placing tile: " + wordTiles[index].toString());
             playerTiles.get(playerName).remove(wordTiles[index]);
             index++;
         }
         int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
-        System.out.println("Score: " + score);
-        return Integer.toString(score);
+        if(score > 0){
+            System.out.println("Score: " + score);
+            updatePlayers("BU,"+getGameBoard());
+            return Integer.toString(score);
+        }
+        // Word placement failed, returning tiles to player
+        else {
+            for (Tile t : wordTiles)
+                playerTiles.get(playerName).add(t);
+            return "Word placement failed!";
+        }
     }
 
 
