@@ -21,6 +21,7 @@ public class GuestPlayer implements Player {
     private int localPort;
     private volatile boolean isMyTurn;
     private String gameBoardStatus;
+    private BufferedReader listenerIn;
 
     public GuestPlayer(Player player) {
         this.name = player.getName().split(":")[0];
@@ -70,25 +71,18 @@ public class GuestPlayer implements Player {
         openSocketIfClosed();
         response = sendRequestToServer("joinGame," + name + ":" + playerID);
         setID(Integer.parseInt(response.split(":")[1].trim()));
-
-        if (!(this instanceof HostPlayer)) {
-            setTurn(false);
-            //setListening(true);
-        } else {
-            setTurn(true);
-            // setListening(false);
-        }
+        setTurn(this instanceof HostPlayer);
         startListeningToServer();
         return response;
     }
 
     public int getScore() {
-        openSocketIfClosed();
+        //openSocketIfClosed();
         return Integer.parseInt(sendRequestToServer("getScore:" + name + ":" + playerID));
     }
 
     public String getTile() {
-        openSocketIfClosed();
+       // openSocketIfClosed();
         if (playerTiles == null)
             playerTiles = new ArrayList<>();
         String tile = sendRequestToServer("getTile:" + name + ":" + playerID);
@@ -101,7 +95,7 @@ public class GuestPlayer implements Player {
     }
 
     public String placeWord(String word, int x, int y, boolean isHorizontal) {
-        openSocketIfClosed();
+       // openSocketIfClosed();
         return sendRequestToServer("placeWord:" + name + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
     }
 
@@ -130,7 +124,7 @@ public class GuestPlayer implements Player {
 
     private String sendRequestToServer(String request) {
         try {
-            openSocketIfClosed();
+            //openSocketIfClosed();
             out.println(request);
             return in.readLine();
         } catch (IOException e) {
@@ -159,8 +153,8 @@ public class GuestPlayer implements Player {
     private void startListeningToServer() {
         //listening = false;
         try {
-            openSocketIfClosed();
-            BufferedReader listenerIn = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+            //openSocketIfClosed();
+            listenerIn = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
             listeningThread = new Thread(() -> listeningToServer(listenerIn));
             //listening = true;
             listeningThread.start();
