@@ -76,9 +76,8 @@ public class GuestPlayer extends java.util.Observable implements Player {
         openSocketIfClosed();
         response = sendRequestToServer("joinGame," + name + ":" + playerID);
         setID(Integer.parseInt(response.split(":")[1].trim()));
-
+        // Set everyone's turn to false till the game starts
         setTurn(false);
-
 
         startListeningToServer();
         return response;
@@ -167,7 +166,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
         try {
             while (listening) {
                 String response = null;
-                if(listenerIn.ready())
+                if(listenerIn.ready())  // Checks whether any data is available to be read from the socket to avoid blocking
                     response = listenerIn.readLine();
                 if (response != null) {
                     System.out.println("Got update from server: " + response);
@@ -211,18 +210,11 @@ public class GuestPlayer extends java.util.Observable implements Player {
     public boolean isMyTurn() {
         return isMyTurn;
 
-        // boolean turn = Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name +
-        // ":" + playerID));
-        // if (turn)
-        // stopListeningToServer();
-        // return turn;
     }
 
     public String startGame() {
-        if (this instanceof HostPlayer) {
-            //stopListeningToServer();
-            setTurn(true);
-        }
+        if (this instanceof HostPlayer)
+            setTurn(true); // Host is first player and starts the game
 
         return sendRequestToServer("startGame," + name + ":" + playerID);
     }
