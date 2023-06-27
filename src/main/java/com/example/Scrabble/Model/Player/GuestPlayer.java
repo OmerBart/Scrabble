@@ -166,20 +166,16 @@ public class GuestPlayer extends java.util.Observable implements Player {
     private void listeningToServer(BufferedReader listenerIn) {
         try {
             while (listening) {
-                String response = listenerIn.readLine();
+                String response = null;
+                if(listenerIn.ready())
+                    response = listenerIn.readLine();
                 if (response != null) {
                     System.out.println("Got update from server: " + response);
                     // create an event and notify the observers
                     setChanged();
                     notifyObservers(response);
                     clearChanged();
-                    if (response.contains("Started")) {
-//                        if(this instanceof HostPlayer) {
-//                            setTurn(true);
-//                        }
-                        this.gameStarted = true;
 
-                    }
                 }
             }
         } catch (IOException e) {
