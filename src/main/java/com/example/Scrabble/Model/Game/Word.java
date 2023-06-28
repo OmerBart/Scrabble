@@ -8,19 +8,17 @@ public class Word {
     int row, col;
     boolean vertical;
 
-
     public Word(Tile[] tiles, int row, int col, boolean vertical) {
         this.tiles = tiles;
         this.row = row;
         this.col = col;
         this.vertical = vertical;
+        System.out.println("Word constructor");
     }
-
-
 
     public void printWord() {
         System.out.println();
-        for (Tile t : this.getTiles()){
+        for (Tile t : this.getTiles()) {
             System.out.print(t);
         }
 
@@ -44,21 +42,25 @@ public class Word {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Word word = (Word) o;
         return row == word.row && col == word.col && vertical == word.vertical && Arrays.equals(tiles, word.tiles);
     }
 
     @Override
     public String toString() {
+        System.out.println("From Word class toString(): " + tiles.length);
         StringBuilder sb = new StringBuilder();
         boolean isFirst = true;
-        for(Tile t : tiles) {
+        for (Tile t : tiles) {
+            System.out.println("From Word class toString(): printing tile: " + t);
             sb.append(isFirst ? t : t.toString().toLowerCase());
             isFirst = false;
         }
-        //System.out.println("From Word class toString(): " +sb.toString());
-        return  sb.toString();
+        // System.out.println("From Word class toString(): " +sb.toString());
+        return sb.toString();
     }
 }

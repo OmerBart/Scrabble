@@ -61,8 +61,9 @@ public class Board {
     public boolean dictionaryLegal(Word word) {
         // return true for now
         return true;
-//        GameManager gm = GameManager.get();
-//        return Boolean.parseBoolean(gm.queryIOserver("Q:"+word.toString())); // send to IO server
+        // GameManager gm = GameManager.get();
+        // return Boolean.parseBoolean(gm.queryIOserver("Q:"+word.toString())); // send
+        // to IO server
     }
 
     // check if adding the word to the board creates other words
@@ -122,6 +123,7 @@ public class Board {
 
         // check if the word is horizontal
         if (!vertical) {
+            System.out.println("horizontal");
             for (int i = 0; i < length; i++) {
                 if (tiles[i] != null) {
                     int letterScore = tiles[i].score;
@@ -156,6 +158,7 @@ public class Board {
                 }
             }
         } else if (vertical) {
+            System.out.println("vertical");
             for (int i = 0; i < length; i++) {
                 if (tiles[i] != null) {
                     int letterScore = tiles[i].score;
@@ -195,39 +198,48 @@ public class Board {
     }
 
     public int tryPlaceWord(Word word) {
+        System.out.println(word);
         if (!boardLegal(word)) {
             return 0;
         }
+        System.out.println("word is legal");
         replceNullTilesWithBoardTiles(word);
-
+        System.out.println("replaced null tiles with board tiles");
         int score = 0;
         ArrayList<Word> words = new ArrayList<Word>();
         if (wordAlreadyOnTheBoard(word)) {
             return 0;
         }
+        System.out.println("word is not already on the board");
         allWords.add(word);
         words.add(word);
         words.addAll(getWords(word));
-
+        System.out.println("got all words");
         for (Word w : words) {
+            System.out.println("getScore for all words");
+            System.out.println(w);
             if (!dictionaryLegal(w) || !boardLegal(w)) {
+                System.out.println("word is not legal");
                 return 0;
             } else {
+                System.out.println("word is legal");
                 setWordOnTheBoard(w);
+                System.out.println("set word on the board");
                 score += getScore(w);
+                System.out.println("got score for word");
             }
         }
 
         return score;
     }
 
-    public String getPrintableBoard(){
+    public String getPrintableBoard() {
         StringBuilder stringBuilder = new StringBuilder();
         Tile t;
-        for(BoardBox[] abb : board){
-            for(BoardBox bb : abb){
+        for (BoardBox[] abb : board) {
+            for (BoardBox bb : abb) {
                 t = bb.tile;
-                if(t == null)
+                if (t == null)
                     stringBuilder.append(" |~| ");
                 else
                     stringBuilder.append(t);
@@ -236,7 +248,6 @@ public class Board {
         }
         return stringBuilder.toString();
     }
-
 
     /*------------------------------- private methodes ------------------------------- */
 

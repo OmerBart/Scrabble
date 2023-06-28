@@ -171,16 +171,18 @@ public class GameManager {
         int index = 0;
         for (char c : carr) {
             if (c == '_')
-                wordTiles[word.indexOf(c)] = null;
+                wordTiles[index] = null;
             else {
-                wordTiles[word.indexOf(c)] = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c)
-                        .findFirst().get();
-                playerTiles.get(playerName).remove(wordTiles[word.indexOf(c)]);
+                wordTiles[index] = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c)
+                        .findFirst().orElse(null);
+                System.out.println(wordTiles[index]);
+                playerTiles.get(playerName).remove(wordTiles[index]);
             }
-            System.out.println("Placing tile: " + wordTiles[word.indexOf(c)].toString());
-
+            index++;
         }
-        int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
+        Word w = new Word(wordTiles, x, y, !isHorizontal);
+        System.out.println("before tryPlaceWord in GameManager");
+        int score = gameBoard.tryPlaceWord(w);
         return Integer.toString(score);
     }
 
