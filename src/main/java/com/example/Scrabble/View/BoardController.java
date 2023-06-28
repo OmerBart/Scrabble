@@ -211,7 +211,6 @@ public class BoardController implements Initializable {
         tile.setOnMouseClicked(event -> {
             handleTileClick(event, tile);
         });
-
     }
 
     private void handleTileClick(Event e, Tile tile) {
