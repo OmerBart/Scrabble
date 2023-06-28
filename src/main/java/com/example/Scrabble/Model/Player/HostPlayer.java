@@ -7,6 +7,10 @@ import com.example.Scrabble.Model.ServerUtils.MyServer;
 /**
  * Represents a host player in the Scrabble game.
  * Extends the GuestPlayer class.
+ * <p>
+ *  @author Omer Bartfeld
+ *  @version 1.0
+ *  @since 2023-06-28
  */
 public class HostPlayer extends GuestPlayer {
 
