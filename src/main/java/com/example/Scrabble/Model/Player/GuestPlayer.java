@@ -1,16 +1,10 @@
 package com.example.Scrabble.Model.Player;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-import javafx.beans.Observable;
-import javafx.event.Event;
-
-import static java.lang.Thread.sleep;
 
 public class GuestPlayer extends java.util.Observable implements Player {
     private volatile String name;
@@ -22,10 +16,8 @@ public class GuestPlayer extends java.util.Observable implements Player {
     private volatile PrintWriter out;
     private volatile BufferedReader in;
     private volatile Thread listeningThread;
-    // private InetAddress localIP;
-    // private int localPort;
     private volatile boolean isMyTurn;
-    public volatile boolean gameStarted;
+
 
     public GuestPlayer(Player player) {
         this.name = player.getName().split(":")[0];
@@ -39,7 +31,6 @@ public class GuestPlayer extends java.util.Observable implements Player {
 
     public GuestPlayer(String name, String serverAddress) {
         this.name = name;
-        // this.playerID = 0;
         this.serverAddress = serverAddress;
     }
 
@@ -47,7 +38,6 @@ public class GuestPlayer extends java.util.Observable implements Player {
         this.name = name;
         this.playerID = 0;
     }
-
 
     public void setServerAddress(String serverAddress, int port) {
         this.serverAddress = serverAddress + ":" + port;
@@ -76,9 +66,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
         openSocketIfClosed();
         response = sendRequestToServer("joinGame," + name + ":" + playerID);
         setID(Integer.parseInt(response.split(":")[1].trim()));
-        // Set everyone's turn to false till the game starts
-        setTurn(false);
-
+        setTurn(false); // Set everyone's turn to false until the game starts
         startListeningToServer();
         return response;
     }
@@ -102,10 +90,15 @@ public class GuestPlayer extends java.util.Observable implements Player {
         return playerTiles;
     }
 
-    public String placeWord(String word, int x, int y, boolean isHorizontal) {
+    public String placeWord(Character[] word, int x, int y, boolean isHorizontal) {
         openSocketIfClosed();
+        String sWord = "";
+        for (Character c : word) {
+            sWord += c == null ? "_" : c;
+        }
+        System.out.println("placeWord:" + name + ":" + playerID + ":" + sWord + ":" + x + ":" + y + ":" + isHorizontal);
         return sendRequestToServer(
-                "placeWord:" + name + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
+                "placeWord:" + name + ":" + playerID + ":" + sWord + ":" + x + ":" + y + ":" + isHorizontal);
     }
 
     public void disconnectFromServer() {
@@ -150,12 +143,10 @@ public class GuestPlayer extends java.util.Observable implements Player {
     }
 
     private void startListeningToServer() {
-        // listening = false;
         try {
             openSocketIfClosed();
             BufferedReader listenerIn = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
             listeningThread = new Thread(() -> listeningToServer(listenerIn));
-            // listening = true;
             listeningThread.start();
         } catch (IOException e) {
             throw new RuntimeException("Error setting up listening thread: " + e.getMessage(), e);
@@ -165,16 +156,14 @@ public class GuestPlayer extends java.util.Observable implements Player {
     private void listeningToServer(BufferedReader listenerIn) {
         try {
             while (listening) {
-                String response = null;
-                if(listenerIn.ready())  // Checks whether any data is available to be read from the socket to avoid blocking
-                    response = listenerIn.readLine();
-                if (response != null) {
-                    System.out.println("Got update from server: " + response);
-                    // create an event and notify the observers
-                    setChanged();
-                    notifyObservers(response);
-                    clearChanged();
-
+                if (listenerIn.ready()) {
+                    String response = listenerIn.readLine();
+                    if (response != null) {
+                        System.out.println("Got update from server: " + response);
+                        setChanged();
+                        notifyObservers(response); // create an event and notify the observers
+                        clearChanged();
+                    }
                 }
             }
         } catch (IOException e) {
@@ -209,13 +198,11 @@ public class GuestPlayer extends java.util.Observable implements Player {
 
     public boolean isMyTurn() {
         return isMyTurn;
-
     }
 
     public String startGame() {
         if (this instanceof HostPlayer)
-            setTurn(true); // Host is first player and starts the game
-
+            setTurn(true); // Host is the first player and starts the game
         return sendRequestToServer("startGame," + name + ":" + playerID);
     }
 
@@ -229,7 +216,6 @@ public class GuestPlayer extends java.util.Observable implements Player {
         sendRequestToServer("endTurn" + name + ":" + playerID);
         setTurn(false);
         startListeningToServer();
-
         return true;
     }
 

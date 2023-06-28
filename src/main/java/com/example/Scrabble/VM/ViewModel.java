@@ -86,12 +86,12 @@ public class ViewModel implements Observer {
     public String tryPlaceWord(Character[] word, int x, int y, boolean isHorizontal) {
         if (guestPlayer.isMyTurn()) {
 
-            // TODO: omer from here im passing the word as a char array, you need to change the
+            // DONE: omer from here im passing the word as a char array, you need to change the
             // placeWord function to accept a char array instead of a string
 
-            // String result = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
+            String result = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
 
-            String result ="0";
+            //String result ="0";
             System.out.println("new score: " + result);
             int score = Integer.parseInt(result);
             score += Integer.parseInt(scoreProperty.getValue());

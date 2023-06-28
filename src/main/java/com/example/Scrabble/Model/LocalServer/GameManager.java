@@ -71,7 +71,7 @@ public class GameManager {
             playerTiles.put(player.getName(), new ArrayList<>());
             if (playersList.size() > 1) {
                 //System.out.println("Player added to the game successfully with ID: " + player.getPlayerID());
-                updatePlayer("player added with ID: " + player.getPlayerID(),0);
+                updatePlayer("player added with ID: " + player.getPlayerID(), 0);
             }
             return "Player added to the game successfully with ID: " + player.getPlayerID();
         }
@@ -171,10 +171,15 @@ public class GameManager {
         Tile[] wordTiles = new Tile[word.length()];
         int index = 0;
         for (char c : carr) {
-            wordTiles[word.indexOf(c)] = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c)
-                    .findFirst().get();
+            if (c == '_')
+                wordTiles[word.indexOf(c)] = null;
+            else {
+                wordTiles[word.indexOf(c)] = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c)
+                        .findFirst().get();
+                playerTiles.get(playerName).remove(wordTiles[word.indexOf(c)]);
+            }
             System.out.println("Placing tile: " + wordTiles[word.indexOf(c)].toString());
-            playerTiles.get(playerName).remove(wordTiles[word.indexOf(c)]);
+
         }
         int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
         return Integer.toString(score);
@@ -217,7 +222,7 @@ public class GameManager {
 //        if(turn == 0)
 //            hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn+1 % playersList.size()));
 //        else
-            hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn % playersList.size()));
+        hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn % playersList.size()));
     }
 
     public synchronized LinkedHashMap<String, List<Tile>> getPlayerTiles() {
