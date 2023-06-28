@@ -60,7 +60,7 @@ public class LocalHostServerTestMain {
         }
 
         // Close the game
-        //gameManager.stopGame();
+        //gameManager.endGame();
         scanner.close();
 
 
@@ -90,7 +90,7 @@ public class LocalHostServerTestMain {
 //        System.out.println("y to end?");
 //       // System.out.println(hostPlayer.placeWord(input,7,7,true));
 //         if (input.equals("y")) {
-//            hostPlayer.stopGame();
+//            hostPlayer.endGame();
 //            scanner.close();
 //        }
 

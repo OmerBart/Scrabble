@@ -29,8 +29,8 @@
 
 //     @AfterAll
 //     public static void tearDown() {
-//         gameManager.stopGame();
-//         hostPlayer.stopGame();
+//         gameManager.endGame();
+//         hostPlayer.endGame();
 //     }
 
 //     @Test
