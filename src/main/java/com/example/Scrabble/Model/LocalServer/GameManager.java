@@ -44,10 +44,9 @@ public class GameManager {
         playerScores = new LinkedHashMap<>();
         playerTiles = new LinkedHashMap<>();
         hasGameStarted = false;
-        gameBooks = new String[] { "search_books/The Matrix.txt","search_books/test.txt" };
+        gameBooks = new String[] { "search_books/The Matrix.txt", "search_books/test.txt" };
         turn = 0;
     }
-
 
     public synchronized void setHost(MyServer hostServer) {
         this.hostServer = hostServer;
@@ -128,7 +127,7 @@ public class GameManager {
         turn++;
         // updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn
         // starts now!");
-        if(turn == numOfTurns)
+        if (turn == numOfTurns)
             endGame();
         else
             myTurn();
@@ -154,12 +153,12 @@ public class GameManager {
     public synchronized String getScore(String playerName) {
         return Integer.toString(playerScores.getOrDefault(playerName, 0));
     }
+
     public void setNumOfTurns(int numOfTurns) {
         this.numOfTurns = numOfTurns;
     }
 
     public String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
-        System.out.println("Placing word: " + word + " at: " + x + "," + y + " isHorizontal: " + isHorizontal);
         char[] carr = word.toUpperCase().toCharArray();
         Tile[] wordTiles = new Tile[word.length()];
         int index = 0;
@@ -175,15 +174,23 @@ public class GameManager {
         }
         Word w = new Word(wordTiles, x, y, !isHorizontal);
         int score = gameBoard.tryPlaceWord(w);
-        // if(score < 1){
-        //     for(Tile t : wordTiles){
-        //         if(t != null)
-        //             playerTiles.get(playerName).add(t);
-        //     }
-        //     return "Invalid move!";
-        // }
+        if (score < 1) {
+            for (Tile t : wordTiles) {
+                if (t != null)
+                    playerTiles.get(playerName).add(t);
+            }
+            return "Invalid move!";
+        }
+        while (playerTiles.get(playerName).size() < 7) {
+            Tile t = bag.getRand();
+            if (t == null) {
+                System.out.println("Bag is empty!");
+                break;
+            }
+            playerTiles.get(playerName).add(t);
+        }
         playerScores.put(playerName, playerScores.get(playerName) + score);
-        updatePlayers("Board Updated "+playerName + " got " + score + " points for " + word);
+        updatePlayers("Board Updated " + playerName + " got " + score + " points for " + word);
         return Integer.toString(score);
     }
 
@@ -197,10 +204,11 @@ public class GameManager {
 
     /**
      *
-     * @param gameBooks the gameBooks to set for the game dictionary must be in "search_books/The Matrix.txt" format see
+     * @param gameBooks the gameBooks to set for the game dictionary must be in
+     *                  "search_books/The Matrix.txt" format see
      *                  and search_books folder to see available books
      */
-    public void setGameBooks(String...gameBooks){
+    public void setGameBooks(String... gameBooks) {
         this.gameBooks = gameBooks;
     }
 
@@ -213,7 +221,7 @@ public class GameManager {
                 String args = "Q,";
                 for (String book : gameBooks)
                     args += book + ",";
-                //System.out.println("wowowo " + args + qword.split(":")[1]);
+                // System.out.println("wowowo " + args + qword.split(":")[1]);
                 out.println(args + qword.split(":")[1]);
                 out.flush();
             } else if (qword.startsWith("C")) {
@@ -237,7 +245,7 @@ public class GameManager {
     }
 
     private void updatePlayers(String msg) {
-        System.out.println(turn % playersList.size());
+        // System.out.println(turn % playersList.size());
         // if(turn == 0)
         // hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn+1 %
         // playersList.size()));

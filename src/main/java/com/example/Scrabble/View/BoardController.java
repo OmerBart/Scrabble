@@ -70,6 +70,12 @@ public class BoardController implements Initializable, Observer {
         scoreText.textProperty().bind(viewModel.scoreProperty);
 
         // Set first 7 tiles
+        setTiles();
+    }
+
+    public void setTiles() {
+        tilesList.clear();
+        tiles.getChildren().clear();
         String[] initialTiles = viewModel.getPlayerTiles().split(" ");
         for (String letter : initialTiles) {
             Tile tile = new Tile(letter);
@@ -87,6 +93,7 @@ public class BoardController implements Initializable, Observer {
         System.out.println("View: " + arg);
         Platform.runLater(() -> {
             boardBuild();
+            setTiles();
         });
     }
 
@@ -136,7 +143,6 @@ public class BoardController implements Initializable, Observer {
 
     public void getTile() {
         String letter = viewModel.getTile();
-        System.out.println(letter);
         Tile tile = new Tile(letter);
         tilesList.add(tile);
         tiles.getChildren().add(tile);
@@ -165,7 +171,6 @@ public class BoardController implements Initializable, Observer {
     }
 
     private void handleBoardClick(Event e, BoardCell cell) {
-        System.out.println("Clicked on cell: " + cell.row + " " + cell.col);
         tryPlaceTile(cell);
     }
 
@@ -208,7 +213,6 @@ public class BoardController implements Initializable, Observer {
             Character[] wordArr = new Character[wordToSet.size()];
             int i = 0;
             for (BoardCell cell : wordToSet) {
-                System.out.println(cell.letter);
                 if (cell.isOccupied) {
                     starOrOcupied = true;
                     wordArr[i++] = null;
@@ -221,9 +225,6 @@ public class BoardController implements Initializable, Observer {
                     wordArr[i++] = cell.letter.charAt(0);
                 }
             }
-            for (Character character : wordArr) {
-                System.out.println(character);
-            }
             if (!starOrOcupied) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Word must be placed on star or use occupied cell");
@@ -232,8 +233,8 @@ public class BoardController implements Initializable, Observer {
             }
             Boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row ? true : false;
             String res = viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
-            System.out.println(res);
             boardBuild();
+            setTiles();
             wordToSet.clear();
             wordToCheck.setValue("");
         } else {
@@ -250,7 +251,6 @@ public class BoardController implements Initializable, Observer {
             }
             wordToSet.clear();
         }
-        // System.out.println(viewModel.getBoard());
     }
 
     private boolean isSequenceWord() {
