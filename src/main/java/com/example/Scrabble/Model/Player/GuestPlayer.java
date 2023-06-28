@@ -1,13 +1,12 @@
 package com.example.Scrabble.Model.Player;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
-public class GuestPlayer implements Player {
+
+public class GuestPlayer extends java.util.Observable implements Player {
     private volatile String name;
     private volatile int playerID;
     private volatile String serverAddress; // format "ip:port"
@@ -17,11 +16,8 @@ public class GuestPlayer implements Player {
     private volatile PrintWriter out;
     private volatile BufferedReader in;
     private volatile Thread listeningThread;
-    private InetAddress localIP;
-    private int localPort;
     private volatile boolean isMyTurn;
-    private String gameBoardStatus;
-    private BufferedReader listenerIn;
+
 
     public GuestPlayer(Player player) {
         this.name = player.getName().split(":")[0];
@@ -35,7 +31,6 @@ public class GuestPlayer implements Player {
 
     public GuestPlayer(String name, String serverAddress) {
         this.name = name;
-        //this.playerID = 0;
         this.serverAddress = serverAddress;
     }
 
@@ -71,18 +66,19 @@ public class GuestPlayer implements Player {
         openSocketIfClosed();
         response = sendRequestToServer("joinGame," + name + ":" + playerID);
         setID(Integer.parseInt(response.split(":")[1].trim()));
-        setTurn(this instanceof HostPlayer);
+        setTurn(false); // Set everyone's turn to false until the game starts
         startListeningToServer();
         return response;
     }
 
     public int getScore() {
-        //openSocketIfClosed();
+        openSocketIfClosed();
         return Integer.parseInt(sendRequestToServer("getScore:" + name + ":" + playerID));
     }
 
     public String getTile() {
-       // openSocketIfClosed();
+        System.out.println("getTile:: guest player");
+        openSocketIfClosed();
         if (playerTiles == null)
             playerTiles = new ArrayList<>();
         String tile = sendRequestToServer("getTile:" + name + ":" + playerID);
@@ -94,9 +90,15 @@ public class GuestPlayer implements Player {
         return playerTiles;
     }
 
-    public String placeWord(String word, int x, int y, boolean isHorizontal) {
-       // openSocketIfClosed();
-        return sendRequestToServer("placeWord:" + name + ":" + playerID + ":" + word + ":" + x + ":" + y + ":" + isHorizontal);
+    public String placeWord(Character[] word, int x, int y, boolean isHorizontal) {
+        openSocketIfClosed();
+        String sWord = "";
+        for (Character c : word) {
+            sWord += c == null ? "_" : c;
+        }
+        System.out.println("placeWord:" + name + ":" + playerID + ":" + sWord + ":" + x + ":" + y + ":" + isHorizontal);
+        return sendRequestToServer(
+                "placeWord:" + name + ":" + playerID + ":" + sWord + ":" + x + ":" + y + ":" + isHorizontal);
     }
 
     public void disconnectFromServer() {
@@ -124,7 +126,7 @@ public class GuestPlayer implements Player {
 
     private String sendRequestToServer(String request) {
         try {
-            //openSocketIfClosed();
+            openSocketIfClosed();
             out.println(request);
             return in.readLine();
         } catch (IOException e) {
@@ -140,23 +142,11 @@ public class GuestPlayer implements Player {
         return sendRequestToServer("boardState");
     }
 
-    private void printBoard() {
-        if(gameBoardStatus == null){
-            gameBoardStatus = getCurrentBoard();
-        }
-        String[] tsa = gameBoardStatus.split(":");
-        for(String s : tsa){
-            System.out.println(s);
-        }
-    }
-
     private void startListeningToServer() {
-        //listening = false;
         try {
-            //openSocketIfClosed();
-            listenerIn = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
+            openSocketIfClosed();
+            BufferedReader listenerIn = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
             listeningThread = new Thread(() -> listeningToServer(listenerIn));
-            //listening = true;
             listeningThread.start();
         } catch (IOException e) {
             throw new RuntimeException("Error setting up listening thread: " + e.getMessage(), e);
@@ -166,18 +156,13 @@ public class GuestPlayer implements Player {
     private void listeningToServer(BufferedReader listenerIn) {
         try {
             while (listening) {
-                String response = listenerIn.readLine();
-                if (response != null) {
-                    // Process the update received from the server
-                    // ...
-                    if (response.contains("T:t")) {
-                        System.out.println("Its my turn!");
-                        setTurn(true);
-                        //break;
-                    } else if (response.contains("BU,")) {
-                        //System.out.println("Board update received");
-                        this.gameBoardStatus = response.split(",")[1];
-                        printBoard();
+                if (listenerIn.ready()) {
+                    String response = listenerIn.readLine();
+                    if (response != null) {
+                        System.out.println("Got update from server: " + response);
+                        setChanged();
+                        notifyObservers(response); // create an event and notify the observers
+                        clearChanged();
                     }
                 }
             }
@@ -213,14 +198,11 @@ public class GuestPlayer implements Player {
 
     public boolean isMyTurn() {
         return isMyTurn;
-
-//        boolean turn = Boolean.parseBoolean(sendRequestToServer("isMyTurn," + name + ":" + playerID));
-//        if (turn)
-//            stopListeningToServer();
-//        return turn;
     }
 
     public String startGame() {
+        if (this instanceof HostPlayer)
+            setTurn(true); // Host is the first player and starts the game
         return sendRequestToServer("startGame," + name + ":" + playerID);
     }
 
@@ -234,7 +216,6 @@ public class GuestPlayer implements Player {
         sendRequestToServer("endTurn" + name + ":" + playerID);
         setTurn(false);
         startListeningToServer();
-
         return true;
     }
 

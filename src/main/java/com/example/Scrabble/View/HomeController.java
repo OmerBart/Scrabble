@@ -29,12 +29,8 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // welcomeText.setVisible(false);
         viewModel = ViewModel.get();
         viewModel.playerNameProperty.bind(nameInput.textProperty());
-        nameInput.textProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("View model: " + viewModel.playerNameProperty.getValue());
-        });
     }
 
     @FXML
@@ -61,6 +57,7 @@ public class HomeController implements Initializable {
                 welcomeText.setText("Please enter a name");
                 return;
             }
+            viewModel.hostGame();
             Parent root = FXMLLoader.load(getClass().getResource("loby-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root, 1000, 700);

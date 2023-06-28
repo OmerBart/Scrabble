@@ -1,11 +1,13 @@
 package com.example.Scrabble.Model.LocalServer;
 
 import com.example.Scrabble.Model.Game.Board;
+import com.example.Scrabble.Model.Game.BoardTmp;
 import com.example.Scrabble.Model.Game.Tile;
 import com.example.Scrabble.Model.Game.Word;
 import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.Player;
 import com.example.Scrabble.Model.ScrabbleDictionary.IOserver.BookScrabbleHandler;
+import com.example.Scrabble.Model.ServerUtils.ClientHandler;
 import com.example.Scrabble.Model.ServerUtils.MyServer;
 
 import java.io.IOException;
@@ -53,7 +55,7 @@ public class GameManager {
     public synchronized String getPlayerTiles(String playerName) {
         StringBuilder tiles = new StringBuilder();
         for (Tile tile : playerTiles.get(playerName)) {
-            //System.out.println("Tile: " + tile + "Player: " + playerName);
+            // System.out.println("Tile: " + tile + "Player: " + playerName);
             tiles.append(tile).append(" ");
         }
         return tiles.toString();
@@ -67,9 +69,10 @@ public class GameManager {
             playersList.add(player);
             playerScores.put(player.getName(), 0);
             playerTiles.put(player.getName(), new ArrayList<>());
-            if (playersList.size() > 1)
-                System.out.println("Player added to the game successfully with ID: " + player.getPlayerID());
-
+            if (playersList.size() > 1) {
+                //System.out.println("Player added to the game successfully with ID: " + player.getPlayerID());
+                updatePlayer("player added with ID: " + player.getPlayerID(), 0);
+            }
             return "Player added to the game successfully with ID: " + player.getPlayerID();
         }
     }
@@ -95,18 +98,19 @@ public class GameManager {
         updatePlayer("T:true", turn % playersList.size());
     }
 
-//    public synchronized String myTurn(String playerName) {
-//        while (!playersList.get(turn % playersList.size()).getName().contains(playerName)) {
-//            try {
-//                System.out.println(playerName + " is waiting for their turn");
-//                wait(1000);
-//            } catch (InterruptedException e) {
-//                return "T:false";
-//            }
-//        }
-//        System.out.println(playerName + " is playing");
-//        return "T:true";
-//    }
+    // public synchronized String myTurn(String playerName) {
+    // while (!playersList.get(turn %
+    // playersList.size()).getName().contains(playerName)) {
+    // try {
+    // System.out.println(playerName + " is waiting for their turn");
+    // wait(1000);
+    // } catch (InterruptedException e) {
+    // return "T:false";
+    // }
+    // }
+    // System.out.println(playerName + " is playing");
+    // return "T:true";
+    // }
 
     public synchronized String startGame(String playerName) {
         IOserver.start();
@@ -116,16 +120,18 @@ public class GameManager {
             for (Player p : playersList)
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
+        updatePlayers("game started!");
 
         hasGameStarted = true;
         return "Game Started!";
     }
 
-    public synchronized String getTilefromBag(String playerName) {
+    public String getTilefromBag(String playerName) {
         Tile t = bag.getRand();
-        if (t == null)
+        if (t == null) {
+            System.out.println("Bag is empty!");
             return "Bag is empty!";
-        else {
+        } else {
             playerTiles.get(playerName).add(t);
             updatePlayers(playerName + " got a new tile: " + t);
             return "Got: " + t;
@@ -135,7 +141,8 @@ public class GameManager {
     public void endTurn() {
         System.out.println(playersList.get((turn) % playersList.size()).getName() + "'s turn ended");
         turn++;
-        //updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn starts now!");
+        // updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn
+        // starts now!");
         myTurn();
 
     }
@@ -158,42 +165,25 @@ public class GameManager {
         return Integer.toString(playerScores.getOrDefault(playerName, 0));
     }
 
-    public synchronized String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
+    public String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
         System.out.println("Placing word: " + word + " at: " + x + " " + y + " " + isHorizontal);
         char[] carr = word.toUpperCase().toCharArray();
         Tile[] wordTiles = new Tile[word.length()];
         int index = 0;
         for (char c : carr) {
-            //System.out.println("Looking for tile: " + c );
-            try {
-                wordTiles[index] = playerTiles.get(playerName)
-                        .stream()
-                        .filter(t -> t.getLetter() == c)
-                        .findFirst()
-                        .orElseThrow(NoSuchElementException::new);
-            } catch (NoSuchElementException e) {
-                return "You don't have these Tiles!";
+            if (c == '_')
+                wordTiles[word.indexOf(c)] = null;
+            else {
+                wordTiles[word.indexOf(c)] = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c)
+                        .findFirst().get();
+                playerTiles.get(playerName).remove(wordTiles[word.indexOf(c)]);
             }
-            System.out.println("Placing tile: " + wordTiles[index].toString());
-            playerTiles.get(playerName).remove(wordTiles[index]);
-            index++;
+            System.out.println("Placing tile: " + wordTiles[word.indexOf(c)].toString());
+
         }
         int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
-        if(score > 0){
-            System.out.println("Score: " + score);
-            updatePlayers("BU,"+getGameBoard());
-            return Integer.toString(score);
-        }
-        // Word placement failed, returning tiles to player
-        else {
-            for (Tile t : wordTiles)
-                playerTiles.get(playerName).add(t);
-            return "Word placement failed!";
-        }
+        return Integer.toString(score);
     }
-
-
-
 
     public synchronized String queryIOserver(String qword) {
         try {
@@ -204,6 +194,7 @@ public class GameManager {
                 String args = "Q,";
                 for (String book : gameBooks)
                     args += book + ",";
+                System.out.println("wowowo " + args + qword.split(":")[1]);
                 out.println(args + qword.split(":")[1]);
                 out.flush();
             } else if (qword.startsWith("C")) {
@@ -227,6 +218,10 @@ public class GameManager {
     }
 
     private void updatePlayers(String msg) {
+        System.out.println(turn % playersList.size());
+//        if(turn == 0)
+//            hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn+1 % playersList.size()));
+//        else
         hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn % playersList.size()));
     }
 
