@@ -1,8 +1,9 @@
 package com.example.Scrabble.DevMains;
 
-import com.example.Scrabble.Model.LocalServer.GameManager;
+//import com.example.Scrabble.Model.LocalServer.GameManager;
 import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.HostPlayer;
+
 
 import java.util.Objects;
 import java.util.Scanner;
@@ -12,7 +13,7 @@ import static java.lang.Thread.sleep;
 public class LocalHostServerTestMain {
     public static void main(String[] args) throws InterruptedException {
 
-        GameManager gameManager = GameManager.get();
+        //GameManager gameManager = GameManager.get();
         Scanner scanner = new Scanner(System.in);
 
         // Create host player
@@ -59,7 +60,7 @@ public class LocalHostServerTestMain {
         }
 
         // Close the game
-        gameManager.stopGame();
+        //gameManager.stopGame();
         scanner.close();
 
 

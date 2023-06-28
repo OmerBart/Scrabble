@@ -36,29 +36,27 @@ public class GuestPlayerTest {
                 System.out.println("Guest getting new Tile: " + guestPlayer.getTile());
                 System.out.println("Placing word...");
                 // Place word logic here
-                System.out.println("Enter word to place: word,x,y,isHorizontal");
-                String input = scanner.nextLine();
-                String[] inputArray = input.split(",");
-                System.out.println("For word: " +
-                        inputArray[0] +
-                        " Got " +
-                        guestPlayer.placeWord(inputArray[0], Integer.parseInt(inputArray[1]), Integer.parseInt(inputArray[2]), Boolean.parseBoolean(inputArray[3])));
-                String[] tsa = guestPlayer.getCurrentBoard().split(":");
-                for(String s: tsa) {
-                    System.out.println(s);
-                }
-               // System.out.println(guestPlayer.getCurrentBoard());
+//                System.out.println("Enter word to place: word,x,y,isHorizontal");
+//                String input = scanner.nextLine();
+//                String[] inputArray = input.split(",");
+//                System.out.println("For word: " +
+//                        inputArray[0] +
+//                        " Got " +
+//                        guestPlayer.placeWord(inputArray[0], Integer.parseInt(inputArray[1]),
+//                                Integer.parseInt(inputArray[2]), Boolean.parseBoolean(inputArray[3]))
+//                        + " points!");
+
                 guestPlayer.endTurn();
                 count++;
             }
-                onSpinWait();
+//            else
+//                System.out.println("Not my turn");
+            onSpinWait();
         } while (count <= 1);
 
         // Close the game
         guestPlayer.disconnectFromServer();
         scanner.close();
-
-
 
     }
 }

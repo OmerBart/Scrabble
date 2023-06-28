@@ -46,7 +46,7 @@ public class PlayerHandler implements ClientHandler {
 
     public void sendMsg(String msg) {
         if (writer != null) {
-            writer.println("update:" + msg);
+            writer.println(msg);
             writer.flush();
         }
     }
