@@ -1,7 +1,7 @@
 package com.example.Scrabble.Model.LocalServer;
 
 import com.example.Scrabble.Model.Game.Board;
-import com.example.Scrabble.Model.Game.BoardTmp;
+
 import com.example.Scrabble.Model.Game.Tile;
 import com.example.Scrabble.Model.Game.Word;
 import com.example.Scrabble.Model.Player.GuestPlayer;
