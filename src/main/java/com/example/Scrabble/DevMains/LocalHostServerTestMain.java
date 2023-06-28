@@ -21,7 +21,7 @@ public class LocalHostServerTestMain {
 
         // Wait for players to join
         System.out.println("Waiting for players to join...");
-        sleep(1000);
+        sleep(2000);
         // Start the game
         System.out.println("Start game? (y/n)");
         if(Objects.equals(scanner.nextLine(), "y")) {
