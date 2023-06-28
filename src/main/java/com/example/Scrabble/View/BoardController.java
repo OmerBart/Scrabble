@@ -93,7 +93,6 @@ public class BoardController implements Initializable, Observer {
         System.out.println("View: " + arg);
         Platform.runLater(() -> {
             boardBuild();
-            setTiles();
         });
     }
 
@@ -209,7 +208,6 @@ public class BoardController implements Initializable, Observer {
         selectedTile = null;
         if (isSequenceWord()) {
             Boolean starOrOcupied = false;
-            String word = "";
             Character[] wordArr = new Character[wordToSet.size()];
             int i = 0;
             for (BoardCell cell : wordToSet) {
@@ -218,10 +216,8 @@ public class BoardController implements Initializable, Observer {
                     wordArr[i++] = null;
                 } else if (cell.isStar) {
                     starOrOcupied = true;
-                    word += cell.letter;
                     wordArr[i++] = cell.letter.charAt(0);
                 } else {
-                    word += cell.letter;
                     wordArr[i++] = cell.letter.charAt(0);
                 }
             }
@@ -232,7 +228,7 @@ public class BoardController implements Initializable, Observer {
                 return;
             }
             Boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row ? true : false;
-            String res = viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
+            viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
             boardBuild();
             setTiles();
             wordToSet.clear();

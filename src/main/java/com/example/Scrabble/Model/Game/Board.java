@@ -1,8 +1,5 @@
 package com.example.Scrabble.Model.Game;
 
-import com.example.Scrabble.Model.Game.Word;
-import com.example.Scrabble.Model.LocalServer.GameManager;
-
 import java.util.ArrayList;
 
 // singltone class
