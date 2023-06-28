@@ -38,14 +38,15 @@ public class ViewModel implements Observer {
         scoreProperty = new SimpleStringProperty("0");
         boardProperty = new SimpleStringProperty("");
         playersProperty = new SimpleStringProperty("");
-        numberOfPlayersProperty = new SimpleStringProperty("0");
+        numberOfPlayersProperty = new SimpleStringProperty("");
     }
 
     @Override
     public void update(java.util.Observable o, Object arg) {
-        System.out.println("VM: Player has been updated");
+        System.out.println("VM: Game has been updated");
         System.out.println("VM: " + arg);
         if (arg instanceof String) {
+            String argString = (String) arg;
             if (arg.equals("game started!")) {
                 try {
                     Parent root = FXMLLoader
@@ -59,8 +60,14 @@ public class ViewModel implements Observer {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
-            } else {
-                System.out.println("VM: " + arg);
+            } else if (argString.startsWith("player added")) {
+                // int numberOfPlayers = Integer.parseInt(numberOfPlayersProperty.getValue());
+                // ++numberOfPlayers;
+                // String players = String.valueOf(numberOfPlayers);
+                Platform.runLater(() -> {
+                    numberOfPlayersProperty.setValue(String.valueOf(guestPlayer.getNumberOfPlayers()));
+                    // numberOfPlayersProperty.setValue(players);
+                });
             }
         }
     }
@@ -68,6 +75,7 @@ public class ViewModel implements Observer {
     public void hostGame() {
         guestPlayer = new GuestPlayer(playerNameProperty.getValue());
         guestPlayer = HostPlayer.get(guestPlayer);
+        numberOfPlayersProperty.setValue(String.valueOf(guestPlayer.getNumberOfPlayers()));
         guestPlayer.addObserver(this);
     }
 
@@ -78,7 +86,8 @@ public class ViewModel implements Observer {
     public String joinGame(String gameId) {
         guestPlayer = new GuestPlayer(playerNameProperty.getValue(), gameId);
         guestPlayer.addObserver(this);
-        return guestPlayer.joinGame();
+        String result = guestPlayer.joinGame();
+        return result;
     }
 
     public Integer getScore() {
@@ -88,12 +97,13 @@ public class ViewModel implements Observer {
     public String tryPlaceWord(Character[] word, int x, int y, boolean isHorizontal) {
         if (guestPlayer.isMyTurn()) {
 
-            // DONE: omer from here im passing the word as a char array, you need to change the
+            // DONE: omer from here im passing the word as a char array, you need to change
+            // the
             // placeWord function to accept a char array instead of a string
 
             String result = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
 
-            //String result ="0";
+            // String result ="0";
             System.out.println("new score: " + result);
             int score = Integer.parseInt(result);
             score += Integer.parseInt(scoreProperty.getValue());
@@ -121,6 +131,11 @@ public class ViewModel implements Observer {
 
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    public Boolean querryWord(String word) {
+        // return true;
+        return guestPlayer.queryIO(word);
     }
 
 }

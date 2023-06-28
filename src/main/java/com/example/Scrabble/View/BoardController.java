@@ -302,6 +302,7 @@ public class BoardController implements Initializable {
             }
             // }
             wordToSet.clear();
+            wordToCheck.setValue("");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Word is not a sequence");
@@ -316,7 +317,7 @@ public class BoardController implements Initializable {
             }
             wordToSet.clear();
         }
-        System.out.println(viewModel.getBoard());
+        // System.out.println(viewModel.getBoard());
     }
 
     private boolean isSequenceWord() {
@@ -343,5 +344,36 @@ public class BoardController implements Initializable {
             }
         }
         return isSequence;
+    }
+
+    public void clear() {
+        for (BoardCell cell : wordToSet) {
+            Tile tile = new Tile(cell.letter);
+            cell.setDefaultStyle();
+            tile.setOnMouseClicked(event -> {
+                handleTileClick(event, tile);
+            });
+            tiles.getChildren().add(tile);
+        }
+        wordToSet.clear();
+        wordToCheck.setValue("");
+        wordPane.getChildren().get(0).setStyle("-fx-fill: white ;");
+
+    }
+
+    public void onQuerryClick() {
+        System.out.println("Querry");
+        String word = wordToCheck.getValue();
+        if (word.length() > 0) {
+            if (viewModel.querryWord(word)) {
+                wordPane.getChildren().get(0).setStyle("-fx-fill: green ;");
+            } else {
+                wordPane.getChildren().get(0).setStyle("-fx-fill: red;");
+            }
+        }
+    }
+
+    public void onChallengeClick() {
+        System.out.println("Challenge");
     }
 }

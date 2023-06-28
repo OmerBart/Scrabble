@@ -25,8 +25,8 @@ public class LobyController implements Initializable {
     private Scene scene;
     private ViewModel viewModel;
 
-    private int numberOfRoundsInt;
-    private StringProperty numberOfPlayersProperty;
+    @FXML
+    Label nofcontainer;
 
     @FXML
     Label waitingText;
@@ -51,6 +51,9 @@ public class LobyController implements Initializable {
         } else {
             waitingText.setVisible(true);
             startGameButton.setVisible(false);
+            numberOfRounds.setVisible(false);
+            numberOfPlayers.setVisible(false);
+            nofcontainer.setVisible(false);
         }
     }
 
