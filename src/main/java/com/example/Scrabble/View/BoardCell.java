@@ -52,7 +52,16 @@ public class BoardCell extends StackPane {
         Label label = new Label(letter);
         Rectangle rect = new Rectangle(40,40);
         switch (letter) {
-            case "star":
+            case "1":
+                label = new Label("");
+                rect = new Rectangle(40,40);
+                rect.getStyleClass().add("board-cell");
+                this.label = label;
+                this.rect = rect;
+                this.bonus = "none";
+                break;
+
+            case "6":
                 label = new Label("★");
                 rect = new Rectangle(40,40);
                 rect.getStyleClass().add("star");
@@ -61,7 +70,7 @@ public class BoardCell extends StackPane {
                 this.isStar = true;
                 this.bonus = "star";
                 break;
-            case "2L":
+            case "2":
                 label = new Label("2L");
                 rect = new Rectangle(40,40);
                 rect.getStyleClass().add("bonus-2L");
@@ -70,7 +79,7 @@ public class BoardCell extends StackPane {
                 this.bonus = "2L";
                 break;
 
-            case "3L":
+            case "3":
                 label = new Label("3L");
                 rect = new Rectangle(40,40);
                 rect.getStyleClass().add("bonus-3L");
@@ -79,7 +88,7 @@ public class BoardCell extends StackPane {
                 this.bonus = "3L";
                 break;
 
-            case "2W":
+            case "4":
                 label = new Label("2W");
                 rect = new Rectangle(40,40);
                 rect.getStyleClass().add("bonus-2W");
@@ -88,7 +97,7 @@ public class BoardCell extends StackPane {
                 this.bonus = "2W";
                 break;
 
-            case "3W":
+            case "5":
                 label = new Label("3W");
                 rect = new Rectangle(40,40);
                 rect.getStyleClass().add("bonus-3W");
@@ -100,9 +109,10 @@ public class BoardCell extends StackPane {
             default:
                 label = new Label(letter);
                 rect = new Rectangle(40,40);
-                rect.getStyleClass().add("board-cell");
+                rect.getStyleClass().add("board-cell-occupied");
                 this.label = label;
                 this.rect = rect;
+                // this.isOccupied = true;
                 break;
         }
         this.getChildren().addAll(rect, label);

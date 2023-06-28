@@ -56,7 +56,6 @@ public class GameManager {
     public synchronized String getPlayerTiles(String playerName) {
         StringBuilder tiles = new StringBuilder();
         for (Tile tile : playerTiles.get(playerName)) {
-            // System.out.println("Tile: " + tile + "Player: " + playerName);
             tiles.append(tile).append(" ");
         }
         return tiles.toString();
@@ -174,6 +173,7 @@ public class GameManager {
     }
 
     public String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
+        System.out.println("Placing word: " + word + " at: " + x + "," + y + " isHorizontal: " + isHorizontal);
         char[] carr = word.toUpperCase().toCharArray();
         Tile[] wordTiles = new Tile[word.length()];
         int index = 0;
@@ -189,14 +189,15 @@ public class GameManager {
         }
         Word w = new Word(wordTiles, x, y, !isHorizontal);
         int score = gameBoard.tryPlaceWord(w);
-        if(score < 1){
-            for(Tile t : wordTiles){
-                if(t != null)
-                    playerTiles.get(playerName).add(t);
-            }
-            return "Invalid move!";
-        }
+        // if(score < 1){
+        //     for(Tile t : wordTiles){
+        //         if(t != null)
+        //             playerTiles.get(playerName).add(t);
+        //     }
+        //     return "Invalid move!";
+        // }
         playerScores.put(playerName, playerScores.get(playerName) + score);
+        updatePlayers("Board Updated "+playerName + " got " + score + " points for " + word);
         return Integer.toString(score);
     }
 

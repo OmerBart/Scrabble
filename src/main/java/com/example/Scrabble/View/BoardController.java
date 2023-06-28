@@ -27,6 +27,7 @@ public class BoardController implements Initializable {
     ArrayList<BoardCell> wordToSet = new ArrayList<>();
     ViewModel viewModel;
     StringProperty wordToCheck;
+    StringProperty boardString = new SimpleStringProperty("");
 
     @FXML
     StackPane wordPane;
@@ -78,14 +79,13 @@ public class BoardController implements Initializable {
     }
 
     public void boardBuild() {
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
-                newCellBuilder(i, j);
+        String[][] boardArray = viewModel.getBoard();
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                newCellBuilder(boardArray[i][j], i + 1, j + 1);
             }
         }
         boardBordersBuild();
-        drawStar();
-        drawBonus();
     }
 
     public void boardBordersBuild() {
@@ -112,86 +112,6 @@ public class BoardController implements Initializable {
             stack.setAlignment(Pos.CENTER);
             board.add(stack, 0, i);
         }
-    }
-
-    private void drawStar() {
-        newCellBuilder("star", 8, 8);
-    }
-
-    public void drawBonus() {
-        newCellBuilder("3W", 1, 1);
-        newCellBuilder("3W", 1, 8);
-        newCellBuilder("3W", 1, 15);
-        newCellBuilder("3W", 8, 1);
-        newCellBuilder("3W", 8, 15);
-        newCellBuilder("3W", 15, 1);
-        newCellBuilder("3W", 15, 8);
-        newCellBuilder("3W", 15, 15);
-
-        newCellBuilder("2W", 2, 2);
-        newCellBuilder("2W", 3, 3);
-        newCellBuilder("2W", 4, 4);
-        newCellBuilder("2W", 5, 5);
-        newCellBuilder("2W", 11, 11);
-        newCellBuilder("2W", 12, 12);
-        newCellBuilder("2W", 13, 13);
-        newCellBuilder("2W", 14, 14);
-        newCellBuilder("2W", 2, 14);
-        newCellBuilder("2W", 3, 13);
-        newCellBuilder("2W", 4, 12);
-        newCellBuilder("2W", 5, 11);
-        newCellBuilder("2W", 11, 5);
-        newCellBuilder("2W", 12, 4);
-        newCellBuilder("2W", 13, 3);
-        newCellBuilder("2W", 14, 2);
-
-        newCellBuilder("2L", 1, 4);
-        newCellBuilder("2L", 4, 1);
-        newCellBuilder("2L", 1, 12);
-        newCellBuilder("2L", 12, 1);
-        newCellBuilder("2L", 3, 7);
-        newCellBuilder("2L", 7, 3);
-        newCellBuilder("2L", 4, 8);
-        newCellBuilder("2L", 8, 4);
-        newCellBuilder("2L", 9, 3);
-        newCellBuilder("2L", 3, 9);
-        newCellBuilder("2L", 15, 4);
-        newCellBuilder("2L", 4, 15);
-        newCellBuilder("2L", 7, 7);
-        newCellBuilder("2L", 7, 9);
-        newCellBuilder("2L", 9, 7);
-        newCellBuilder("2L", 9, 9);
-        newCellBuilder("2L", 12, 8);
-        newCellBuilder("2L", 8, 12);
-        newCellBuilder("2L", 7, 13);
-        newCellBuilder("2L", 13, 7);
-        newCellBuilder("2L", 9, 13);
-        newCellBuilder("2L", 13, 9);
-        newCellBuilder("2L", 4, 15);
-        newCellBuilder("2L", 15, 4);
-        newCellBuilder("2L", 12, 15);
-        newCellBuilder("2L", 15, 12);
-
-        newCellBuilder("3L", 2, 6);
-        newCellBuilder("3L", 6, 2);
-        newCellBuilder("3L", 2, 10);
-        newCellBuilder("3L", 10, 2);
-        newCellBuilder("3L", 6, 6);
-        newCellBuilder("3L", 6, 10);
-        newCellBuilder("3L", 10, 6);
-        newCellBuilder("3L", 10, 10);
-        newCellBuilder("3L", 6, 14);
-        newCellBuilder("3L", 14, 6);
-        newCellBuilder("3L", 10, 14);
-        newCellBuilder("3L", 14, 10);
-    }
-
-    private void newCellBuilder(int r, int c) {
-        BoardCell cell = new BoardCell(r, c);
-        cell.setOnMouseClicked(event -> {
-            handleBoardClick(event, cell);
-        });
-        board.add(cell, c, r);
     }
 
     private void newCellBuilder(String letter, int r, int c) {
@@ -272,6 +192,7 @@ public class BoardController implements Initializable {
             Character[] wordArr = new Character[wordToSet.size()];
             int i = 0;
             for (BoardCell cell : wordToSet) {
+                System.out.println(cell.letter);
                 if (cell.isOccupied) {
                     starOrOcupied = true;
                     wordArr[i++] = null;
@@ -293,14 +214,7 @@ public class BoardController implements Initializable {
             Boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row ? true : false;
             String res = viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
             System.out.println(res);
-            // if (Integer.parseInt(res) > 0) {
-            for (BoardCell cell : wordToSet) {
-                cell.isOccupied = true;
-                cell.getRect().getStyleClass().clear();
-                cell.getRect().getStyleClass().add("board-cell-occupied");
-                cell.isOccupied = true;
-            }
-            // }
+            boardBuild();
             wordToSet.clear();
             wordToCheck.setValue("");
         } else {

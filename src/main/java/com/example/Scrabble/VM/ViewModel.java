@@ -68,6 +68,8 @@ public class ViewModel implements Observer {
                     numberOfPlayersProperty.setValue(String.valueOf(guestPlayer.getNumberOfPlayers()));
                     // numberOfPlayersProperty.setValue(players);
                 });
+            } else if (argString.startsWith("Board")) {
+                
             }
         }
     }
