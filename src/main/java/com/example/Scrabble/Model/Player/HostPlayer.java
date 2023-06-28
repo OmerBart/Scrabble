@@ -40,7 +40,7 @@ public class HostPlayer extends GuestPlayer {
      * @param books must be in the format of "search_books/BookName.txt" or "search_books/BookName.txt search_books/BookName2.txt....ect"
      */
     public void setBooks(String... books) {
-        gameManager.setBooks(books);
+        gameManager.setGameBooks(books);
     }
 
 
