@@ -117,7 +117,6 @@ public class GameManager {
             return "Bag is empty!";
         } else {
             playerTiles.get(playerName).add(t);
-            updatePlayers(playerName + " got a new tile: " + t);
             return "Got: " + t;
         }
     }
