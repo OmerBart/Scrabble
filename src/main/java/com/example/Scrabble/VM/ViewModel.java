@@ -101,7 +101,6 @@ public class ViewModel extends Observable implements Observer {
     public String tryPlaceWord(Character[] word, int x, int y, boolean isHorizontal) {
         if (guestPlayer.isMyTurn()) {
             String result = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
-            System.out.println("new score: " + result);
             int score = Integer.parseInt(result);
             score += Integer.parseInt(scoreProperty.getValue());
             scoreProperty.setValue(String.valueOf(score));
@@ -135,7 +134,6 @@ public class ViewModel extends Observable implements Observer {
 
     public String getTile() {
         String result = guestPlayer.getTile();
-        System.out.println(result);
         return result.split(" ")[1];
     }
 

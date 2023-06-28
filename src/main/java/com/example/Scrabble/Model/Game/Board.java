@@ -135,7 +135,6 @@ public class Board {
 
         // check if the word is horizontal
         if (!vertical) {
-            System.out.println("horizontal");
             for (int i = 0; i < length; i++) {
                 if (tiles[i] != null) {
                     int letterScore = tiles[i].score;
@@ -170,7 +169,6 @@ public class Board {
                 }
             }
         } else if (vertical) {
-            System.out.println("vertical");
             for (int i = 0; i < length; i++) {
                 if (tiles[i] != null) {
                     int letterScore = tiles[i].score;
