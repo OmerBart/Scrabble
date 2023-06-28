@@ -96,20 +96,6 @@ public class GameManager {
         updatePlayer("T:true", turn % playersList.size());
     }
 
-    // public synchronized String myTurn(String playerName) {
-    // while (!playersList.get(turn %
-    // playersList.size()).getName().contains(playerName)) {
-    // try {
-    // System.out.println(playerName + " is waiting for their turn");
-    // wait(1000);
-    // } catch (InterruptedException e) {
-    // return "T:false";
-    // }
-    // }
-    // System.out.println(playerName + " is playing");
-    // return "T:true";
-    // }
-
     public synchronized String startGame(String playerName) {
         IOserver.start();
         System.out.println("IO server started successfully at: " + IOserver.getPort());
