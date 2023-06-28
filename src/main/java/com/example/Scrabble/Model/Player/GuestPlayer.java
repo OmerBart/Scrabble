@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class GuestPlayer extends java.util.Observable implements Player {
     private volatile String name;
     private volatile int playerID;
@@ -17,7 +16,6 @@ public class GuestPlayer extends java.util.Observable implements Player {
     private volatile BufferedReader in;
     private volatile Thread listeningThread;
     private volatile boolean isMyTurn;
-
 
     public GuestPlayer(Player player) {
         this.name = player.getName().split(":")[0];
@@ -68,12 +66,21 @@ public class GuestPlayer extends java.util.Observable implements Player {
         setID(Integer.parseInt(response.split(":")[1].trim()));
         setTurn(false); // Set everyone's turn to false until the game starts
         startListeningToServer();
+        //System.out.println("Joined game successfully" + getName());
         return response;
     }
 
     public int getScore() {
         openSocketIfClosed();
         return Integer.parseInt(sendRequestToServer("getScore:" + name + ":" + playerID));
+    }
+
+
+
+    public int getNumberOfPlayers() {
+        String response = getPlayerList();
+        // System.out.println("getNumberOfPlayers:: response: " + response);
+        return response.split(",").length;
     }
 
     public String getTile() {
@@ -96,7 +103,6 @@ public class GuestPlayer extends java.util.Observable implements Player {
         for (Character c : word) {
             sWord += c == null ? "_" : c;
         }
-        System.out.println("placeWord:" + name + ":" + playerID + ":" + sWord + ":" + x + ":" + y + ":" + isHorizontal);
         return sendRequestToServer(
                 "placeWord:" + name + ":" + playerID + ":" + sWord + ":" + x + ":" + y + ":" + isHorizontal);
     }
@@ -169,6 +175,10 @@ public class GuestPlayer extends java.util.Observable implements Player {
         } catch (IOException e) {
             System.err.println("Error reading server update: " + e.getMessage());
         }
+    }
+
+    public String getPlayerList() {
+        return sendRequestToServer("getPlayerList");
     }
 
     private void stopListeningToServer() {

@@ -26,6 +26,7 @@ public class GuestPlayerTest {
         System.out.println("Waiting for game to start...");
         sleep(1000);
         int count = 0;
+        System.out.println(guestPlayer.getPlayerList());
         // Game loop
         do {
             // Guest player's turn

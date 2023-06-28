@@ -12,14 +12,14 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ListView?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+<VBox alignment="CENTER" spacing="30.0" xmlns:fx="http://javafx.com/fxml"
     fx:controller="com.example.Scrabble.View.LobyController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
     <Label fx:id="gameid" text="Game ID : 'localhost:65432'" />
     <Label fx:id="waitingText" text="Waiting for Host to start the Game.." visible='false' />
-    <Label text="Number of Players: " />
+    <Label fx:id="nofcontainer" text="Number of Players: " />
     <Label fx:id="numberOfPlayers" text="1" />
     <!-- number of rounds -->
     <Label text="Number of Rounds: " />
