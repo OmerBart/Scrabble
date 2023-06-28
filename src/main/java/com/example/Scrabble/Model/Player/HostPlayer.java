@@ -49,7 +49,7 @@ public class HostPlayer extends GuestPlayer {
     }
 
     public void stopGame() {
-        gameManager.stopGame();
+        gameManager.endGame();
         // hostGameServer.close();
     }
     
