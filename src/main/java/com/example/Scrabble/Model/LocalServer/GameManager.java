@@ -44,7 +44,7 @@ public class GameManager {
         playerScores = new LinkedHashMap<>();
         playerTiles = new LinkedHashMap<>();
         hasGameStarted = false;
-        gameBooks = new String[]{"search_books/The Matrix.txt,search_books/test.txt"};
+        gameBooks = new String[] { "search_books/The Matrix.txt,search_books/test.txt" };
         turn = 0;
     }
 
@@ -71,7 +71,6 @@ public class GameManager {
             playerScores.put(player.getName(), 0);
             playerTiles.put(player.getName(), new ArrayList<>());
             if (playersList.size() > 1) {
-                //System.out.println("Player added to the game successfully with ID: " + player.getPlayerID());
                 updatePlayer("player added with ID: " + player.getPlayerID(), 0);
             }
             return "Player added to the game successfully with ID: " + player.getPlayerID();
@@ -195,6 +194,15 @@ public class GameManager {
         return Integer.toString(score);
     }
 
+    public synchronized String getPlayerList() {
+        StringBuilder sb = new StringBuilder();
+        // int c = 1;
+        for (Player p : playersList) {
+            sb.append(p.getName()).append(":Score:").append(playerScores.get(p.getName())).append(",");
+        }
+        return sb.toString();
+    }
+
     public synchronized String queryIOserver(String qword) {
         try {
             Socket socket = new Socket("localhost", IOserver.getPort());
@@ -229,9 +237,10 @@ public class GameManager {
 
     private void updatePlayers(String msg) {
         System.out.println(turn % playersList.size());
-//        if(turn == 0)
-//            hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn+1 % playersList.size()));
-//        else
+        // if(turn == 0)
+        // hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn+1 %
+        // playersList.size()));
+        // else
         hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn % playersList.size()));
     }
 

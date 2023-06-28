@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class GuestPlayer extends java.util.Observable implements Player {
     private volatile String name;
     private volatile int playerID;
@@ -17,7 +16,6 @@ public class GuestPlayer extends java.util.Observable implements Player {
     private volatile BufferedReader in;
     private volatile Thread listeningThread;
     private volatile boolean isMyTurn;
-
 
     public GuestPlayer(Player player) {
         this.name = player.getName().split(":")[0];
@@ -75,6 +73,16 @@ public class GuestPlayer extends java.util.Observable implements Player {
     public int getScore() {
         openSocketIfClosed();
         return Integer.parseInt(sendRequestToServer("getScore:" + name + ":" + playerID));
+    }
+
+    public String getPlayerList() {
+        return sendRequestToServer("getPlayerList");
+    }
+
+    public int getNumberOfPlayers() {
+        String response = getPlayerList();
+        // System.out.println("getNumberOfPlayers:: response: " + response);
+        return response.split(",").length;
     }
 
     public String getTile() {

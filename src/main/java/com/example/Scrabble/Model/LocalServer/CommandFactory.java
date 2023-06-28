@@ -19,6 +19,8 @@ public class CommandFactory {
         } else if (request.contains("startGame")) {
             String playerName = request.split(",")[1];
             return new StartGameCommand(playerName);
+        } else if (request.contains("getPlayerList")) {
+            return new GetPlayerListCommand();
         } else if (request.contains("stopGame")) {
             return new StopGameCommand();
         } else if (request.contains("getScore")) {
@@ -46,9 +48,9 @@ public class CommandFactory {
             return new ChallengeCommand(request);
 
         }
-        else if (request.contains("getPlayerList")) {
-            return new GetPlayerListCommand();
-        }
+//        else if (request.contains("getTurn")) {
+//            return new GetTurnCommand();
+//        }
         else if (request.contains("endTurn")) {
             return new EndTurnCommand();
         } else if (request.contains("printTiles")) {
@@ -235,7 +237,6 @@ public class CommandFactory {
             return GM.queryIOserver(this.query);
         }
     }
-
     private class GetPlayerListCommand implements Command {
         @Override
         public String execute() {
@@ -243,4 +244,5 @@ public class CommandFactory {
             return GM.getPlayerList();
         }
     }
+
 }
