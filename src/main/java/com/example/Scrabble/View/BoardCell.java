@@ -27,7 +27,7 @@ public class BoardCell extends StackPane {
         this.isOccupied = false;
 
         Label label = new Label(letter);
-        Rectangle rect = new Rectangle(40, 40);
+        Rectangle rect = new Rectangle(40,40);
         if (row == 0 && col == 0) {
             rect.getStyleClass().add("hide");
         } else {
@@ -50,47 +50,56 @@ public class BoardCell extends StackPane {
         this.isOccupied = false;
 
         Label label = new Label(letter);
-        Rectangle rect = new Rectangle(40, 40);
+        Rectangle rect = new Rectangle(40,40);
         switch (letter) {
-            case "star":
+            case "1":
+                label = new Label("");
+                rect = new Rectangle(40,40);
+                rect.getStyleClass().add("board-cell");
+                this.label = label;
+                this.rect = rect;
+                this.bonus = "none";
+                break;
+
+            case "6":
                 label = new Label("★");
-                rect = new Rectangle(40, 40);
+                rect = new Rectangle(40,40);
                 rect.getStyleClass().add("star");
                 this.label = label;
                 this.rect = rect;
                 this.isStar = true;
                 this.bonus = "star";
                 break;
-            case "2L":
+            case "2":
                 label = new Label("2L");
-                rect = new Rectangle(40, 40);
+                rect = new Rectangle(40,40);
                 rect.getStyleClass().add("bonus-2L");
                 this.label = label;
                 this.rect = rect;
                 this.bonus = "2L";
                 break;
 
-            case "3L":
+            case "3":
                 label = new Label("3L");
-                rect = new Rectangle(40, 40);
+                rect = new Rectangle(40,40);
                 rect.getStyleClass().add("bonus-3L");
                 this.label = label;
                 this.rect = rect;
                 this.bonus = "3L";
                 break;
 
-            case "2W":
+            case "4":
                 label = new Label("2W");
-                rect = new Rectangle(40, 40);
+                rect = new Rectangle(40,40);
                 rect.getStyleClass().add("bonus-2W");
                 this.label = label;
                 this.rect = rect;
                 this.bonus = "2W";
                 break;
 
-            case "3W":
+            case "5":
                 label = new Label("3W");
-                rect = new Rectangle(40, 40);
+                rect = new Rectangle(40,40);
                 rect.getStyleClass().add("bonus-3W");
                 this.label = label;
                 this.rect = rect;
@@ -99,10 +108,11 @@ public class BoardCell extends StackPane {
 
             default:
                 label = new Label(letter);
-                rect = new Rectangle(40, 40);
-                rect.getStyleClass().add("board-cell");
+                rect = new Rectangle(40,40);
+                rect.getStyleClass().add("board-cell-occupied");
                 this.label = label;
                 this.rect = rect;
+                this.isOccupied = true;
                 break;
         }
         this.getChildren().addAll(rect, label);

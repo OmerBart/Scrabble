@@ -12,35 +12,19 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ListView?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+<VBox alignment="CENTER" spacing="30.0" xmlns:fx="http://javafx.com/fxml"
     fx:controller="com.example.Scrabble.View.LobyController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-
     <Label fx:id="gameid" text="Game ID : 'localhost:65432'" />
-    <VBox fx:id="playerList" alignment="CENTER" spacing="60.0">
-        <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-        </padding>
-        <HBox fx:id="player1" alignment="CENTER" spacing="200.0">
-            <Label fx:id="player1Name" text="Player 1" />
-            <!--  -->
-            <Button fx:id="player1Button" text="Ready" onAction="#onReadyButtonClick" />
-        </HBox>
-        <HBox fx:id="player2" alignment="CENTER" spacing="200.0" visible='false'>
-            <Label fx:id="player2Name" text="Player 2" />
-            <Button fx:id="player2Button" text="Ready" onAction="#onReadyButtonClick" />
-        </HBox>
-        <HBox fx:id="player3" alignment="CENTER" spacing="200.0" visible='false'>
-            <Label fx:id="player3Name" text="Player 3" />
-            <Button fx:id="player3Button" text="Ready" onAction="#onReadyButtonClick" />
-        </HBox>
-        <HBox fx:id="player4" alignment="CENTER" spacing="200.0" visible='false'>
-            <Label fx:id="player4Name" text="Player 4" />
-            <Button fx:id="player4Button" text="Ready" onAction="#onReadyButtonClick" />
-        </HBox>
-    </VBox>
-    <Button text="Start Game" onAction="#onHostGameButtonClick" />
+    <Label fx:id="waitingText" text="Waiting for Host to start the Game.." visible='false' />
+    <Label fx:id="nofcontainer" text="Number of Players: " />
+    <Label fx:id="numberOfPlayers" text="1" />
+    <!-- number of rounds -->
+    <Label text="Number of Rounds: " />
+    <ComboBox fx:id="numberOfRounds" prefWidth="150.0" visible="false" />
+
+    <Button fx:id="startGameButton" text="Start Game" onAction="#onStartGameButtonClick" />
     <Button text="Back" onAction="#onBackButtonClick" />
 </VBox>

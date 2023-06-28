@@ -9,28 +9,62 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
 
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
     fx:controller="com.example.Scrabble.View.BoardController">
-    <SplitPane>
+    <SplitPane dividerPositions="0.2">
         <AnchorPane>
             <VBox alignment="CENTER" spacing="20.0">
                 <padding>
                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                 </padding>
                 <Label fx:id="welcomeText" text='Welcome To Scrabble!!!!!!' />
-                <Button text="Place Word" onAction="#placeWord" />
-                <Button text="Get Tile" onAction="#getTile" />
-                <Label fx:id="scoreText" text='Score: 0' />
+                <HBox alignment="center" spacing="20.0">
+                    <Button text="Place Word" onAction="#placeWord" />
+                    <Button text="Get Tile" onAction="#getTile" />
+                    <Button text="Clear" onAction="#clear" />
+                </HBox>
                 <Label fx:id="nameText" text='Name:' />
+                <Label fx:id="scoreText" text='Score: 0' />
                 <Label text='Tiles:' />
                 <HBox fx:id="tiles" spacing="10" />
+                <Label text="Word:" />
+                <StackPane fx:id="wordPane" prefHeight="50.0" prefWidth="200.0" alignment="center">
+                    <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0"
+                            stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                        <Label fx:id="wordText" text="" />
+                    </children>
+                </StackPane>
+                <HBox alignment="center" spacing="20.0">
+                    <Button text="Querry" onAction="#onQuerryClick" />
+                    <Button text="Challenge (-10)" onAction="#onChallengeClick" />
+                </HBox>
             </VBox>
         </AnchorPane>
         <AnchorPane>
-            <GridPane fx:id="board" alignment="CENTER" hgap="1" vgap="1">
-            </GridPane>
+            <SplitPane dividerPositions="0.3">
+                <AnchorPane>
+                    <GridPane fx:id="board" alignment="CENTER" hgap="1" vgap="1">
+                    </GridPane>
+                </AnchorPane>
+                <AnchorPane>
+                    <VBox alignment="center" spacing="20.0">
+                        <padding>
+                            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        </padding>
+                        <Label text="Game Table " />
+                        <Label text="Player 1 score: " />
+                        <Label text="Player 1 score: " />
+                        <Label text="Player 1 score: " />
+                        <Label text="Player 1 score: " />
+                    </VBox>
+                </AnchorPane>
+            </SplitPane>
         </AnchorPane>
     </SplitPane>
 </VBox>

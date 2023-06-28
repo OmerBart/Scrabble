@@ -1,5 +1,8 @@
 package com.example.Scrabble.View;
 
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,22 +17,31 @@ import javafx.scene.shape.Rectangle;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Observer;
 import java.util.ResourceBundle;
 
 import com.example.Scrabble.VM.ViewModel;
 
-public class BoardController implements Initializable {
+public class BoardController implements Initializable, Observer {
 
     ArrayList<Tile> tilesList = new ArrayList<>();
     Tile selectedTile;
     ArrayList<BoardCell> wordToSet = new ArrayList<>();
     ViewModel viewModel;
+    StringProperty wordToCheck;
+    StringProperty boardString = new SimpleStringProperty("");
+
+    @FXML
+    StackPane wordPane;
 
     @FXML
     Label scoreText;
 
     @FXML
     Label nameText;
+
+    @FXML
+    Label wordText;
 
     @FXML
     private GridPane board;
@@ -44,10 +56,13 @@ public class BoardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Get ViewModel instance
         viewModel = ViewModel.get();
+        viewModel.addObserver(this);
 
         // Set welcome text and build board
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
+        wordToCheck = new SimpleStringProperty("");
+        wordText.textProperty().bind(wordToCheck);
         boardBuild();
 
         // Bindings
@@ -55,6 +70,12 @@ public class BoardController implements Initializable {
         scoreText.textProperty().bind(viewModel.scoreProperty);
 
         // Set first 7 tiles
+        setTiles();
+    }
+
+    public void setTiles() {
+        tilesList.clear();
+        tiles.getChildren().clear();
         String[] initialTiles = viewModel.getPlayerTiles().split(" ");
         for (String letter : initialTiles) {
             Tile tile = new Tile(letter);
@@ -66,15 +87,23 @@ public class BoardController implements Initializable {
         }
     }
 
+    @Override
+    public void update(java.util.Observable o, Object arg) {
+        System.out.println("View: Game has been updated");
+        System.out.println("View: " + arg);
+        Platform.runLater(() -> {
+            boardBuild();
+        });
+    }
+
     public void boardBuild() {
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 16; j++) {
-                newCellBuilder(i, j);
+        String[][] boardArray = viewModel.getBoard();
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                newCellBuilder(boardArray[i][j], i + 1, j + 1);
             }
         }
         boardBordersBuild();
-        drawStar();
-        drawBonus();
     }
 
     public void boardBordersBuild() {
@@ -103,86 +132,6 @@ public class BoardController implements Initializable {
         }
     }
 
-    private void drawStar() {
-        newCellBuilder("star", 8, 8);
-    }
-
-    public void drawBonus() {
-        newCellBuilder("3W", 1, 1);
-        newCellBuilder("3W", 1, 8);
-        newCellBuilder("3W", 1, 15);
-        newCellBuilder("3W", 8, 1);
-        newCellBuilder("3W", 8, 15);
-        newCellBuilder("3W", 15, 1);
-        newCellBuilder("3W", 15, 8);
-        newCellBuilder("3W", 15, 15);
-
-        newCellBuilder("2W", 2, 2);
-        newCellBuilder("2W", 3, 3);
-        newCellBuilder("2W", 4, 4);
-        newCellBuilder("2W", 5, 5);
-        newCellBuilder("2W", 11, 11);
-        newCellBuilder("2W", 12, 12);
-        newCellBuilder("2W", 13, 13);
-        newCellBuilder("2W", 14, 14);
-        newCellBuilder("2W", 2, 14);
-        newCellBuilder("2W", 3, 13);
-        newCellBuilder("2W", 4, 12);
-        newCellBuilder("2W", 5, 11);
-        newCellBuilder("2W", 11, 5);
-        newCellBuilder("2W", 12, 4);
-        newCellBuilder("2W", 13, 3);
-        newCellBuilder("2W", 14, 2);
-
-        newCellBuilder("2L", 1, 4);
-        newCellBuilder("2L", 4, 1);
-        newCellBuilder("2L", 1, 12);
-        newCellBuilder("2L", 12, 1);
-        newCellBuilder("2L", 3, 7);
-        newCellBuilder("2L", 7, 3);
-        newCellBuilder("2L", 4, 8);
-        newCellBuilder("2L", 8, 4);
-        newCellBuilder("2L", 9, 3);
-        newCellBuilder("2L", 3, 9);
-        newCellBuilder("2L", 15, 4);
-        newCellBuilder("2L", 4, 15);
-        newCellBuilder("2L", 7, 7);
-        newCellBuilder("2L", 7, 9);
-        newCellBuilder("2L", 9, 7);
-        newCellBuilder("2L", 9, 9);
-        newCellBuilder("2L", 12, 8);
-        newCellBuilder("2L", 8, 12);
-        newCellBuilder("2L", 7, 13);
-        newCellBuilder("2L", 13, 7);
-        newCellBuilder("2L", 9, 13);
-        newCellBuilder("2L", 13, 9);
-        newCellBuilder("2L", 4, 15);
-        newCellBuilder("2L", 15, 4);
-        newCellBuilder("2L", 12, 15);
-        newCellBuilder("2L", 15, 12);
-
-        newCellBuilder("3L", 2, 6);
-        newCellBuilder("3L", 6, 2);
-        newCellBuilder("3L", 2, 10);
-        newCellBuilder("3L", 10, 2);
-        newCellBuilder("3L", 6, 6);
-        newCellBuilder("3L", 6, 10);
-        newCellBuilder("3L", 10, 6);
-        newCellBuilder("3L", 10, 10);
-        newCellBuilder("3L", 6, 14);
-        newCellBuilder("3L", 14, 6);
-        newCellBuilder("3L", 10, 14);
-        newCellBuilder("3L", 14, 10);
-    }
-
-    private void newCellBuilder(int r, int c) {
-        BoardCell cell = new BoardCell(r, c);
-        cell.setOnMouseClicked(event -> {
-            handleBoardClick(event, cell);
-        });
-        board.add(cell, c, r);
-    }
-
     private void newCellBuilder(String letter, int r, int c) {
         BoardCell cell = new BoardCell(letter, r, c);
         cell.setOnMouseClicked(event -> {
@@ -199,7 +148,6 @@ public class BoardController implements Initializable {
         tile.setOnMouseClicked(event -> {
             handleTileClick(event, tile);
         });
-
     }
 
     private void handleTileClick(Event e, Tile tile) {
@@ -228,7 +176,10 @@ public class BoardController implements Initializable {
     private void tryPlaceTile(BoardCell cell) {
         if (cell.isOccupied) {
             System.out.println("Cell is occupied but you can use it to bulid a word");
+            cell.getRect().getStyleClass().clear();
+            cell.getRect().getStyleClass().add("board-cell-tile");
             wordToSet.add(cell);
+            wordToCheck.setValue(wordToCheck.getValue() + cell.letter);
         }
         if (selectedTile != null && !cell.isOccupied) {
             BoardCell newCell = new BoardCell(selectedTile.getLetter(), cell.row, cell.col);
@@ -237,12 +188,13 @@ public class BoardController implements Initializable {
             newCell.letter = selectedTile.getLetter();
             newCell.bonus = cell.bonus;
             newCell.isStar = cell.isStar;
-            // newCell.isOccupied = true;
+            newCell.isOccupied = false;
             newCell.setOnMouseClicked(event -> {
                 handleBoardClick(event, newCell);
             });
             board.add(newCell, cell.col, cell.row);
             wordToSet.add(newCell);
+            wordToCheck.setValue(wordToCheck.getValue() + newCell.letter);
 
             selectedTile.selected = false;
             selectedTile.getChildren().get(0).getStyleClass().clear();
@@ -256,15 +208,18 @@ public class BoardController implements Initializable {
         selectedTile = null;
         if (isSequenceWord()) {
             Boolean starOrOcupied = false;
-            String word = "";
+            Character[] wordArr = new Character[wordToSet.size()];
+            int i = 0;
             for (BoardCell cell : wordToSet) {
-                if (cell.isOccupied)
+                if (cell.isOccupied) {
                     starOrOcupied = true;
-                else if (cell.isStar) {
+                    wordArr[i++] = null;
+                } else if (cell.isStar) {
                     starOrOcupied = true;
-                    word += cell.letter;
-                } else
-                    word += cell.letter;
+                    wordArr[i++] = cell.letter.charAt(0);
+                } else {
+                    wordArr[i++] = cell.letter.charAt(0);
+                }
             }
             if (!starOrOcupied) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -273,16 +228,11 @@ public class BoardController implements Initializable {
                 return;
             }
             Boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row ? true : false;
-            String res = viewModel.tryPlaceWord(word, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
-            // if (Integer.parseInt(res) > 0) {
-            for (BoardCell cell : wordToSet) {
-                cell.isOccupied = true;
-                cell.getRect().getStyleClass().clear();
-                cell.getRect().getStyleClass().add("board-cell-occupied");
-                cell.isOccupied = true;
-            }
-            // }
+            viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
+            boardBuild();
+            setTiles();
             wordToSet.clear();
+            wordToCheck.setValue("");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Word is not a sequence");
@@ -297,7 +247,6 @@ public class BoardController implements Initializable {
             }
             wordToSet.clear();
         }
-        System.out.println(viewModel.getBoard());
     }
 
     private boolean isSequenceWord() {
@@ -324,5 +273,35 @@ public class BoardController implements Initializable {
             }
         }
         return isSequence;
+    }
+
+    public void clear() {
+        for (BoardCell cell : wordToSet) {
+            Tile tile = new Tile(cell.letter);
+            tile.setOnMouseClicked(event -> {
+                handleTileClick(event, tile);
+            });
+            tiles.getChildren().add(tile);
+        }
+        wordToSet.clear();
+        wordToCheck.setValue("");
+        wordPane.getChildren().get(0).setStyle("-fx-fill: white ;");
+        boardBuild();
+    }
+
+    public void onQuerryClick() {
+        System.out.println("Querry");
+        String word = wordToCheck.getValue();
+        if (word.length() > 0) {
+            if (viewModel.querryWord(word)) {
+                wordPane.getChildren().get(0).setStyle("-fx-fill: green ;");
+            } else {
+                wordPane.getChildren().get(0).setStyle("-fx-fill: red;");
+            }
+        }
+    }
+
+    public void onChallengeClick() {
+        System.out.println("Challenge");
     }
 }

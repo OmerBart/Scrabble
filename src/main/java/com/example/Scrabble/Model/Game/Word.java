@@ -8,7 +8,6 @@ public class Word {
     int row, col;
     boolean vertical;
 
-
     public Word(Tile[] tiles, int row, int col, boolean vertical) {
         this.tiles = tiles;
         this.row = row;
@@ -16,11 +15,9 @@ public class Word {
         this.vertical = vertical;
     }
 
-
-
     public void printWord() {
         System.out.println();
-        for (Tile t : this.getTiles()){
+        for (Tile t : this.getTiles()) {
             System.out.print(t);
         }
 
@@ -44,8 +41,10 @@ public class Word {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Word word = (Word) o;
         return row == word.row && col == word.col && vertical == word.vertical && Arrays.equals(tiles, word.tiles);
     }
@@ -54,11 +53,10 @@ public class Word {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         boolean isFirst = true;
-        for(Tile t : tiles) {
+        for (Tile t : tiles) {
             sb.append(isFirst ? t : t.toString().toLowerCase());
             isFirst = false;
         }
-        //System.out.println("From Word class toString(): " +sb.toString());
-        return  sb.toString();
+        return sb.toString();
     }
 }
