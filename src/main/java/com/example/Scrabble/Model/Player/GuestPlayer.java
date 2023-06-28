@@ -68,6 +68,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
         setID(Integer.parseInt(response.split(":")[1].trim()));
         setTurn(false); // Set everyone's turn to false until the game starts
         startListeningToServer();
+        //System.out.println("Joined game successfully" + getName());
         return response;
     }
 
@@ -169,6 +170,10 @@ public class GuestPlayer extends java.util.Observable implements Player {
         } catch (IOException e) {
             System.err.println("Error reading server update: " + e.getMessage());
         }
+    }
+
+    public String getPlayerList() {
+        return sendRequestToServer("getPlayerList");
     }
 
     private void stopListeningToServer() {

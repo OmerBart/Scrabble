@@ -48,6 +48,7 @@ public class GameManager {
         turn = 0;
     }
 
+
     public synchronized void setHost(MyServer hostServer) {
         this.hostServer = hostServer;
     }
@@ -236,5 +237,15 @@ public class GameManager {
 
     public synchronized LinkedHashMap<String, List<Tile>> getPlayerTiles() {
         return playerTiles;
+    }
+    public synchronized String getPlayerList(){
+        StringBuilder sb = new StringBuilder();
+        int c = 1;
+        for(Player p : playersList) {
+            System.out.println("####" + p.getName());
+            sb.append(p.getName()).append(":Score:").append(playerScores.get(p.getName()));
+
+        }
+        return sb.toString();
     }
 }
