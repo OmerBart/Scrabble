@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
@@ -44,6 +45,9 @@ public class BoardController implements Initializable, Observer {
     Label wordText;
 
     @FXML
+    VBox playersTable;
+
+    @FXML
     private GridPane board;
 
     @FXML
@@ -71,6 +75,9 @@ public class BoardController implements Initializable, Observer {
 
         // Set first 7 tiles
         setTiles();
+
+        // Set TableView
+        setTableView();
     }
 
     public void setTiles() {
@@ -87,12 +94,24 @@ public class BoardController implements Initializable, Observer {
         }
     }
 
+    public void setTableView() {
+        playersTable.getChildren().clear();
+        String[] players = viewModel.guestPlayer.getPlayerList().split(",");
+        for (String player : players) {
+            System.out.println(player);
+            String[] playerInfo = player.split(":");
+            Label label = new Label(playerInfo[0] + " - " + playerInfo[1] + " points: " + playerInfo[3]);
+            playersTable.getChildren().add(label);
+        }
+    }
+
     @Override
     public void update(java.util.Observable o, Object arg) {
         System.out.println("View: Game has been updated");
         System.out.println("View: " + arg);
         Platform.runLater(() -> {
             boardBuild();
+            setTableView();
         });
     }
 
@@ -231,6 +250,7 @@ public class BoardController implements Initializable, Observer {
             viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
             boardBuild();
             setTiles();
+            // setTableView();
             wordToSet.clear();
             wordToCheck.setValue("");
         } else {

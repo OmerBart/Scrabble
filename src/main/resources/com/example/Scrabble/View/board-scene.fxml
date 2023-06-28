@@ -53,15 +53,11 @@
                     </GridPane>
                 </AnchorPane>
                 <AnchorPane>
-                    <VBox alignment="center" spacing="20.0">
+                    <VBox fx:id="playersTable" alignment="center" spacing="20.0">
                         <padding>
                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                         </padding>
                         <Label text="Game Table " />
-                        <Label text="Player 1 score: " />
-                        <Label text="Player 1 score: " />
-                        <Label text="Player 1 score: " />
-                        <Label text="Player 1 score: " />
                     </VBox>
                 </AnchorPane>
             </SplitPane>
