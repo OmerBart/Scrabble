@@ -17,6 +17,7 @@ public class ViewModel implements Observer {
 
     public GuestPlayer guestPlayer;
     public StringProperty playerNameProperty;
+    public StringProperty numberOfPlayersProperty;
     public StringProperty scoreProperty;
     public StringProperty boardProperty;
     public StringProperty playersProperty;
@@ -37,6 +38,7 @@ public class ViewModel implements Observer {
         scoreProperty = new SimpleStringProperty("0");
         boardProperty = new SimpleStringProperty("");
         playersProperty = new SimpleStringProperty("");
+        numberOfPlayersProperty = new SimpleStringProperty("0");
     }
 
     @Override

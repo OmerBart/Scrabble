@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
 import com.example.Scrabble.Model.Player.HostPlayer;
 import com.example.Scrabble.VM.ViewModel;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,8 +25,14 @@ public class LobyController implements Initializable {
     private Scene scene;
     private ViewModel viewModel;
 
+    private int numberOfRoundsInt;
+    private StringProperty numberOfPlayersProperty;
+
     @FXML
     Label waitingText;
+
+    @FXML
+    Label numberOfPlayers;
 
     @FXML
     Button startGameButton;
@@ -35,6 +43,7 @@ public class LobyController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         viewModel = ViewModel.get();
+        numberOfPlayers.textProperty().bindBidirectional(viewModel.numberOfPlayersProperty);        
         if (viewModel.guestPlayer instanceof HostPlayer) {
             waitingText.setVisible(false);
             numberOfRounds.setVisible(true);
