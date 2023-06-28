@@ -1,7 +1,7 @@
 package com.example.Scrabble.Model.LocalServer;
 
 import com.example.Scrabble.Model.Game.Board;
-import com.example.Scrabble.Model.Game.BoardTmp;
+
 import com.example.Scrabble.Model.Game.Tile;
 import com.example.Scrabble.Model.Game.Word;
 import com.example.Scrabble.Model.Player.GuestPlayer;
@@ -182,6 +182,15 @@ public class GameManager {
 
         }
         int score = gameBoard.tryPlaceWord(new Word(wordTiles, x, y, isHorizontal));
+        if(score < 1){
+            for(Tile t : wordTiles){
+                if(t != null)
+                    playerTiles.get(playerName).add(t);
+            }
+            return "Invalid move!";
+        }
+        playerScores.put(playerName, playerScores.get(playerName) + score);
+        updatePlayers(playerName + "'s score is now: " + playerScores.get(playerName));
         return Integer.toString(score);
     }
 
