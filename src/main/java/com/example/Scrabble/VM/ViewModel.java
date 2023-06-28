@@ -1,5 +1,6 @@
 package com.example.Scrabble.VM;
 
+import java.util.Observable;
 import java.util.Observer;
 
 import com.example.Scrabble.Model.Player.GuestPlayer;
@@ -13,7 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class ViewModel implements Observer {
+public class ViewModel extends Observable implements Observer {
 
     public GuestPlayer guestPlayer;
     public StringProperty playerNameProperty;
@@ -69,7 +70,8 @@ public class ViewModel implements Observer {
                     // numberOfPlayersProperty.setValue(players);
                 });
             } else if (argString.startsWith("Board")) {
-                
+                setChanged();
+                notifyObservers(argString);
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.Scrabble.View;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.Event;
@@ -16,11 +17,12 @@ import javafx.scene.shape.Rectangle;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Observer;
 import java.util.ResourceBundle;
 
 import com.example.Scrabble.VM.ViewModel;
 
-public class BoardController implements Initializable {
+public class BoardController implements Initializable, Observer {
 
     ArrayList<Tile> tilesList = new ArrayList<>();
     Tile selectedTile;
@@ -54,6 +56,7 @@ public class BoardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Get ViewModel instance
         viewModel = ViewModel.get();
+        viewModel.addObserver(this);
 
         // Set welcome text and build board
         welcomeText.setText("Welcome to Scrabble!");
@@ -76,6 +79,15 @@ public class BoardController implements Initializable {
                 handleTileClick(event, tile);
             });
         }
+    }
+
+    @Override
+    public void update(java.util.Observable o, Object arg) {
+        System.out.println("View: Game has been updated");
+        System.out.println("View: " + arg);
+        Platform.runLater(() -> {
+            boardBuild();
+        });
     }
 
     public void boardBuild() {
@@ -153,13 +165,17 @@ public class BoardController implements Initializable {
     }
 
     private void handleBoardClick(Event e, BoardCell cell) {
+        System.out.println("Clicked on cell: " + cell.row + " " + cell.col);
         tryPlaceTile(cell);
     }
 
     private void tryPlaceTile(BoardCell cell) {
         if (cell.isOccupied) {
             System.out.println("Cell is occupied but you can use it to bulid a word");
+            cell.getRect().getStyleClass().clear();
+            cell.getRect().getStyleClass().add("board-cell-tile");
             wordToSet.add(cell);
+            wordToCheck.setValue(wordToCheck.getValue() + cell.letter);
         }
         if (selectedTile != null && !cell.isOccupied) {
             BoardCell newCell = new BoardCell(selectedTile.getLetter(), cell.row, cell.col);
@@ -168,7 +184,7 @@ public class BoardController implements Initializable {
             newCell.letter = selectedTile.getLetter();
             newCell.bonus = cell.bonus;
             newCell.isStar = cell.isStar;
-            // newCell.isOccupied = true;
+            newCell.isOccupied = false;
             newCell.setOnMouseClicked(event -> {
                 handleBoardClick(event, newCell);
             });
@@ -204,6 +220,9 @@ public class BoardController implements Initializable {
                     word += cell.letter;
                     wordArr[i++] = cell.letter.charAt(0);
                 }
+            }
+            for (Character character : wordArr) {
+                System.out.println(character);
             }
             if (!starOrOcupied) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -263,7 +282,6 @@ public class BoardController implements Initializable {
     public void clear() {
         for (BoardCell cell : wordToSet) {
             Tile tile = new Tile(cell.letter);
-            cell.setDefaultStyle();
             tile.setOnMouseClicked(event -> {
                 handleTileClick(event, tile);
             });
@@ -272,7 +290,7 @@ public class BoardController implements Initializable {
         wordToSet.clear();
         wordToCheck.setValue("");
         wordPane.getChildren().get(0).setStyle("-fx-fill: white ;");
-
+        boardBuild();
     }
 
     public void onQuerryClick() {

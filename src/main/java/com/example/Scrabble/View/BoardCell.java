@@ -112,7 +112,7 @@ public class BoardCell extends StackPane {
                 rect.getStyleClass().add("board-cell-occupied");
                 this.label = label;
                 this.rect = rect;
-                // this.isOccupied = true;
+                this.isOccupied = true;
                 break;
         }
         this.getChildren().addAll(rect, label);
