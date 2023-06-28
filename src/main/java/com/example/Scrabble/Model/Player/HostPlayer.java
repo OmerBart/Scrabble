@@ -31,12 +31,25 @@ public class HostPlayer extends GuestPlayer {
 
     }
 
+    public void setNumOfTurns(int numOfTurns) {
+        gameManager.setNumOfTurns(numOfTurns);
+    }
+
+    /**
+     * Set the books to be used in the game
+     * @param books must be in the format of "search_books/BookName.txt" or "search_books/BookName.txt search_books/BookName2.txt....ect"
+     */
+    public void setBooks(String... books) {
+        gameManager.setGameBooks(books);
+    }
+
+
     public MyServer getHostGameServer() {
         return hostGameServer;
     }
 
     public void stopGame() {
-        gameManager.stopGame();
+        gameManager.endGame();
         // hostGameServer.close();
     }
     

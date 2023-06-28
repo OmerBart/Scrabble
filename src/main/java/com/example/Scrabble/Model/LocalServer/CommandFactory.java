@@ -21,7 +21,7 @@ public class CommandFactory {
             return new StartGameCommand(playerName);
         } else if (request.contains("getPlayerList")) {
             return new GetPlayerListCommand();
-        } else if (request.contains("stopGame")) {
+        } else if (request.contains("endGame")) {
             return new StopGameCommand();
         } else if (request.contains("getScore")) {
             String playerName = request.split("getScore:")[1];
@@ -118,7 +118,7 @@ public class CommandFactory {
         @Override
         public String execute() {
             GameManager GM = GameManager.get();
-            GM.stopGame();
+            GM.endGame();
             return "Game stopped";
         }
     }

@@ -65,7 +65,7 @@ public class GuestPlayer2Test {
 
 
         //System.out.println(GM.printPlayers());
-        //host.stopGame();
+        //host.endGame();
 //        guest.disconnectFromServer();
         guest2.disconnectFromServer();
 //        guest3.disconnectFromServer();

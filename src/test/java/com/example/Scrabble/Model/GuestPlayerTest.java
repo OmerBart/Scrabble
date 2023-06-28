@@ -27,7 +27,7 @@
 //     @AfterAll
 //     static void tearDownAll() {
 //         System.out.println("GuestPlayerTest.tearDownAll() --END--");
-//         hostPlayer.stopGame();
+//         hostPlayer.endGame();
 //     }
 
 //     @Test
