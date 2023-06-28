@@ -15,7 +15,19 @@ public class Board {
     private Board() {
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
-                board[i][j] = new BoardBox();
+                if (doubleBonusLetter(j, i)) {
+                    board[i][j] = new BoardBox("2");
+                } else if (tripleBonusLetter(j, i)) {
+                    board[i][j] = new BoardBox("3");
+                } else if (doubleBonusWord(j, i)) {
+                    board[i][j] = new BoardBox("4");
+                } else if (tripleBonusWord(j, i)) {
+                    board[i][j] = new BoardBox("5");
+                } else if (i == 7 && j == 7) {
+                    board[i][j] = new BoardBox("6");
+                } else {
+                    board[i][j] = new BoardBox("1");
+                }
             }
         }
     }
@@ -198,35 +210,24 @@ public class Board {
     }
 
     public int tryPlaceWord(Word word) {
-        System.out.println(word);
         if (!boardLegal(word)) {
             return 0;
         }
-        System.out.println("word is legal");
         replceNullTilesWithBoardTiles(word);
-        System.out.println("replaced null tiles with board tiles");
         int score = 0;
         ArrayList<Word> words = new ArrayList<Word>();
         if (wordAlreadyOnTheBoard(word)) {
             return 0;
         }
-        System.out.println("word is not already on the board");
         allWords.add(word);
         words.add(word);
         words.addAll(getWords(word));
-        System.out.println("got all words");
         for (Word w : words) {
-            System.out.println("getScore for all words");
-            System.out.println(w);
             if (!dictionaryLegal(w) || !boardLegal(w)) {
-                System.out.println("word is not legal");
                 return 0;
             } else {
-                System.out.println("word is legal");
                 setWordOnTheBoard(w);
-                System.out.println("set word on the board");
                 score += getScore(w);
-                System.out.println("got score for word");
             }
         }
 
@@ -239,12 +240,12 @@ public class Board {
         for (BoardBox[] abb : board) {
             for (BoardBox bb : abb) {
                 t = bb.tile;
-                if (t == null)
-                    stringBuilder.append(" |~| ");
-                else
-                    stringBuilder.append(t);
+                if (t == null) {
+                    stringBuilder.append(bb.letter + " ");
+                } else
+                    stringBuilder.append(t + " ");
             }
-            stringBuilder.append("\n");
+            stringBuilder.append(",");
         }
         return stringBuilder.toString();
     }
@@ -540,17 +541,20 @@ public class Board {
         private Tile tile;
         private boolean isOccupied;
         private final int scoreBonus;
+        private String letter;
 
-        public BoardBox() {
+        public BoardBox(String letter) {
             this.tile = null;
             this.isOccupied = false;
             this.scoreBonus = 1;
+            this.letter = letter;
         }
 
         public BoardBox(int scoreBonus) {
             this.tile = null;
             this.scoreBonus = scoreBonus;
             this.isOccupied = false;
+            this.letter = null;
         }
 
         public Tile getTile() {

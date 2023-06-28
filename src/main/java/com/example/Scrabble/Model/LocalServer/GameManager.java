@@ -165,7 +165,6 @@ public class GameManager {
     }
 
     public String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
-        System.out.println("Placing word: " + word + " at: " + x + " " + y + " " + isHorizontal);
         char[] carr = word.toUpperCase().toCharArray();
         Tile[] wordTiles = new Tile[word.length()];
         int index = 0;
@@ -175,20 +174,17 @@ public class GameManager {
             else {
                 wordTiles[index] = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c)
                         .findFirst().orElse(null);
-                System.out.println(wordTiles[index]);
                 playerTiles.get(playerName).remove(wordTiles[index]);
             }
             index++;
         }
         Word w = new Word(wordTiles, x, y, !isHorizontal);
-        System.out.println("before tryPlaceWord in GameManager");
         int score = gameBoard.tryPlaceWord(w);
         return Integer.toString(score);
     }
 
     public synchronized String getPlayerList() {
         StringBuilder sb = new StringBuilder();
-        // int c = 1;
         for (Player p : playersList) {
             sb.append(p.getName()).append(":Score:").append(playerScores.get(p.getName())).append(",");
         }

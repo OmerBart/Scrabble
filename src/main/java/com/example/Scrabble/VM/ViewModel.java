@@ -101,7 +101,6 @@ public class ViewModel implements Observer {
             int score = Integer.parseInt(result);
             score += Integer.parseInt(scoreProperty.getValue());
             scoreProperty.setValue(String.valueOf(score));
-            System.out.println(guestPlayer.getCurrentBoard());
             return result;
         } else {
             System.out.println("not my turn");
@@ -109,8 +108,25 @@ public class ViewModel implements Observer {
         }
     }
 
-    public String getBoard() {
-        return guestPlayer.getCurrentBoard();
+    public String[][] getBoard() {
+        String[][] board = new String[15][15];
+        String result = guestPlayer.getCurrentBoard();
+        String[] rows = result.split(",");
+        for (int i = 0; i < rows.length; i++) {
+            String[] row = rows[i].split(" ");
+            for (int j = 0; j < row.length; j++) {
+                board[i][j] = row[j];
+            }
+        }
+        return board;
+    }
+
+    public void printBoard() {
+        String result = guestPlayer.getCurrentBoard();
+        String[] rows = result.split(",");
+        for (int i = 0; i < rows.length; i++) {
+            System.out.println(rows[i]);
+        }
     }
 
     public String getTile() {

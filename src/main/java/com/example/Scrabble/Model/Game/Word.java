@@ -13,7 +13,6 @@ public class Word {
         this.row = row;
         this.col = col;
         this.vertical = vertical;
-        System.out.println("Word constructor");
     }
 
     public void printWord() {
@@ -52,15 +51,12 @@ public class Word {
 
     @Override
     public String toString() {
-        System.out.println("From Word class toString(): " + tiles.length);
         StringBuilder sb = new StringBuilder();
         boolean isFirst = true;
         for (Tile t : tiles) {
-            System.out.println("From Word class toString(): printing tile: " + t);
             sb.append(isFirst ? t : t.toString().toLowerCase());
             isFirst = false;
         }
-        // System.out.println("From Word class toString(): " +sb.toString());
         return sb.toString();
     }
 }

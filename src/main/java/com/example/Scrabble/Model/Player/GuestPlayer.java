@@ -104,7 +104,6 @@ public class GuestPlayer extends java.util.Observable implements Player {
         for (Character c : word) {
             sWord += c == null ? "_" : c;
         }
-        System.out.println("placeWord:" + name + ":" + playerID + ":" + sWord + ":" + x + ":" + y + ":" + isHorizontal);
         return sendRequestToServer(
                 "placeWord:" + name + ":" + playerID + ":" + sWord + ":" + x + ":" + y + ":" + isHorizontal);
     }
