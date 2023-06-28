@@ -32,7 +32,7 @@ class HostPlayerTest {
 
     @Test
     void stopGame() {
-        System.out.println("HostPlayerTest: stopGame()");
+        System.out.println("HostPlayerTest: endGame()");
         hostPlayer.stopGame();
         assertEquals(true, hostPlayer.getHostGameServer().isStop());
     }

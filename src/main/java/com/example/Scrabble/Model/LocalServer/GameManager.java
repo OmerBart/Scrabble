@@ -7,7 +7,6 @@ import com.example.Scrabble.Model.Game.Word;
 import com.example.Scrabble.Model.Player.GuestPlayer;
 import com.example.Scrabble.Model.Player.Player;
 import com.example.Scrabble.Model.ScrabbleDictionary.IOserver.BookScrabbleHandler;
-import com.example.Scrabble.Model.ServerUtils.ClientHandler;
 import com.example.Scrabble.Model.ServerUtils.MyServer;
 
 import java.io.IOException;
@@ -28,6 +27,7 @@ public class GameManager {
     private String[] gameBooks;
 
     private static GameManager single_instance = null;
+    private int numOfTurns;
 
     public static GameManager get() {
         if (single_instance == null)
@@ -44,7 +44,7 @@ public class GameManager {
         playerScores = new LinkedHashMap<>();
         playerTiles = new LinkedHashMap<>();
         hasGameStarted = false;
-        gameBooks = new String[] { "search_books/The Matrix.txt,search_books/test.txt" };
+        gameBooks = new String[] { "search_books/The Matrix.txt","search_books/test.txt" };
         turn = 0;
     }
 
@@ -143,13 +143,18 @@ public class GameManager {
         turn++;
         // updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn
         // starts now!");
-        myTurn();
+        if(turn == numOfTurns)
+            endGame();
+        else
+            myTurn();
 
     }
 
-    public synchronized void stopGame() {
+    public synchronized void endGame() {
         try {
             Thread.sleep(1000);
+            updatePlayer("Game has Ended!", turn % playersList.size());
+            updatePlayers("Game has Ended!");
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -163,6 +168,9 @@ public class GameManager {
 
     public synchronized String getScore(String playerName) {
         return Integer.toString(playerScores.getOrDefault(playerName, 0));
+    }
+    public void setNumOfTurns(int numOfTurns) {
+        this.numOfTurns = numOfTurns;
     }
 
     public String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
@@ -203,6 +211,15 @@ public class GameManager {
         return sb.toString();
     }
 
+    /**
+     *
+     * @param gameBooks the gameBooks to set for the game dictionary must be in "search_books/The Matrix.txt" format see
+     *                  {@link Dictionary#Dictionary(String...)} and search_books folder to see available books and see the use!
+     */
+    public void setGameBooks(String...gameBooks){
+        this.gameBooks = gameBooks;
+    }
+
     public synchronized String queryIOserver(String qword) {
         try {
             Socket socket = new Socket("localhost", IOserver.getPort());
@@ -212,7 +229,7 @@ public class GameManager {
                 String args = "Q,";
                 for (String book : gameBooks)
                     args += book + ",";
-                System.out.println("wowowo " + args + qword.split(":")[1]);
+                //System.out.println("wowowo " + args + qword.split(":")[1]);
                 out.println(args + qword.split(":")[1]);
                 out.flush();
             } else if (qword.startsWith("C")) {
