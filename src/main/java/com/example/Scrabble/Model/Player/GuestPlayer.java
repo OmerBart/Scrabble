@@ -76,6 +76,10 @@ public class GuestPlayer extends java.util.Observable implements Player {
         return Integer.parseInt(sendRequestToServer("getScore:" + name + ":" + playerID));
     }
 
+    public String getPlayerList() {
+        return sendRequestToServer("getPlayerList");
+    }
+
     public String getTile() {
         System.out.println("getTile:: guest player");
         openSocketIfClosed();

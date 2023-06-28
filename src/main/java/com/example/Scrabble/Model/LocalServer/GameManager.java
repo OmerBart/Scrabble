@@ -185,6 +185,17 @@ public class GameManager {
         return Integer.toString(score);
     }
 
+    public synchronized String getPlayerList(){
+        StringBuilder sb = new StringBuilder();
+        int c = 1;
+        for(Player p : playersList) {
+            System.out.println("####" + p.getName());
+            sb.append(p.getName()).append(":Score:").append(playerScores.get(p.getName()));
+
+        }
+        return sb.toString();
+    }
+
     public synchronized String queryIOserver(String qword) {
         try {
             Socket socket = new Socket("localhost", IOserver.getPort());
