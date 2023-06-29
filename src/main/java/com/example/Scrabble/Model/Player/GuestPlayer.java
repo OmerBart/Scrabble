@@ -227,7 +227,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      * @param  y Specify the y coordinate of the first letter in a word
      * @param  isHorizontal Determine whether the word is placed horizontally or vertically
      *
-     * @return A string with score if player placed a word successfully, otherwise return an error message
+     * @return A string with score of player placed a word successfully, otherwise return an error message
      *
      * @author Omer Bartfeld
      */
