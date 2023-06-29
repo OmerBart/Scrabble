@@ -247,11 +247,6 @@ public class GameManager {
     }
 
     private void updatePlayers(String msg) {
-        // System.out.println(turn % playersList.size());
-        // if(turn == 0)
-        // hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn+1 %
-        // playersList.size()));
-        // else
         hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn % playersList.size()));
     }
 
