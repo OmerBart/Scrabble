@@ -66,7 +66,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
         setID(Integer.parseInt(response.split(":")[1].trim()));
         setTurn(false); // Set everyone's turn to false until the game starts
         startListeningToServer();
-        //System.out.println("Joined game successfully" + getName());
+        // System.out.println("Joined game successfully" + getName());
         return response;
     }
 
@@ -74,8 +74,6 @@ public class GuestPlayer extends java.util.Observable implements Player {
         openSocketIfClosed();
         return Integer.parseInt(sendRequestToServer("getScore:" + name + ":" + playerID));
     }
-
-
 
     public int getNumberOfPlayers() {
         String response = getPlayerList();
@@ -169,14 +167,11 @@ public class GuestPlayer extends java.util.Observable implements Player {
                         setChanged();
                         notifyObservers(response); // create an event and notify the observers
                         clearChanged();
-                        if(response.contains(getName()+";")){
+                        if (response.contains(getName() + ";")) {
                             setTurn(true);
                         }
                     }
 
-                }
-                else{
-                    System.out.println("No update from server");
                 }
             }
         } catch (IOException e) {
