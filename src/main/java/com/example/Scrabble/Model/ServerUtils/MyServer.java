@@ -239,14 +239,14 @@ public class MyServer {
 
 
     /**    
-     * The getPlayerKeys function returns a list of the keys of all players in the game.
+     * The getPlayerNames function returns a list of the keys of all players in the game.
      * this is used to allow us to synchronize the player keys across all clients.
      *
      * @return A list of player keys
      *
      * @author Omer Bartfeld
      */
-    public List<String> getPlayerKeys() {
+    public List<String> getPlayerNames() {
         return playerNames;
     }
 }
