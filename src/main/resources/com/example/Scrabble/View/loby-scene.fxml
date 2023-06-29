@@ -22,8 +22,8 @@
     <Label fx:id="nofcontainer" text="Number of Players: " />
     <Label fx:id="numberOfPlayers" text="1" />
     <!-- number of rounds -->
-    <Label text="Number of Rounds: " />
-    <ComboBox fx:id="numberOfRounds" prefWidth="150.0" visible="false" />
+    <Label fx:id="numberOfRoundsText" text="Number of Rounds: " visible="false" />
+    <TextField fx:id="numberOfRounds" promptText="How Many Rounds ?" focusTraversable="false" visible="false" />
 
     <Button fx:id="startGameButton" text="Start Game" onAction="#onStartGameButtonClick" />
     <Button text="Back" onAction="#onBackButtonClick" />

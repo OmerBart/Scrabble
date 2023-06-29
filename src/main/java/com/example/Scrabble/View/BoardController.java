@@ -34,6 +34,7 @@ public class BoardController implements Initializable, Observer {
     StringProperty wordToCheck;
     StringProperty boardString = new SimpleStringProperty("");
     boolean turn = false;
+    public StringProperty numberOfTurnsProperty;
 
     @FXML
     StackPane wordPane;
@@ -49,6 +50,9 @@ public class BoardController implements Initializable, Observer {
 
     @FXML
     Label turnText;
+
+    @FXML
+    Label numOfTurns;
 
     @FXML
     VBox playersTable;
@@ -87,12 +91,14 @@ public class BoardController implements Initializable, Observer {
         welcomeText.getStyleClass().add("welcome-text");
         wordToCheck = new SimpleStringProperty("");
         wordText.textProperty().bind(wordToCheck);
+        numberOfTurnsProperty = new SimpleStringProperty("Turns left: " + viewModel.numberOfTurns);
 
         boardBuild();
 
         // Bindings
         nameText.textProperty().bind(viewModel.playerNameProperty);
         scoreText.textProperty().bind(viewModel.scoreProperty);
+        numOfTurns.textProperty().bind(numberOfTurnsProperty);
 
         // Set first 7 tiles
         setTiles();
@@ -164,6 +170,7 @@ public class BoardController implements Initializable, Observer {
             setTableView();
             setButtons();
             setTurnText();
+            numberOfTurnsProperty.setValue("Turns left: " + viewModel.numberOfTurns);
         });
     }
 
