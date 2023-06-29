@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 /**
  * Represents a player in the Scrabble game.
  * Implements the Player interface.
@@ -129,7 +131,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
         return playerID;
     }
 
-    /**    
+    /**
      * The setSocket function sets the socket for this server.
      *
      *
@@ -190,7 +192,6 @@ public class GuestPlayer extends java.util.Observable implements Player {
      */
     public int getNumberOfPlayers() {
         String response = getPlayerList();
-        // System.out.println("getNumberOfPlayers:: response: " + response);
         return response.split(",").length;
     }
 
@@ -204,7 +205,6 @@ public class GuestPlayer extends java.util.Observable implements Player {
      * @author Omer Bartfeld
      */
     public String getTile() {
-        System.out.println("getTile:: guest player");
         openSocketIfClosed();
         if (playerTiles == null)
             playerTiles = new ArrayList<>();
@@ -346,21 +346,23 @@ public class GuestPlayer extends java.util.Observable implements Player {
     private void listeningToServer(BufferedReader listenerIn) {
         try {
             while (listening) {
+                sleep(10);
                 if (listenerIn.ready()) {
                     String response = listenerIn.readLine();
                     if (response != null) {
-                        System.out.println("Got update from server: " + response);
                         setChanged();
                         notifyObservers(response); // create an event and notify the observers
                         clearChanged();
-                        if(response.contains("T:true"))
+                        if (response.contains(getName() + ";")) {
                             setTurn(true);
+                        }
                     }
-
                 }
             }
         } catch (IOException e) {
             System.err.println("Error reading server update: " + e.getMessage());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -409,9 +411,9 @@ public class GuestPlayer extends java.util.Observable implements Player {
         return Boolean.parseBoolean(sendRequestToServer("Q:" + request));
     }
 
-//    public boolean challengeIO(String request) {
-//        return Boolean.parseBoolean(sendRequestToServer("C:" + request));
-//    }
+    public boolean challengeIO(String request) {
+        return Boolean.parseBoolean(sendRequestToServer("C:" + request));
+    }
 
     /**
      * The setTurn function is used to set the turn of the player.
