@@ -14,6 +14,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.*;
 
+import static java.lang.Thread.sleep;
+
 public class GameManager {
     private List<GuestPlayer> playersList;
     private LinkedHashMap<String, Integer> playerScores; // key: name+ID, value: score
@@ -135,7 +137,7 @@ public class GameManager {
 
     public synchronized void endGame() {
         try {
-            Thread.sleep(1000);
+            sleep(1000);
             updatePlayer("Game has Ended!", turn % playersList.size());
             updatePlayers("Game has Ended!");
         } catch (InterruptedException e) {
@@ -192,6 +194,11 @@ public class GameManager {
         // updatePlayers("Board Updated " + playerName + " got " + score + " points for
         // " + word);
         updatePlayers(getGameState(true));
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         endTurn();
         return getGameState(false);
     }
