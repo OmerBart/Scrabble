@@ -29,6 +29,7 @@ public class GameManager {
     private static GameManager single_instance = null;
     private int numOfTurns;
 
+
     public static GameManager get() {
         if (single_instance == null)
             single_instance = new GameManager();
@@ -46,6 +47,7 @@ public class GameManager {
         hasGameStarted = false;
         gameBooks = new String[] { "search_books/The Matrix.txt", "search_books/test.txt" };
         turn = 0;
+
     }
 
     public synchronized void setHost(MyServer hostServer) {
@@ -104,10 +106,10 @@ public class GameManager {
             for (Player p : playersList)
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
-        updatePlayers("game started!" + getGameState());
+        updatePlayers("game started!" + getGameState(false));
 
         hasGameStarted = true;
-        return "Game Started!" + getGameState();
+        return "Game Started!" + getGameState(false);
     }
 
     public String getTilefromBag(String playerName) {
@@ -122,7 +124,9 @@ public class GameManager {
     }
 
     public void endTurn() {
+        updatePlayers(getGameState(true));
         turn++;
+
         if (turn == numOfTurns)
             endGame();
         else
@@ -188,8 +192,8 @@ public class GameManager {
         playerScores.put(playerName, playerScores.get(playerName) + score);
         // updatePlayers("Board Updated " + playerName + " got " + score + " points for
         // " + word);
-        updatePlayers(getGameState());
-        return getGameState();
+        updatePlayers(getGameState(false));
+        return getGameState(false);
     }
 
     public synchronized String getPlayerList() {
@@ -255,9 +259,12 @@ public class GameManager {
         return playerTiles;
     }
 
-    private String getGameState() {
+    private String getGameState(boolean turnEnded) {
+        int tturn = turn;
+        if(turnEnded)
+            tturn++;
         StringBuilder gameState = new StringBuilder();
-        String playerTurn = playersList.get(turn % playersList.size()).getName();
+        String playerTurn = playersList.get(tturn % playersList.size()).getName();
         gameState.append(playerTurn).append(";");
         gameState.append(gameBoard.getPrintableBoard()).append(";");
         gameState.append(getPlayerList());
