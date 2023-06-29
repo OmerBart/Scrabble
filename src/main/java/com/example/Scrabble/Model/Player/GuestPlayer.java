@@ -213,8 +213,10 @@ public class GuestPlayer extends java.util.Observable implements Player {
     }
 
     public String startGame() {
-        if (this instanceof HostPlayer)
+        if (this instanceof HostPlayer) {
             setTurn(true); // Host is the first player and starts the game
+            listeningThread.interrupt();
+        }
         return sendRequestToServer("startGame," + name + ":" + playerID);
     }
 
