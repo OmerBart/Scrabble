@@ -44,7 +44,7 @@ public class GuestPlayer3Test {
                     System.out.println(guest3.getTile());
                     sleep(1500);
                     System.out.println(guest3.endTurn());
-                    System.out.println(guest3.queryIO("kaka"));//18878
+                    System.out.println(guest3.queryDictionaryServer("kaka"));//18878
                    // System.out.println(guest3.challengeIO("s1.txt","s2.txt","18878"));//18878
 
 
@@ -59,7 +59,7 @@ public class GuestPlayer3Test {
 //            System.out.println(guest.printTiles());
 //            System.out.println(guest2.printTiles());
 //            System.out.println(guest3.printTiles());
-//            System.out.println(guest.queryIO("s1.txt","s2.txt","kaka"));//18878
+//            System.out.println(guest.queryDictionaryServer("s1.txt","s2.txt","kaka"));//18878
 //            System.out.println(guest.challangeIO("s1.txt","s2.txt","18878"));//18878
 
 //            int x,y;

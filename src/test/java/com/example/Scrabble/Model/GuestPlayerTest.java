@@ -73,12 +73,12 @@
 
 //     // @Test
 //     // void queryIOTest() {
-//     //     assertEquals(false, guestPlayer.queryIO("s1.txt", "s2.txt", "kaka"));
+//     //     assertEquals(false, guestPlayer.queryDictionaryServer("s1.txt", "s2.txt", "kaka"));
 //     // }
 
 //     // @Test
 //     // void queryIOTest2() {
-//     //     assertEquals(true, guestPlayer.queryIO("s1.txt", "s2.txt", "18878"));
+//     //     assertEquals(true, guestPlayer.queryDictionaryServer("s1.txt", "s2.txt", "18878"));
 //     // }
 
 //     // @Test
