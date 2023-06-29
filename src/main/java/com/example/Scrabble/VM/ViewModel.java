@@ -164,10 +164,6 @@ public class ViewModel extends Observable implements Observer {
         this.board = board;
         this.players = players;
         this.turn = turn.equals(guestPlayer.getName()) ? true : false;
-
-        System.out.println(turn);
-        System.out.println(board);
-        System.out.println(players);
     }
 
 }

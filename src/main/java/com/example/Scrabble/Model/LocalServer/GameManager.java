@@ -31,7 +31,6 @@ public class GameManager {
     private static GameManager single_instance = null;
     private int numOfTurns;
 
-
     public static GameManager get() {
         if (single_instance == null)
             single_instance = new GameManager();
@@ -97,8 +96,7 @@ public class GameManager {
     }
 
     public synchronized void myTurn() {
-        updatePlayer(getGameState(false),turn-1 % playersList.size());
-        //updatePlayer("T:true", turn % playersList.size());
+        updatePlayer(getGameState(), turn % playersList.size());
     }
 
     public synchronized String startGame(String playerName) {
@@ -109,10 +107,10 @@ public class GameManager {
             for (Player p : playersList)
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
-        updatePlayers("game started!" + getGameState(false));
+        updatePlayers("game started!" + getGameState());
 
         hasGameStarted = true;
-        return "Game Started!" + getGameState(false);
+        return "Game Started!" + getGameState();
     }
 
     public String getTilefromBag(String playerName) {
@@ -127,12 +125,12 @@ public class GameManager {
     }
 
     public void endTurn() {
-//        updatePlayers(getGameState(true));
         turn++;
+        updatePlayers(getGameState());
         if (turn == numOfTurns)
             endGame();
-//        else
-//            myTurn();
+        else
+            myTurn();
     }
 
     public synchronized void endGame() {
@@ -191,16 +189,10 @@ public class GameManager {
             playerTiles.get(playerName).add(t);
         }
         playerScores.put(playerName, playerScores.get(playerName) + score);
-        // updatePlayers("Board Updated " + playerName + " got " + score + " points for
-        // " + word);
-        updatePlayers(getGameState(true));
-        try {
-            sleep(2000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        endTurn();
-        return getGameState(false);
+
+        String gameState = getGameState();
+        updatePlayers(gameState);
+        return gameState;
     }
 
     public synchronized String getPlayerList() {
@@ -266,12 +258,9 @@ public class GameManager {
         return playerTiles;
     }
 
-    private String getGameState(boolean turnEnded) {
-        int tturn = turn;
-        if(turnEnded)
-            tturn++;
+    private String getGameState() {
         StringBuilder gameState = new StringBuilder();
-        String playerTurn = playersList.get(tturn % playersList.size()).getName();
+        String playerTurn = playersList.get(turn % playersList.size()).getName();
         gameState.append(playerTurn).append(";");
         gameState.append(gameBoard.getPrintableBoard()).append(";");
         gameState.append(getPlayerList());

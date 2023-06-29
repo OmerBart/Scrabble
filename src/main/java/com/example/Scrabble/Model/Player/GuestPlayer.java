@@ -169,10 +169,14 @@ public class GuestPlayer extends java.util.Observable implements Player {
                         setChanged();
                         notifyObservers(response); // create an event and notify the observers
                         clearChanged();
-                        if(response.contains(getName()))
+                        if(response.contains(getName()+";")){
                             setTurn(true);
+                        }
                     }
 
+                }
+                else{
+                    System.out.println("No update from server");
                 }
             }
         } catch (IOException e) {
