@@ -205,8 +205,7 @@ public class CommandFactory {
         @Override
         public String execute() {
             GameManager GM = GameManager.get();
-            GM.endTurn();
-            return "";
+            return GM.endTurn();
         }
     }
 
