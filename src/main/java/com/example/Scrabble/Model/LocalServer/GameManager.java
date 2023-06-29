@@ -14,6 +14,10 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.*;
 
+/**
+ * The GameManager class is responsible for managing the Scrabble game, including player management, game board,
+ * scoring, and turn management.
+ */
 public class GameManager {
     private List<GuestPlayer> playersList;
     private LinkedHashMap<String, Integer> playerScores; // key: name+ID, value: score
@@ -29,12 +33,20 @@ public class GameManager {
     private static GameManager single_instance = null;
     private int numOfTurns;
 
+    /**
+     * Returns the singleton instance of the GameManager class.
+     *
+     * @return The singleton instance of the GameManager class.
+     */
     public static GameManager get() {
         if (single_instance == null)
             single_instance = new GameManager();
         return single_instance;
     }
 
+    /**
+     * Private constructor to enforce singleton behavior and initialize the game manager.
+     */
     private GameManager() {
         Random r = new Random();
         playersList = new ArrayList<>();
@@ -44,14 +56,25 @@ public class GameManager {
         playerScores = new LinkedHashMap<>();
         playerTiles = new LinkedHashMap<>();
         hasGameStarted = false;
-        gameBooks = new String[] { "search_books/The Matrix.txt", "search_books/test.txt" };
+        gameBooks = new String[]{"search_books/The Matrix.txt", "search_books/test.txt"};
         turn = 0;
     }
 
+    /**
+     * Sets the host server for the game.
+     *
+     * @param hostServer The host server to set.
+     */
     public synchronized void setHost(MyServer hostServer) {
         this.hostServer = hostServer;
     }
 
+    /**
+     * Retrieves the tiles of a player as a string.
+     *
+     * @param playerName The name of the player.
+     * @return A string representation of the player's tiles.
+     */
     public synchronized String getPlayerTiles(String playerName) {
         StringBuilder tiles = new StringBuilder();
         for (Tile tile : playerTiles.get(playerName)) {
@@ -60,6 +83,12 @@ public class GameManager {
         return tiles.toString();
     }
 
+    /**
+     * Adds a player to the game.
+     *
+     * @param player The guest player to add.
+     * @return A message indicating the success or failure of adding the player.
+     */
     public synchronized String addPlayer(GuestPlayer player) {
         if (playersList.contains(player) || playersList.size() > 3) {
             return "Player already in the game or game is full!";
@@ -75,11 +104,22 @@ public class GameManager {
         }
     }
 
+    /**
+     * Generates a unique ID for a player.
+     *
+     * @return The generated unique ID.
+     */
     private synchronized int generateUniqueID() {
         Random r = new Random();
         return r.nextInt(1000 + playersList.size());
     }
 
+    /**
+     * Retrieves the player with the specified name.
+     *
+     * @param name The name of the player.
+     * @return The GuestPlayer object corresponding to the specified name, or null if not found.
+     */
     public synchronized GuestPlayer getPlayer(String name) {
         for (GuestPlayer p : GameManager.get().playersList) {
             if (p.getName().split(":")[0].equals(name))
@@ -88,14 +128,28 @@ public class GameManager {
         return null;
     }
 
+    /**
+     * Retrieves the game board as a string.
+     *
+     * @return The printable representation of the game board.
+     */
     public synchronized String getGameBoard() {
         return gameBoard.getPrintableBoard();
     }
 
+    /**
+     * Signals the start of the current player's turn.
+     */
     public synchronized void myTurn() {
         updatePlayer("T:true", turn % playersList.size());
     }
 
+    /**
+     * Starts the game and initializes the players and their tiles.
+     *
+     * @param playerName The name of the player who initiated the game start.
+     * @return A message indicating the success or failure of starting the game.
+     */
     public synchronized String startGame(String playerName) {
         IOserver.start();
         System.out.println("IO server started successfully at: " + IOserver.getPort());
@@ -110,6 +164,12 @@ public class GameManager {
         return "Game Started!";
     }
 
+    /**
+     * Retrieves a tile from the bag and adds it to the player's tiles.
+     *
+     * @param playerName The name of the player.
+     * @return A message indicating the tile obtained from the bag.
+     */
     public String getTilefromBag(String playerName) {
         Tile t = bag.getRand();
         if (t == null) {
@@ -121,18 +181,21 @@ public class GameManager {
         }
     }
 
+    /**
+     * Ends the current turn and prepares for the next turn.
+     */
     public void endTurn() {
         System.out.println(playersList.get((turn) % playersList.size()).getName() + "'s turn ended");
         turn++;
-        // updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn
-        // starts now!");
         if (turn == numOfTurns)
             endGame();
         else
             myTurn();
-
     }
 
+    /**
+     * Ends the game and performs cleanup operations.
+     */
     public synchronized void endGame() {
         try {
             Thread.sleep(1000);
@@ -145,18 +208,44 @@ public class GameManager {
         IOserver.close();
     }
 
+    /**
+     * Retrieves a string representation of the list of players.
+     *
+     * @return A string representing the list of players.
+     */
     public synchronized String printPlayers() {
         return playersList.toString();
     }
 
+    /**
+     * Retrieves the score of a player.
+     *
+     * @param playerName The name of the player.
+     * @return The score of the player.
+     */
     public synchronized String getScore(String playerName) {
         return Integer.toString(playerScores.getOrDefault(playerName, 0));
     }
 
+    /**
+     * Sets the number of turns for the game.
+     *
+     * @param numOfTurns The number of turns to set.
+     */
     public void setNumOfTurns(int numOfTurns) {
         this.numOfTurns = numOfTurns;
     }
 
+    /**
+     * Places a word on the game board and updates the player's score.
+     *
+     * @param playerName   The name of the player.
+     * @param word         The word to place on the board.
+     * @param x            The x-coordinate of the starting position.
+     * @param y            The y-coordinate of the starting position.
+     * @param isHorizontal A flag indicating if the word is placed horizontally.
+     * @return A message indicating the success or failure of placing the word.
+     */
     public String placeWord(String playerName, String word, int x, int y, boolean isHorizontal) {
         char[] carr = word.toUpperCase().toCharArray();
         Tile[] wordTiles = new Tile[word.length()];
@@ -193,6 +282,11 @@ public class GameManager {
         return Integer.toString(score);
     }
 
+    /**
+     * Retrieves a string representation of the players and their scores.
+     *
+     * @return A string representation of the players and their scores.
+     */
     public synchronized String getPlayerList() {
         StringBuilder sb = new StringBuilder();
         for (Player p : playersList) {
@@ -202,15 +296,22 @@ public class GameManager {
     }
 
     /**
+     * Sets the game books for the game dictionary.
      *
-     * @param gameBooks the gameBooks to set for the game dictionary must be in
-     *                  "search_books/The Matrix.txt" format see
-     *                  and search_books folder to see available books
+     * @param gameBooks The game books to set for the game dictionary.
+     *                  The books must be in the format "search_books/The Matrix.txt".
+     *                  See the "search_books" folder to see available books.
      */
     public void setGameBooks(String... gameBooks) {
         this.gameBooks = gameBooks;
     }
 
+    /**
+     * Queries the IO server with a word.
+     *
+     * @param qword The word to query.
+     * @return The result of the query.
+     */
     public synchronized String queryIOserver(String qword) {
         try {
             Socket socket = new Socket("localhost", IOserver.getPort());
@@ -220,7 +321,6 @@ public class GameManager {
                 String args = "Q,";
                 for (String book : gameBooks)
                     args += book + ",";
-                // System.out.println("wowowo " + args + qword.split(":")[1]);
                 out.println(args + qword.split(":")[1]);
                 out.flush();
             } else if (qword.startsWith("C")) {
@@ -234,25 +334,26 @@ public class GameManager {
             String res = in.nextLine();
             return res;
         } catch (IOException e) {
-            throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
+            throw new RuntimeException(e);
         }
     }
 
-    private void updatePlayer(String msg, int playerKeyIndex) {
-        hostServer.sendToOne(msg, hostServer.getPlayerKeys().get(playerKeyIndex));
-
+    /**
+     * Updates a player with a message.
+     *
+     * @param msg   The message to send.
+     * @param playerIdx The index of the player to update.
+     */
+    private void updatePlayer(String msg, int playerIdx) {
+        hostServer.sendToOne(msg, hostServer.getPlayerKeys().get(playerIdx));
     }
 
+    /**
+     * Updates all players with a message.
+     *
+     * @param msg The message to send.
+     */
     private void updatePlayers(String msg) {
-        // System.out.println(turn % playersList.size());
-        // if(turn == 0)
-        // hostServer.sendToAllButOne(msg, hostServer.getPlayerKeys().get(turn+1 %
-        // playersList.size()));
-        // else
         hostServer.sendToAllButOne(msg, hostServer.getPlayerKeys().get(turn % playersList.size()));
-    }
-
-    public synchronized LinkedHashMap<String, List<Tile>> getPlayerTiles() {
-        return playerTiles;
     }
 }
