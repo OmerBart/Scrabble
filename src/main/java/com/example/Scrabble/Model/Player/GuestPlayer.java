@@ -146,10 +146,10 @@ public class GuestPlayer extends java.util.Observable implements Player {
     /**
      * The joinGame function is used to join a game.
      * It sends the server a request to join the game, and then starts listening for messages from the server.
+     *
+     *
+     * @return A string, which is a response from the server indicating whether or not the player joined the game successfully
 
-     *
-     *
-     * @return A string of the format &quot;joingame,playerName:ID&quot;
      *
      * @author Omer Bartfeld
      */
@@ -166,7 +166,6 @@ public class GuestPlayer extends java.util.Observable implements Player {
 
     /**
      * The getScore function returns the score of a player.
-     *
      *
      *
      * @return The score of the player

@@ -239,17 +239,17 @@ public class GameManager {
     }
 
     private void updatePlayer(String msg, int playerKeyIndex) {
-        hostServer.sendToOne(msg, hostServer.getPlayerNames().get(playerKeyIndex));
+        hostServer.sendToOne(msg, hostServer.getPlayerKeys().get(playerKeyIndex));
 
     }
 
     private void updatePlayers(String msg) {
         // System.out.println(turn % playersList.size());
         // if(turn == 0)
-        // hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn+1 %
+        // hostServer.sendToAllButOne(msg, hostServer.getPlayerKeys().get(turn+1 %
         // playersList.size()));
         // else
-        hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn % playersList.size()));
+        hostServer.sendToAllButOne(msg, hostServer.getPlayerKeys().get(turn % playersList.size()));
     }
 
     public synchronized LinkedHashMap<String, List<Tile>> getPlayerTiles() {

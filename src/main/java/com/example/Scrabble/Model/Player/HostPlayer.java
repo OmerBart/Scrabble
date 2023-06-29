@@ -7,9 +7,13 @@ import com.example.Scrabble.Model.ServerUtils.MyServer;
 /**
  * Represents a host player in the Scrabble game.
  * Extends the GuestPlayer class.
- * <p>
- *  @author Omer Bartfeld
- *  @version 1.0
+ *
+ * This class is responsible for managing the game as a host player.
+ * It creates and starts a server, sets it as the host for the GameManager,
+ * and provides methods for configuring the game settings.
+ *
+ * @author Omer Bartfeld
+ * @version 1.0
  */
 public class HostPlayer extends GuestPlayer {
 
@@ -32,11 +36,10 @@ public class HostPlayer extends GuestPlayer {
 
     /**
      * Constructs a new HostPlayer object.
-     * <p>
-     * When HostPlayer is constructed, a new MyServer object is created and started.
-     * The server is then set as the host for the GameManager.
-     * Finally the player joins the game.
      *
+     * When a HostPlayer is constructed, a new MyServer object is created and started.
+     * The server is then set as the host for the GameManager.
+     * Finally, the player joins the game.
      *
      * @param player The player object associated with the host.
      */
@@ -45,7 +48,6 @@ public class HostPlayer extends GuestPlayer {
         int port = 65432;
         hostGameServer = new MyServer(port, new PlayerHandler());
         setServerAddress("localhost", port);
-        System.out.println("host cutr: " + this.getServerAddress());
         hostGameServer.start();
         gameManager = GameManager.get();
         gameManager.setHost(hostGameServer);
@@ -62,7 +64,7 @@ public class HostPlayer extends GuestPlayer {
     }
 
     /**
-     * Set the books to be used in the game.
+     * Sets the books to be used in the game.
      *
      * @param books The books to be used in the game.
      *              Must be in the format of "search_books/BookName.txt" or "search_books/BookName.txt search_books/BookName2.txt...etc".
@@ -85,7 +87,6 @@ public class HostPlayer extends GuestPlayer {
      */
     public void stopGame() {
         gameManager.endGame();
-        // hostGameServer.close();
     }
 
 }
