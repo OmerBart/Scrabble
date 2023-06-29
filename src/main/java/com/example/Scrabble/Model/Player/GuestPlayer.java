@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 public class GuestPlayer extends java.util.Observable implements Player {
     private volatile String name;
     private volatile int playerID;
@@ -66,7 +68,6 @@ public class GuestPlayer extends java.util.Observable implements Player {
         setID(Integer.parseInt(response.split(":")[1].trim()));
         setTurn(false); // Set everyone's turn to false until the game starts
         startListeningToServer();
-        //System.out.println("Joined game successfully" + getName());
         return response;
     }
 
@@ -75,16 +76,12 @@ public class GuestPlayer extends java.util.Observable implements Player {
         return Integer.parseInt(sendRequestToServer("getScore:" + name + ":" + playerID));
     }
 
-
-
     public int getNumberOfPlayers() {
         String response = getPlayerList();
-        // System.out.println("getNumberOfPlayers:: response: " + response);
         return response.split(",").length;
     }
 
     public String getTile() {
-        System.out.println("getTile:: guest player");
         openSocketIfClosed();
         if (playerTiles == null)
             playerTiles = new ArrayList<>();
@@ -162,6 +159,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
     private void listeningToServer(BufferedReader listenerIn) {
         try {
             while (listening) {
+                sleep(10);
                 if (listenerIn.ready()) {
                     String response = listenerIn.readLine();
                     if (response != null) {
@@ -169,14 +167,16 @@ public class GuestPlayer extends java.util.Observable implements Player {
                         setChanged();
                         notifyObservers(response); // create an event and notify the observers
                         clearChanged();
-                        if(response.contains("T:true"))
+                        if (response.contains(getName() + ";")) {
                             setTurn(true);
+                        }
                     }
-
                 }
             }
         } catch (IOException e) {
             System.err.println("Error reading server update: " + e.getMessage());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

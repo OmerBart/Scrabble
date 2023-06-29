@@ -14,6 +14,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.*;
 
+import static java.lang.Thread.sleep;
+
 public class GameManager {
     private List<GuestPlayer> playersList;
     private LinkedHashMap<String, Integer> playerScores; // key: name+ID, value: score
@@ -46,6 +48,7 @@ public class GameManager {
         hasGameStarted = false;
         gameBooks = new String[] { "search_books/The Matrix.txt", "search_books/test.txt" };
         turn = 0;
+
     }
 
     public synchronized void setHost(MyServer hostServer) {
@@ -93,7 +96,7 @@ public class GameManager {
     }
 
     public synchronized void myTurn() {
-        updatePlayer("T:true", turn % playersList.size());
+        updatePlayer(getGameState(), turn % playersList.size());
     }
 
     public synchronized String startGame(String playerName) {
@@ -104,10 +107,10 @@ public class GameManager {
             for (Player p : playersList)
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
-        updatePlayers("game started!");
+        updatePlayers("game started!" + getGameState());
 
         hasGameStarted = true;
-        return "Game Started!";
+        return "Started Game!" + getGameState();
     }
 
     public String getTilefromBag(String playerName) {
@@ -121,21 +124,19 @@ public class GameManager {
         }
     }
 
-    public void endTurn() {
-        System.out.println(playersList.get((turn) % playersList.size()).getName() + "'s turn ended");
+    public String endTurn() {
         turn++;
-        // updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn
-        // starts now!");
+        updatePlayers(getGameState());
         if (turn == numOfTurns)
             endGame();
         else
             myTurn();
-
+        return getGameState();
     }
 
     public synchronized void endGame() {
         try {
-            Thread.sleep(1000);
+            sleep(1000);
             updatePlayer("Game has Ended!", turn % playersList.size());
             updatePlayers("Game has Ended!");
         } catch (InterruptedException e) {
@@ -189,8 +190,10 @@ public class GameManager {
             playerTiles.get(playerName).add(t);
         }
         playerScores.put(playerName, playerScores.get(playerName) + score);
-        updatePlayers("Board Updated " + playerName + " got " + score + " points for " + word);
-        return Integer.toString(score);
+
+        String gameState = getGameState();
+        updatePlayers(gameState);
+        return gameState;
     }
 
     public synchronized String getPlayerList() {
@@ -220,7 +223,6 @@ public class GameManager {
                 String args = "Q,";
                 for (String book : gameBooks)
                     args += book + ",";
-                // System.out.println("wowowo " + args + qword.split(":")[1]);
                 out.println(args + qword.split(":")[1]);
                 out.flush();
             } else if (qword.startsWith("C")) {
@@ -244,15 +246,19 @@ public class GameManager {
     }
 
     private void updatePlayers(String msg) {
-        // System.out.println(turn % playersList.size());
-        // if(turn == 0)
-        // hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn+1 %
-        // playersList.size()));
-        // else
         hostServer.sendToAllButOne(msg, hostServer.getPlayerNames().get(turn % playersList.size()));
     }
 
     public synchronized LinkedHashMap<String, List<Tile>> getPlayerTiles() {
         return playerTiles;
+    }
+
+    private String getGameState() {
+        StringBuilder gameState = new StringBuilder();
+        String playerTurn = playersList.get(turn % playersList.size()).getName();
+        gameState.append(playerTurn).append(";");
+        gameState.append(gameBoard.getPrintableBoard()).append(";");
+        gameState.append(getPlayerList());
+        return gameState.toString();
     }
 }

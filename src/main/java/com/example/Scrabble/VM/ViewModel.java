@@ -25,6 +25,10 @@ public class ViewModel extends Observable implements Observer {
     private Stage stage;
     private Scene scene;
 
+    public Boolean turn;
+    public String board;
+    public String players;
+
     private static ViewModel viewModelInstance = null;
 
     public static ViewModel get() {
@@ -40,15 +44,18 @@ public class ViewModel extends Observable implements Observer {
         boardProperty = new SimpleStringProperty("");
         playersProperty = new SimpleStringProperty("");
         numberOfPlayersProperty = new SimpleStringProperty("");
+        turn = false;
+        board = "";
+        players = "";
     }
 
     @Override
     public void update(java.util.Observable o, Object arg) {
         System.out.println("VM: Game has been updated");
-        System.out.println("VM: " + arg);
         if (arg instanceof String) {
             String argString = (String) arg;
-            if (arg.equals("game started!")) {
+            if (argString.startsWith("game started!")) {
+                setGameState(argString.substring(13));
                 try {
                     Parent root = FXMLLoader
                             .load(getClass().getResource("/com/example/Scrabble/View/board-scene.fxml"));
@@ -65,8 +72,8 @@ public class ViewModel extends Observable implements Observer {
                 Platform.runLater(() -> {
                     numberOfPlayersProperty.setValue(String.valueOf(guestPlayer.getNumberOfPlayers()));
                 });
-            }
-            else if (argString.startsWith("T:true")) {
+            } else {
+                setGameState(argString);
                 setChanged();
                 notifyObservers(argString);
             }
@@ -81,7 +88,7 @@ public class ViewModel extends Observable implements Observer {
     }
 
     public void startGame() {
-        System.out.println(guestPlayer.startGame());
+        setGameState(guestPlayer.startGame().substring(13));
     }
 
     public String joinGame(String gameId) {
@@ -97,11 +104,13 @@ public class ViewModel extends Observable implements Observer {
 
     public String tryPlaceWord(Character[] word, int x, int y, boolean isHorizontal) {
         if (guestPlayer.isMyTurn()) {
-            String result = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
-            int score = Integer.parseInt(result);
-            score += Integer.parseInt(scoreProperty.getValue());
-            scoreProperty.setValue(String.valueOf(score));
-            return result;
+            String newState = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
+            // int score = Integer.parseInt(result);
+            // score += Integer.parseInt(scoreProperty.getValue());
+            // scoreProperty.setValue(String.valueOf(score));
+            setGameState(newState);
+            scoreProperty.setValue(String.valueOf(guestPlayer.getScore()));
+            return newState;
         } else {
             System.out.println("not my turn");
             return scoreProperty.getValue();
@@ -110,8 +119,7 @@ public class ViewModel extends Observable implements Observer {
 
     public String[][] getBoard() {
         String[][] board = new String[15][15];
-        String result = guestPlayer.getCurrentBoard();
-        String[] rows = result.split(",");
+        String[] rows = this.board.split(",");
         for (int i = 0; i < rows.length; i++) {
             String[] row = rows[i].split(" ");
             for (int j = 0; j < row.length; j++) {
@@ -122,7 +130,7 @@ public class ViewModel extends Observable implements Observer {
     }
 
     public void printBoard() {
-        String result = guestPlayer.getCurrentBoard();
+        String result = this.board;
         String[] rows = result.split(",");
         for (int i = 0; i < rows.length; i++) {
             System.out.println(rows[i]);
@@ -145,6 +153,16 @@ public class ViewModel extends Observable implements Observer {
     public Boolean querryWord(String word) {
         // return true;
         return guestPlayer.queryIO(word);
+    }
+
+    public void setGameState(String gameState) {
+        String turn = gameState.split(";")[0];
+        String board = gameState.split(";")[1];
+        String players = gameState.split(";")[2];
+
+        this.board = board;
+        this.players = players;
+        this.turn = turn.equals(guestPlayer.getName()) ? true : false;
     }
 
 }
