@@ -80,19 +80,14 @@ public class BoardController implements Initializable, Observer {
         viewModel = ViewModel.get();
         viewModel.addObserver(this);
 
+        turn = viewModel.turn;
+
         // Set welcome text and build board
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
         wordToCheck = new SimpleStringProperty("");
         wordText.textProperty().bind(wordToCheck);
-        if (viewModel.guestPlayer instanceof HostPlayer) {
-            turnText.setText("It's your turn!");
-            turnText.setStyle("-fx-text-fill: green;");
-            turn = true;
-        } else {
-            turnText.setText("wait for your turn!");
-            turnText.setStyle("-fx-text-fill: red;");
-        }
+
         boardBuild();
 
         // Bindings
@@ -107,6 +102,19 @@ public class BoardController implements Initializable, Observer {
 
         // Set buttons
         setButtons();
+
+        // Set turn text
+        setTurnText();
+    }
+
+    public void setTurnText() {
+        if (turn) {
+            turnText.setText("It's your turn!");
+            turnText.setStyle("-fx-text-fill: green;");
+        } else {
+            turnText.setText("wait for your turn!");
+            turnText.setStyle("-fx-text-fill: red;");
+        }
     }
 
     public void setTiles() {
@@ -125,7 +133,7 @@ public class BoardController implements Initializable, Observer {
 
     public void setTableView() {
         playersTable.getChildren().clear();
-        String[] players = viewModel.guestPlayer.getPlayerList().split(",");
+        String[] players = viewModel.players.split(",");
         for (String player : players) {
             System.out.println(player);
             String[] playerInfo = player.split(":");
@@ -152,15 +160,11 @@ public class BoardController implements Initializable, Observer {
     public void update(java.util.Observable o, Object arg) {
         Platform.runLater(() -> {
             System.out.println("View: Game has been updated");
-            System.out.println("View: " + arg);
-            if (arg.equals("T:true")) {
-                turn = true;
-                boardBuild();
-                setTableView();
-                setButtons();
-                turnText.setText("It's your turn!");
-                turnText.setStyle("-fx-text-fill: green;");
-            }
+            turn = viewModel.turn;
+            boardBuild();
+            setTableView();
+            setButtons();
+            setTurnText();
         });
     }
 
@@ -300,11 +304,9 @@ public class BoardController implements Initializable, Observer {
             boardBuild();
             setTiles();
             setTableView();
-            viewModel.guestPlayer.endTurn();
-            turn = false;
-            setButtons();
-            turnText.setText("waiting for other player to play");
-            turnText.setStyle("-fx-text-fill:red;");
+            turn = viewModel.turn;
+            setTurnText();
+
             wordToSet.clear();
             wordToCheck.setValue("");
         } else {

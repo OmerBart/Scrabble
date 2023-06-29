@@ -104,10 +104,10 @@ public class GameManager {
             for (Player p : playersList)
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
-        updatePlayers("game started!");
+        updatePlayers("game started!" + getGameState());
 
         hasGameStarted = true;
-        return "Game Started!";
+        return "Game Started!" + getGameState();
     }
 
     public String getTilefromBag(String playerName) {
@@ -122,10 +122,7 @@ public class GameManager {
     }
 
     public void endTurn() {
-        System.out.println(playersList.get((turn) % playersList.size()).getName() + "'s turn ended");
         turn++;
-        // updatePlayers(playersList.get(turn % playersList.size()).getName() + "'s turn
-        // starts now!");
         if (turn == numOfTurns)
             endGame();
         else
@@ -189,8 +186,10 @@ public class GameManager {
             playerTiles.get(playerName).add(t);
         }
         playerScores.put(playerName, playerScores.get(playerName) + score);
-        updatePlayers("Board Updated " + playerName + " got " + score + " points for " + word);
-        return Integer.toString(score);
+        // updatePlayers("Board Updated " + playerName + " got " + score + " points for
+        // " + word);
+        updatePlayers(getGameState());
+        return getGameState();
     }
 
     public synchronized String getPlayerList() {
@@ -254,5 +253,14 @@ public class GameManager {
 
     public synchronized LinkedHashMap<String, List<Tile>> getPlayerTiles() {
         return playerTiles;
+    }
+
+    private String getGameState() {
+        StringBuilder gameState = new StringBuilder();
+        String playerTurn = playersList.get(turn % playersList.size()).getName();
+        gameState.append(playerTurn).append(";");
+        gameState.append(gameBoard.getPrintableBoard()).append(";");
+        gameState.append(getPlayerList());
+        return gameState.toString();
     }
 }
