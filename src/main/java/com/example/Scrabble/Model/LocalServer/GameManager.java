@@ -110,7 +110,7 @@ public class GameManager {
         updatePlayers("game started!" + getGameState());
 
         hasGameStarted = true;
-        return "Game Started!" + getGameState();
+        return "Started Game!" + getGameState();
     }
 
     public String getTilefromBag(String playerName) {

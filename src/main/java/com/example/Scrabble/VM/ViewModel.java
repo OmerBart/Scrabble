@@ -52,7 +52,6 @@ public class ViewModel extends Observable implements Observer {
     @Override
     public void update(java.util.Observable o, Object arg) {
         System.out.println("VM: Game has been updated");
-        // System.out.println(arg);
         if (arg instanceof String) {
             String argString = (String) arg;
             if (argString.startsWith("game started!")) {

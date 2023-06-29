@@ -135,7 +135,6 @@ public class BoardController implements Initializable, Observer {
         playersTable.getChildren().clear();
         String[] players = viewModel.players.split(",");
         for (String player : players) {
-            System.out.println(player);
             String[] playerInfo = player.split(":");
             Label label = new Label(playerInfo[0] + " - " + playerInfo[1] + " points: " + playerInfo[3]);
             playersTable.getChildren().add(label);
@@ -301,13 +300,13 @@ public class BoardController implements Initializable, Observer {
             }
             Boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row ? true : false;
             viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
+            setTiles();
             viewModel.guestPlayer.endTurn();
             turn = viewModel.turn;
             boardBuild();
-            setTiles();
             setTableView();
             setTurnText();
-            
+
             wordToSet.clear();
             wordToCheck.setValue("");
         } else {
