@@ -95,7 +95,8 @@ public class GameManager {
     }
 
     public synchronized void myTurn() {
-        updatePlayer("T:true", turn % playersList.size());
+        updatePlayer(getGameState(false),turn-1 % playersList.size());
+        //updatePlayer("T:true", turn % playersList.size());
     }
 
     public synchronized String startGame(String playerName) {
@@ -124,14 +125,12 @@ public class GameManager {
     }
 
     public void endTurn() {
-        updatePlayers(getGameState(true));
+//        updatePlayers(getGameState(true));
         turn++;
-
         if (turn == numOfTurns)
             endGame();
-        else
-            myTurn();
-
+//        else
+//            myTurn();
     }
 
     public synchronized void endGame() {
@@ -192,7 +191,8 @@ public class GameManager {
         playerScores.put(playerName, playerScores.get(playerName) + score);
         // updatePlayers("Board Updated " + playerName + " got " + score + " points for
         // " + word);
-        updatePlayers(getGameState(false));
+        updatePlayers(getGameState(true));
+        endTurn();
         return getGameState(false);
     }
 
@@ -262,7 +262,7 @@ public class GameManager {
     private String getGameState(boolean turnEnded) {
         int tturn = turn;
         if(turnEnded)
-            ++tturn;
+            tturn++;
         StringBuilder gameState = new StringBuilder();
         String playerTurn = playersList.get(tturn % playersList.size()).getName();
         gameState.append(playerTurn).append(";");
