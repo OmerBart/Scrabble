@@ -163,7 +163,6 @@ public class GuestPlayer extends java.util.Observable implements Player {
                 if (listenerIn.ready()) {
                     String response = listenerIn.readLine();
                     if (response != null) {
-                        System.out.println("Got update from server: " + response);
                         setChanged();
                         notifyObservers(response); // create an event and notify the observers
                         clearChanged();
