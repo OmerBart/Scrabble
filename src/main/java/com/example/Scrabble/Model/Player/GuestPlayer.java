@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 public class GuestPlayer extends java.util.Observable implements Player {
     private volatile String name;
     private volatile int playerID;
@@ -160,22 +162,27 @@ public class GuestPlayer extends java.util.Observable implements Player {
     private void listeningToServer(BufferedReader listenerIn) {
         try {
             while (listening) {
+                sleep(100);
                 if (listenerIn.ready()) {
                     String response = listenerIn.readLine();
-                    if (response != null) {
+                    if (response != null){
                         System.out.println("Got update from server: " + response);
-                        setChanged();
-                        notifyObservers(response); // create an event and notify the observers
-                        clearChanged();
+
                         if (response.contains(getName() + ";")) {
                             setTurn(true);
                         }
+
                     }
+                    setChanged();
+                    notifyObservers(response); // create an event and notify the observers
+                    clearChanged();
 
                 }
             }
         } catch (IOException e) {
             System.err.println("Error reading server update: " + e.getMessage());
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -215,7 +222,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
     public String startGame() {
         if (this instanceof HostPlayer) {
             setTurn(true); // Host is the first player and starts the game
-            listeningThread.interrupt();
+            //listeningThread.interrupt();
         }
         return sendRequestToServer("startGame," + name + ":" + playerID);
     }
