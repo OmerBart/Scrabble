@@ -62,14 +62,11 @@ public class ViewModel extends Observable implements Observer {
                     System.out.println(e.getMessage());
                 }
             } else if (argString.startsWith("player added")) {
-                // int numberOfPlayers = Integer.parseInt(numberOfPlayersProperty.getValue());
-                // ++numberOfPlayers;
-                // String players = String.valueOf(numberOfPlayers);
                 Platform.runLater(() -> {
                     numberOfPlayersProperty.setValue(String.valueOf(guestPlayer.getNumberOfPlayers()));
-                    // numberOfPlayersProperty.setValue(players);
                 });
-            } else if (argString.startsWith("Board")) {
+            }
+            else if (argString.startsWith("T:true")) {
                 setChanged();
                 notifyObservers(argString);
             }
@@ -104,7 +101,6 @@ public class ViewModel extends Observable implements Observer {
             int score = Integer.parseInt(result);
             score += Integer.parseInt(scoreProperty.getValue());
             scoreProperty.setValue(String.valueOf(score));
-            guestPlayer.endTurn();
             return result;
         } else {
             System.out.println("not my turn");

@@ -8,10 +8,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
@@ -20,6 +22,7 @@ import java.util.Comparator;
 import java.util.Observer;
 import java.util.ResourceBundle;
 
+import com.example.Scrabble.Model.Player.HostPlayer;
 import com.example.Scrabble.VM.ViewModel;
 
 public class BoardController implements Initializable, Observer {
@@ -30,6 +33,7 @@ public class BoardController implements Initializable, Observer {
     ViewModel viewModel;
     StringProperty wordToCheck;
     StringProperty boardString = new SimpleStringProperty("");
+    boolean turn = false;
 
     @FXML
     StackPane wordPane;
@@ -44,6 +48,12 @@ public class BoardController implements Initializable, Observer {
     Label wordText;
 
     @FXML
+    Label turnText;
+
+    @FXML
+    VBox playersTable;
+
+    @FXML
     private GridPane board;
 
     @FXML
@@ -51,6 +61,18 @@ public class BoardController implements Initializable, Observer {
 
     @FXML
     private Label welcomeText;
+
+    @FXML
+    Button placeWordButton;
+
+    @FXML
+    Button getTileButton;
+
+    @FXML
+    Button querryButton;
+
+    @FXML
+    Button challengeButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -63,6 +85,14 @@ public class BoardController implements Initializable, Observer {
         welcomeText.getStyleClass().add("welcome-text");
         wordToCheck = new SimpleStringProperty("");
         wordText.textProperty().bind(wordToCheck);
+        if (viewModel.guestPlayer instanceof HostPlayer) {
+            turnText.setText("It's your turn!");
+            turnText.setStyle("-fx-text-fill: green;");
+            turn = true;
+        } else {
+            turnText.setText("wait for your turn!");
+            turnText.setStyle("-fx-text-fill: red;");
+        }
         boardBuild();
 
         // Bindings
@@ -71,6 +101,12 @@ public class BoardController implements Initializable, Observer {
 
         // Set first 7 tiles
         setTiles();
+
+        // Set TableView
+        setTableView();
+
+        // Set buttons
+        setButtons();
     }
 
     public void setTiles() {
@@ -87,12 +123,44 @@ public class BoardController implements Initializable, Observer {
         }
     }
 
+    public void setTableView() {
+        playersTable.getChildren().clear();
+        String[] players = viewModel.guestPlayer.getPlayerList().split(",");
+        for (String player : players) {
+            System.out.println(player);
+            String[] playerInfo = player.split(":");
+            Label label = new Label(playerInfo[0] + " - " + playerInfo[1] + " points: " + playerInfo[3]);
+            playersTable.getChildren().add(label);
+        }
+    }
+
+    public void setButtons() {
+        if (turn) {
+            placeWordButton.setDisable(false);
+            getTileButton.setDisable(false);
+            querryButton.setDisable(false);
+            challengeButton.setDisable(false);
+        } else {
+            placeWordButton.setDisable(true);
+            getTileButton.setDisable(true);
+            querryButton.setDisable(true);
+            challengeButton.setDisable(true);
+        }
+    }
+
     @Override
     public void update(java.util.Observable o, Object arg) {
-        System.out.println("View: Game has been updated");
-        System.out.println("View: " + arg);
         Platform.runLater(() -> {
-            boardBuild();
+            System.out.println("View: Game has been updated");
+            System.out.println("View: " + arg);
+            if (arg.equals("T:true")) {
+                turn = true;
+                boardBuild();
+                setTableView();
+                setButtons();
+                turnText.setText("It's your turn!");
+                turnText.setStyle("-fx-text-fill: green;");
+            }
         });
     }
 
@@ -231,6 +299,12 @@ public class BoardController implements Initializable, Observer {
             viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
             boardBuild();
             setTiles();
+            setTableView();
+            viewModel.guestPlayer.endTurn();
+            turn = false;
+            setButtons();
+            turnText.setText("waiting for other player to play");
+            turnText.setStyle("-fx-text-fill:red;");
             wordToSet.clear();
             wordToCheck.setValue("");
         } else {
