@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Represents a player in the Scrabble game.
  * Implements the Player interface.
- * <p>
+ *
  *  @author Omer Bartfeld
  *  @version 1.0
  */
@@ -32,8 +32,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      *
      * @param player Get the name and playerid of the player
      *
-     * @return A new guestplayer object
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      *
      */
     public GuestPlayer(Player player) {
@@ -51,8 +50,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      * @param  name Set the name of the player
      * @param  playerID Identify the player
      *
-     * @return A guestplayer object
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      *
      */
     public GuestPlayer(String name, int playerID) {
@@ -69,8 +67,8 @@ public class GuestPlayer extends java.util.Observable implements Player {
      * @param  name Set the name of the player
      * @param  serverAddress Connect to the server
      *
-     * @return A GuestPlayer object
-     * @docauthor Omer Bartfeld
+     *
+     * @author Omer Bartfeld
      *
      *
      */
@@ -86,8 +84,8 @@ public class GuestPlayer extends java.util.Observable implements Player {
      *
      * @param  name Set the name of the guestplayer
      *
-     * @return A new guestplayer object
-     * @docauthor Omer Bartfeld
+     *
+     * @author Omer Bartfeld
      *
      */
     public GuestPlayer(String name) {
@@ -102,8 +100,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      * @param  serverAddress Set the server address
      * @param  port Set the port number for the server
      *
-     * @return Nothing
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      *
      */
     public void setServerAddress(String serverAddress, int port) {
@@ -116,7 +113,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      *
      *
      * @return The serveraddress variable
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     public String getServerAddress() {
         return serverAddress;
@@ -138,9 +135,9 @@ public class GuestPlayer extends java.util.Observable implements Player {
      *
      * @param  socket Set the serversocket variable to the socket passed in
      *
-     * @return Nothing, so the return type is void
      *
-     * @docauthor Omer Bartfeld
+     *
+     * @author Omer Bartfeld
      */
     public void setSocket(Socket socket) {
         this.serverSocket = socket;
@@ -154,7 +151,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      *
      * @return A string of the format &quot;joingame,playerName:ID&quot;
      *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     public String joinGame() {
         String response;
@@ -174,7 +171,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      *
      * @return The score of the player
      *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     public int getScore() {
         openSocketIfClosed();
@@ -190,7 +187,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      *
      * @return The number of players in the game
      *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     public int getNumberOfPlayers() {
         String response = getPlayerList();
@@ -205,7 +202,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      *
      * @return A string, which is a tile
      *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     public String getTile() {
         System.out.println("getTile:: guest player");
@@ -232,7 +229,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      *
      * @return A string with score if player placed a word successfully, otherwise return an error message
      *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     public String placeWord(Character[] word, int x, int y, boolean isHorizontal) {
         openSocketIfClosed();
@@ -246,12 +243,8 @@ public class GuestPlayer extends java.util.Observable implements Player {
 
     /**
      * The disconnectFromServer function closes the serverSocket and stops listening to the server.
-
      *
-     *
-     * @return Void, because it does not return anything
-     *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     public void disconnectFromServer() {
         stopListeningToServer();
@@ -267,11 +260,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
     /**
      * The openSocketIfClosed function checks if the socket is closed, and if it is, opens a new one.
      *
-     *
-     *
-     * @return Nothing
-     *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     private void openSocketIfClosed() {
         if (serverSocket == null || serverSocket.isClosed()) {
@@ -291,9 +280,9 @@ public class GuestPlayer extends java.util.Observable implements Player {
      *
      * @param  request Send a request to the server
      *
-     * @return A string
+     * @return A string containing the response from the server
      *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     private String sendRequestToServer(String request) {
         try {
@@ -309,10 +298,9 @@ public class GuestPlayer extends java.util.Observable implements Player {
      * The printTiles function prints the tiles in a player's hand.
      *
      *
+     * @return A string containing the tiles in player's rack
      *
-     * @return A string containing the tiles in your rack
-     *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     public String printTiles() {
         return sendRequestToServer("printTiles," + name + ":" + playerID);
@@ -322,10 +310,9 @@ public class GuestPlayer extends java.util.Observable implements Player {
      * The getCurrentBoard function returns the current state of the board as a string.
      *
      *
-     *
      * @return A string of the current board state
      *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     public String getCurrentBoard() {
         return sendRequestToServer("boardState");
@@ -335,12 +322,8 @@ public class GuestPlayer extends java.util.Observable implements Player {
      * The startListeningToServer function is used to start a thread that listens for messages from the server.
      * The function opens a socket if it is closed, and then creates a BufferedReader object called listenerIn.
      * It then starts the listeningThread thread.
-
      *
-     *
-     * @return Nothing
-     *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     private void startListeningToServer() {
         try {
@@ -356,12 +339,10 @@ public class GuestPlayer extends java.util.Observable implements Player {
     /**
      * The listeningToServer function is a helper function that listens to the server for updates.
      * It will notify all observers of any changes in the game state, and it will also set turn to true if it receives a message from the server saying that it's this client's turn.
-
      *
      * @param  listenerIn BufferedReader object that is used to read messages from the server
      *
-     *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     private void listeningToServer(BufferedReader listenerIn) {
         try {
@@ -388,9 +369,9 @@ public class GuestPlayer extends java.util.Observable implements Player {
      * The getPlayerList function returns a string containing the names of all players currently in the game.
      *
      *
-     * @return A string of the form:
+     * @return A string containing the names of all players currently in the game:
      *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     public String getPlayerList() {
         return sendRequestToServer("getPlayerList");
@@ -399,7 +380,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
     /**
      * The stopListeningToServer function stops the listening thread.
      *
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      */
     private void stopListeningToServer() {
         listening = false;
@@ -422,7 +403,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      * @param  request Send a request to the server
      *
      * @return A boolean value
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      *
      */
     public boolean queryDictionaryServer(String request) {
@@ -436,11 +417,9 @@ public class GuestPlayer extends java.util.Observable implements Player {
     /**
      * The setTurn function is used to set the turn of the player.
      *
-     *
      * @param  turn Set the ismyturn variable to true or false
      *
-     * @return Nothing
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      *
      */
     private void setTurn(boolean turn) {
@@ -452,7 +431,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      * The isMyTurn function returns a boolean value that indicates whether or not it is the player's turn.
      *
      * @return A boolean value
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      *
      */
     public boolean isMyTurn() {
@@ -462,8 +441,8 @@ public class GuestPlayer extends java.util.Observable implements Player {
     /**
      * The startGame function is used to start the game.
      *
-     * @return A string
-     * @docauthor Omer Bartfeld
+     * @return On success, returns a string and updates all players that the game started successfully.
+     * @author Omer Bartfeld
      *
      */
     public String startGame() {
@@ -482,8 +461,8 @@ public class GuestPlayer extends java.util.Observable implements Player {
      * Calls the setTurn function to set the turn to false.
      * Starts listening to the server again.
      *
-     * @return True
-     * @docauthor Omer Bartfeld
+     * @return Always returns true
+     * @author Omer Bartfeld
      *
      */
     @Override
@@ -497,11 +476,9 @@ public class GuestPlayer extends java.util.Observable implements Player {
     /**
      * The setListening function sets the listening variable to true or false.
      *
-     *
      * @param listening Determine whether the app is listening for a voice command or not
      *
-     * @return A boolean
-     * @docauthor Omer Bartfeld
+     * @author Omer Bartfeld
      *
      */
     private void setListening(boolean listening) {
