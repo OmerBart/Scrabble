@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -32,6 +33,7 @@ public class BoardController implements Initializable, Observer {
     ViewModel viewModel;
     StringProperty wordToCheck;
     StringProperty boardString = new SimpleStringProperty("");
+    boolean turn = false;
 
     @FXML
     StackPane wordPane;
@@ -60,6 +62,18 @@ public class BoardController implements Initializable, Observer {
     @FXML
     private Label welcomeText;
 
+    @FXML
+    Button placeWordButton;
+
+    @FXML
+    Button getTileButton;
+
+    @FXML
+    Button querryButton;
+
+    @FXML
+    Button challengeButton;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Get ViewModel instance
@@ -74,6 +88,7 @@ public class BoardController implements Initializable, Observer {
         if (viewModel.guestPlayer instanceof HostPlayer) {
             turnText.setText("It's your turn!");
             turnText.setStyle("-fx-text-fill: green;");
+            turn = true;
         } else {
             turnText.setText("wait for your turn!");
             turnText.setStyle("-fx-text-fill: red;");
@@ -89,6 +104,9 @@ public class BoardController implements Initializable, Observer {
 
         // Set TableView
         setTableView();
+
+        // Set buttons
+        setButtons();
     }
 
     public void setTiles() {
@@ -116,16 +134,30 @@ public class BoardController implements Initializable, Observer {
         }
     }
 
+    public void setButtons() {
+        if (turn) {
+            placeWordButton.setDisable(false);
+            getTileButton.setDisable(false);
+            querryButton.setDisable(false);
+            challengeButton.setDisable(false);
+        } else {
+            placeWordButton.setDisable(true);
+            getTileButton.setDisable(true);
+            querryButton.setDisable(true);
+            challengeButton.setDisable(true);
+        }
+    }
+
     @Override
     public void update(java.util.Observable o, Object arg) {
         Platform.runLater(() -> {
             System.out.println("View: Game has been updated");
             System.out.println("View: " + arg);
-            Platform.runLater(() -> {
+            if (arg.equals("T:true")) {
+                turn = true;
                 boardBuild();
                 setTableView();
-            });
-            if (arg.equals("T:true")) {
+                setButtons();
                 turnText.setText("It's your turn!");
                 turnText.setStyle("-fx-text-fill: green;");
             }
@@ -269,6 +301,8 @@ public class BoardController implements Initializable, Observer {
             setTiles();
             setTableView();
             viewModel.guestPlayer.endTurn();
+            turn = false;
+            setButtons();
             turnText.setText("waiting for other player to play");
             turnText.setStyle("-fx-text-fill:red;");
             wordToSet.clear();

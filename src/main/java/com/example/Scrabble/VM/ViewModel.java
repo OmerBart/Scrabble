@@ -62,17 +62,11 @@ public class ViewModel extends Observable implements Observer {
                     System.out.println(e.getMessage());
                 }
             } else if (argString.startsWith("player added")) {
-                // int numberOfPlayers = Integer.parseInt(numberOfPlayersProperty.getValue());
-                // ++numberOfPlayers;
-                // String players = String.valueOf(numberOfPlayers);
                 Platform.runLater(() -> {
                     numberOfPlayersProperty.setValue(String.valueOf(guestPlayer.getNumberOfPlayers()));
-                    // numberOfPlayersProperty.setValue(players);
                 });
-            } else if (argString.startsWith("Board")) {
-                setChanged();
-                notifyObservers(argString);
-            } else if (argString.startsWith("T:true")) {
+            }
+            else if (argString.startsWith("T:true")) {
                 setChanged();
                 notifyObservers(argString);
             }

@@ -24,8 +24,8 @@
                 </padding>
                 <Label fx:id="welcomeText" text='Welcome To Scrabble!!!!!!' />
                 <HBox alignment="center" spacing="20.0">
-                    <Button text="Place Word" onAction="#placeWord" />
-                    <Button text="Get Tile" onAction="#getTile" />
+                    <Button fx:id="placeWordButton" text="Place Word" onAction="#placeWord" />
+                    <Button fx:id="getTileButton" text="Get Tile" onAction="#getTile" />
                     <Button text="Clear" onAction="#clear" />
                 </HBox>
                 <Label fx:id="nameText" text='Name:' />
@@ -43,8 +43,8 @@
                     </children>
                 </StackPane>
                 <HBox alignment="center" spacing="20.0">
-                    <Button text="Querry" onAction="#onQuerryClick" />
-                    <Button text="Challenge (-10)" onAction="#onChallengeClick" />
+                    <Button fx:id="querryButton" text="Querry" onAction="#onQuerryClick" />
+                    <Button fx:id="challengeButton" text="Challenge (-10)" onAction="#onChallengeClick" />
                 </HBox>
             </VBox>
         </AnchorPane>
