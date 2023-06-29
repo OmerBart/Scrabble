@@ -152,7 +152,7 @@ public class ViewModel extends Observable implements Observer {
 
     public Boolean querryWord(String word) {
         // return true;
-        return guestPlayer.queryIO(word);
+        return guestPlayer.queryDictionaryServer(word);
     }
 
     public void setGameState(String gameState) {
