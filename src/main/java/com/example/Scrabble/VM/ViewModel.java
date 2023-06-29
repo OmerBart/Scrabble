@@ -106,12 +106,15 @@ public class ViewModel extends Observable implements Observer {
     public String tryPlaceWord(Character[] word, int x, int y, boolean isHorizontal) {
         if (guestPlayer.isMyTurn()) {
             String newState = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
+            if(newState.split(";").length < 4) {
+                return newState;
+            }
             // int score = Integer.parseInt(result);
             // score += Integer.parseInt(scoreProperty.getValue());
             // scoreProperty.setValue(String.valueOf(score));
             setGameState(newState);
             scoreProperty.setValue(String.valueOf(guestPlayer.getScore()));
-            return newState;
+            return "";
         } else {
             System.out.println("not my turn");
             return scoreProperty.getValue();

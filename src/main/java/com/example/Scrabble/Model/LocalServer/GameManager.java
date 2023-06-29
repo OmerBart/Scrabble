@@ -180,7 +180,10 @@ public class GameManager {
                 if (t != null)
                     playerTiles.get(playerName).add(t);
             }
-            return "Invalid move!";
+            if(score == -1)
+                return "Error word isnt in game dictionary!";
+            else
+                return "Error invalid move!";
         }
         while (playerTiles.get(playerName).size() < 7) {
             Tile t = bag.getRand();
@@ -234,8 +237,7 @@ public class GameManager {
                 out.flush();
             }
 
-            String res = in.nextLine();
-            return res;
+            return in.nextLine();
         } catch (IOException e) {
             throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
         }

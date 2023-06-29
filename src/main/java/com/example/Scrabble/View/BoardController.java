@@ -305,17 +305,24 @@ public class BoardController implements Initializable, Observer {
                 alert.showAndWait();
                 return;
             }
-            Boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row ? true : false;
-            viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
-            setTiles();
-            viewModel.guestPlayer.endTurn();
-            turn = viewModel.turn;
-            boardBuild();
-            setTableView();
-            setTurnText();
+            boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row;
+            String err = viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
+            if (err.contains("Error")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(err);
+                alert.showAndWait();
+                wordToSet.clear();
+            } else {
+                setTiles();
+                viewModel.guestPlayer.endTurn();
+                turn = viewModel.turn;
+                boardBuild();
+                setTableView();
+                setTurnText();
 
-            wordToSet.clear();
-            wordToCheck.setValue("");
+                wordToSet.clear();
+                wordToCheck.setValue("");
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Word is not a sequence");
@@ -329,8 +336,11 @@ public class BoardController implements Initializable, Observer {
                 tiles.getChildren().add(tile);
             }
             wordToSet.clear();
+
         }
     }
+
+
 
     private boolean isSequenceWord() {
         wordToSet.sort(Comparator.comparing(BoardCell::getRow).thenComparing(BoardCell::getCol));
