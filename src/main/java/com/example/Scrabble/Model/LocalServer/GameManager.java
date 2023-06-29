@@ -48,7 +48,7 @@ public class GameManager {
         hasGameStarted = false;
         gameBooks = new String[] { "search_books/The Matrix.txt", "search_books/test.txt" };
         turn = 0;
-
+        numOfTurns = 50;
     }
 
     public synchronized void setHost(MyServer hostServer) {
@@ -103,6 +103,7 @@ public class GameManager {
         IOserver.start();
         System.out.println("IO server started successfully at: " + IOserver.getPort());
         System.out.println("Number of players: " + playersList.size());
+        System.out.println("Number of turns: " + numOfTurns);
         for (int i = 0; i < 7; i++) {
             for (Player p : playersList)
                 playerTiles.get(p.getName()).add(bag.getRand());
@@ -110,7 +111,7 @@ public class GameManager {
         updatePlayers("game started!" + getGameState());
 
         hasGameStarted = true;
-        return "game started!" + getGameState();
+        return "Started Game!" + getGameState();
     }
 
     public String getTilefromBag(String playerName) {
@@ -179,7 +180,10 @@ public class GameManager {
                 if (t != null)
                     playerTiles.get(playerName).add(t);
             }
-            return "Invalid move!";
+            if(score == -1)
+                return "Error word isnt in game dictionary!";
+            else
+                return "Error invalid move!";
         }
         while (playerTiles.get(playerName).size() < 7) {
             Tile t = bag.getRand();
@@ -233,8 +237,7 @@ public class GameManager {
                 out.flush();
             }
 
-            String res = in.nextLine();
-            return res;
+            return in.nextLine();
         } catch (IOException e) {
             throw new RuntimeException("Error sending request to server: " + e.getMessage(), e);
         }
@@ -258,7 +261,9 @@ public class GameManager {
         String playerTurn = playersList.get(turn % playersList.size()).getName();
         gameState.append(playerTurn).append(";");
         gameState.append(gameBoard.getPrintableBoard()).append(";");
-        gameState.append(getPlayerList());
+        gameState.append(getPlayerList()).append(";");
+        gameState.append(String.valueOf(numOfTurns - turn)).append(";");
+        
         return gameState.toString();
     }
 }

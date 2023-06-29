@@ -28,6 +28,7 @@ public class ViewModel extends Observable implements Observer {
     public Boolean turn;
     public String board;
     public String players;
+    public String numberOfTurns;
 
     private static ViewModel viewModelInstance = null;
 
@@ -52,7 +53,6 @@ public class ViewModel extends Observable implements Observer {
     @Override
     public void update(java.util.Observable o, Object arg) {
         System.out.println("VM: Game has been updated");
-        // System.out.println(arg);
         if (arg instanceof String) {
             String argString = (String) arg;
             if (argString.startsWith("game started!")) {
@@ -107,12 +107,15 @@ public class ViewModel extends Observable implements Observer {
     public String tryPlaceWord(Character[] word, int x, int y, boolean isHorizontal) {
         if (guestPlayer.isMyTurn()) {
             String newState = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
+            if(newState.split(";").length < 4) {
+                return newState;
+            }
             // int score = Integer.parseInt(result);
             // score += Integer.parseInt(scoreProperty.getValue());
             // scoreProperty.setValue(String.valueOf(score));
             setGameState(newState);
             scoreProperty.setValue(String.valueOf(guestPlayer.getScore()));
-            return newState;
+            return "";
         } else {
             System.out.println("not my turn");
             return scoreProperty.getValue();
@@ -154,17 +157,19 @@ public class ViewModel extends Observable implements Observer {
 
     public Boolean querryWord(String word) {
         // return true;
-        return guestPlayer.queryIO(word);
+        return guestPlayer.queryDictionaryServer(word);
     }
 
     public void setGameState(String gameState) {
         String turn = gameState.split(";")[0];
         String board = gameState.split(";")[1];
         String players = gameState.split(";")[2];
+        String numOfTurns = gameState.split(";")[3];
 
         this.board = board;
         this.players = players;
         this.turn = turn.equals(guestPlayer.getName()) ? true : false;
+        this.numberOfTurns = numOfTurns;
     }
 
 }

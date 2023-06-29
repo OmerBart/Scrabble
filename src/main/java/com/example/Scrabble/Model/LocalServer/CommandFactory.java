@@ -2,7 +2,24 @@ package com.example.Scrabble.Model.LocalServer;
 
 import com.example.Scrabble.Model.Player.GuestPlayer;
 
+/**
+ * The `CommandFactory` class is responsible for creating command objects based on client requests.
+ * It implements a synchronized factory method, `createCommand`, to create specific command objects
+ * based on the provided request.
+ */
 public class CommandFactory {
+    /**
+     * The createCommand function takes in a string and returns a Command object.
+     * The function parses the string to determine which command is being requested,
+     * then creates an instance of that command and returns it. If the request is not recognized, null is returned.
+
+     *
+     * @param  request The client request.
+     *
+     * @return A command object that corresponds to the request, or null if no matching command is found.
+     *
+     * @author Omer Bartfeld
+     */
     public synchronized Command createCommand(String request) {
         if (request.contains("getTile:")) {
             String playerName = request.split("getTile:")[1];

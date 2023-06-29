@@ -34,6 +34,7 @@ public class BoardController implements Initializable, Observer {
     StringProperty wordToCheck;
     StringProperty boardString = new SimpleStringProperty("");
     boolean turn = false;
+    public StringProperty numberOfTurnsProperty;
 
     @FXML
     StackPane wordPane;
@@ -49,6 +50,9 @@ public class BoardController implements Initializable, Observer {
 
     @FXML
     Label turnText;
+
+    @FXML
+    Label numOfTurns;
 
     @FXML
     VBox playersTable;
@@ -87,12 +91,14 @@ public class BoardController implements Initializable, Observer {
         welcomeText.getStyleClass().add("welcome-text");
         wordToCheck = new SimpleStringProperty("");
         wordText.textProperty().bind(wordToCheck);
+        numberOfTurnsProperty = new SimpleStringProperty("Turns left: " + viewModel.numberOfTurns);
 
         boardBuild();
 
         // Bindings
         nameText.textProperty().bind(viewModel.playerNameProperty);
         scoreText.textProperty().bind(viewModel.scoreProperty);
+        numOfTurns.textProperty().bind(numberOfTurnsProperty);
 
         // Set first 7 tiles
         setTiles();
@@ -135,7 +141,6 @@ public class BoardController implements Initializable, Observer {
         playersTable.getChildren().clear();
         String[] players = viewModel.players.split(",");
         for (String player : players) {
-            System.out.println(player);
             String[] playerInfo = player.split(":");
             Label label = new Label(playerInfo[0] + " - " + playerInfo[1] + " points: " + playerInfo[3]);
             playersTable.getChildren().add(label);
@@ -165,6 +170,7 @@ public class BoardController implements Initializable, Observer {
             setTableView();
             setButtons();
             setTurnText();
+            numberOfTurnsProperty.setValue("Turns left: " + viewModel.numberOfTurns);
         });
     }
 
@@ -299,17 +305,23 @@ public class BoardController implements Initializable, Observer {
                 alert.showAndWait();
                 return;
             }
-            Boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row ? true : false;
-            viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
-            viewModel.guestPlayer.endTurn();
-            turn = viewModel.turn;
-            boardBuild();
-            setTiles();
-            setTableView();
-            setTurnText();
-            
-            wordToSet.clear();
-            wordToCheck.setValue("");
+            boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row;
+            String err = viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
+            if (err.contains("Error")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(err);
+                alert.showAndWait();
+            } else {
+                setTiles();
+                viewModel.guestPlayer.endTurn();
+                turn = viewModel.turn;
+                boardBuild();
+                setTableView();
+                setTurnText();
+
+                wordToSet.clear();
+                wordToCheck.setValue("");
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Word is not a sequence");
@@ -323,8 +335,11 @@ public class BoardController implements Initializable, Observer {
                 tiles.getChildren().add(tile);
             }
             wordToSet.clear();
+
         }
     }
+
+
 
     private boolean isSequenceWord() {
         wordToSet.sort(Comparator.comparing(BoardCell::getRow).thenComparing(BoardCell::getCol));
