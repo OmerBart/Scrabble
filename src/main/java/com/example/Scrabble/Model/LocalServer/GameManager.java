@@ -262,7 +262,7 @@ public class GameManager {
     private String getGameState(boolean turnEnded) {
         int tturn = turn;
         if(turnEnded)
-            tturn++;
+            ++tturn;
         StringBuilder gameState = new StringBuilder();
         String playerTurn = playersList.get(tturn % playersList.size()).getName();
         gameState.append(playerTurn).append(";");

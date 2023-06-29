@@ -301,12 +301,13 @@ public class BoardController implements Initializable, Observer {
             }
             Boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row ? true : false;
             viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
+            viewModel.guestPlayer.endTurn();
             boardBuild();
             setTiles();
             setTableView();
             turn = viewModel.turn;
             setTurnText();
-
+            
             wordToSet.clear();
             wordToCheck.setValue("");
         } else {
