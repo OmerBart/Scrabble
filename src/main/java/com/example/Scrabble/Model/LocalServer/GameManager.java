@@ -124,13 +124,14 @@ public class GameManager {
         }
     }
 
-    public void endTurn() {
+    public String endTurn() {
         turn++;
         updatePlayers(getGameState());
         if (turn == numOfTurns)
             endGame();
         else
             myTurn();
+        return getGameState();
     }
 
     public synchronized void endGame() {
