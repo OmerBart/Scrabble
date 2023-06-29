@@ -72,6 +72,9 @@ public class ViewModel extends Observable implements Observer {
             } else if (argString.startsWith("Board")) {
                 setChanged();
                 notifyObservers(argString);
+            } else if (argString.startsWith("T:true")) {
+                setChanged();
+                notifyObservers(argString);
             }
         }
     }
@@ -104,7 +107,6 @@ public class ViewModel extends Observable implements Observer {
             int score = Integer.parseInt(result);
             score += Integer.parseInt(scoreProperty.getValue());
             scoreProperty.setValue(String.valueOf(score));
-            guestPlayer.endTurn();
             return result;
         } else {
             System.out.println("not my turn");

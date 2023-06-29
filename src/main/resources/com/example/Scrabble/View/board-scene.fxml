@@ -29,7 +29,9 @@
                     <Button text="Clear" onAction="#clear" />
                 </HBox>
                 <Label fx:id="nameText" text='Name:' />
+                <Label text='Score:' />
                 <Label fx:id="scoreText" text='Score: 0' />
+                <Label fx:id="turnText" />
                 <Label text='Tiles:' />
                 <HBox fx:id="tiles" spacing="10" />
                 <Label text="Word:" />
