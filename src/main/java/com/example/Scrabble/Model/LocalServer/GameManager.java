@@ -48,7 +48,7 @@ public class GameManager {
         hasGameStarted = false;
         gameBooks = new String[] { "search_books/The Matrix.txt", "search_books/test.txt" };
         turn = 0;
-
+        numOfTurns = 50;
     }
 
     public synchronized void setHost(MyServer hostServer) {
@@ -103,6 +103,7 @@ public class GameManager {
         IOserver.start();
         System.out.println("IO server started successfully at: " + IOserver.getPort());
         System.out.println("Number of players: " + playersList.size());
+        System.out.println("Number of turns: " + numOfTurns);
         for (int i = 0; i < 7; i++) {
             for (Player p : playersList)
                 playerTiles.get(p.getName()).add(bag.getRand());
@@ -258,7 +259,9 @@ public class GameManager {
         String playerTurn = playersList.get(turn % playersList.size()).getName();
         gameState.append(playerTurn).append(";");
         gameState.append(gameBoard.getPrintableBoard()).append(";");
-        gameState.append(getPlayerList());
+        gameState.append(getPlayerList()).append(";");
+        gameState.append(String.valueOf(numOfTurns - turn)).append(";");
+        
         return gameState.toString();
     }
 }

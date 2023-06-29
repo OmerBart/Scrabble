@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class LobyController implements Initializable {
@@ -38,16 +39,19 @@ public class LobyController implements Initializable {
     Button startGameButton;
 
     @FXML
-    ComboBox<String> numberOfRounds;
+    TextField numberOfRounds;
+
+    @FXML
+    Label numberOfRoundsText;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         viewModel = ViewModel.get();
-        numberOfPlayers.textProperty().bindBidirectional(viewModel.numberOfPlayersProperty);        
+        numberOfPlayers.textProperty().bindBidirectional(viewModel.numberOfPlayersProperty);
         if (viewModel.guestPlayer instanceof HostPlayer) {
             waitingText.setVisible(false);
             numberOfRounds.setVisible(true);
-            numberOfRounds.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
+            numberOfRoundsText.setVisible(true);
         } else {
             waitingText.setVisible(true);
             startGameButton.setVisible(false);
@@ -77,6 +81,9 @@ public class LobyController implements Initializable {
     @FXML
     protected void onStartGameButtonClick(ActionEvent event) {
         try {
+            HostPlayer hostPlayer = HostPlayer.get(viewModel.guestPlayer);
+            Integer numOfRounds = Integer.parseInt(numberOfRounds.getText() != "" ? numberOfRounds.getText() : "30");
+            hostPlayer.setNumOfTurns(numOfRounds);
             viewModel.startGame();
             Parent root = FXMLLoader.load(getClass().getResource("board-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();

@@ -31,6 +31,7 @@
                 <Label fx:id="nameText" text='Name:' />
                 <Label text='Score:' />
                 <Label fx:id="scoreText" text='Score: 0' />
+                <Label fx:id="numOfTurns" text="Turns: 0" />
                 <Label fx:id="turnText" />
                 <Label text='Tiles:' />
                 <HBox fx:id="tiles" spacing="10" />

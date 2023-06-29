@@ -28,6 +28,7 @@ public class ViewModel extends Observable implements Observer {
     public Boolean turn;
     public String board;
     public String players;
+    public String numberOfTurns;
 
     private static ViewModel viewModelInstance = null;
 
@@ -159,10 +160,12 @@ public class ViewModel extends Observable implements Observer {
         String turn = gameState.split(";")[0];
         String board = gameState.split(";")[1];
         String players = gameState.split(";")[2];
+        String numOfTurns = gameState.split(";")[3];
 
         this.board = board;
         this.players = players;
         this.turn = turn.equals(guestPlayer.getName()) ? true : false;
+        this.numberOfTurns = numOfTurns;
     }
 
 }
