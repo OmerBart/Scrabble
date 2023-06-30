@@ -4,9 +4,7 @@ import com.example.Scrabble.Model.LocalServer.PlayerHandler;
 import com.example.Scrabble.Model.ScrabbleDictionary.IOserver.BookScrabbleHandler;
 
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketTimeoutException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +45,6 @@ public class MyServer {
 
     /**    
      * The MyServer function creates a new server that listens on the specified port.
-     * 
      *
      * @param  port Set the port number for the server
      * @param  clientHandler Pass in the clienthandler object that is created in the main method
@@ -248,5 +245,16 @@ public class MyServer {
      */
     public List<String> getPlayerNames() {
         return playerNames;
+    }
+    public String getIPAddress(){
+        try {
+            InetAddress localhost = InetAddress.getLocalHost();
+            String ipAddress = localhost.getHostAddress();
+            //System.out.println("IP Address: " + ipAddress);
+            return ipAddress;
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        return "Error getting IP Address";
     }
 }

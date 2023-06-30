@@ -4,6 +4,8 @@ import com.example.Scrabble.Model.LocalServer.GameManager;
 import com.example.Scrabble.Model.LocalServer.PlayerHandler;
 import com.example.Scrabble.Model.ServerUtils.MyServer;
 
+import java.util.Random;
+
 /**
  * Represents a host player in the Scrabble game.
  * Extends the GuestPlayer class.
@@ -28,6 +30,7 @@ public class HostPlayer extends GuestPlayer {
     private final MyServer hostGameServer;
     private GameManager gameManager;
     private static HostPlayer hostPlayerInstance = null;
+    private final String serverAddress;
 
     /**
      * Retrieves the instance of the HostPlayer.
@@ -53,9 +56,13 @@ public class HostPlayer extends GuestPlayer {
      */
     private HostPlayer(Player player) {
         super(player);
-        int port = 65432;
+        Random r = new Random();
+        //int port = 65432;
+        int port = 6000 + r.nextInt(6000);
         hostGameServer = new MyServer(port, new PlayerHandler());
-        setServerAddress("localhost", port);
+        serverAddress = hostGameServer.getIPAddress() + ":" + port;
+        System.out.println("Host IP: " + serverAddress);
+        setServerAddress(serverAddress, port);
         hostGameServer.start();
         gameManager = GameManager.get();
         gameManager.setHost(hostGameServer);
@@ -69,6 +76,9 @@ public class HostPlayer extends GuestPlayer {
      */
     public void setNumOfTurns(int numOfTurns) {
         gameManager.setNumOfTurns(numOfTurns);
+    }
+    public String getServerAddress() {
+        return serverAddress;
     }
 
     /**
@@ -96,5 +106,7 @@ public class HostPlayer extends GuestPlayer {
     public void stopGame() {
         gameManager.endGame();
     }
+
+
 
 }
