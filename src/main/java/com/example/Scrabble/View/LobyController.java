@@ -6,8 +6,6 @@ import java.util.ResourceBundle;
 import com.example.Scrabble.Model.Player.HostPlayer;
 import com.example.Scrabble.VM.ViewModel;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,6 +43,9 @@ public class LobyController implements Initializable {
     @FXML
     Label numberOfRoundsText;
 
+    @FXML
+    ComboBox<String> bookSet;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         viewModel = ViewModel.get();
@@ -54,6 +55,10 @@ public class LobyController implements Initializable {
             waitingText.setVisible(false);
             numberOfRounds.setVisible(true);
             numberOfRoundsText.setVisible(true);
+            bookSet.setVisible(true);
+            bookSet.setPromptText("Select a book");
+            bookSet.getItems().addAll("Alice In Wonderland", "Dune", "Harry Potter", "Moby Dick", "Pg10",
+                    "Shakespeare", "The Matrix");
         } else {
             waitingText.setVisible(true);
             startGameButton.setVisible(false);
@@ -80,13 +85,13 @@ public class LobyController implements Initializable {
     protected void onReadyButtonClick(ActionEvent event) {
     }
 
-
     @FXML
     protected void onStartGameButtonClick(ActionEvent event) {
         try {
             HostPlayer hostPlayer = HostPlayer.get(viewModel.guestPlayer);
             Integer numOfRounds = Integer.parseInt(numberOfRounds.getText() != "" ? numberOfRounds.getText() : "30");
             hostPlayer.setNumOfTurns(numOfRounds);
+            // hostPlayer.setBook(bookSet.getValue());
             viewModel.startGame();
             Parent root = FXMLLoader.load(getClass().getResource("board-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
