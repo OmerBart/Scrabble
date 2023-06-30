@@ -22,6 +22,7 @@ import javafx.stage.Stage;
 
 public class LobyController implements Initializable {
 
+    public Label gameid;
     private Stage stage;
     private Scene scene;
     private ViewModel viewModel;
@@ -49,6 +50,7 @@ public class LobyController implements Initializable {
         viewModel = ViewModel.get();
         numberOfPlayers.textProperty().bindBidirectional(viewModel.numberOfPlayersProperty);
         if (viewModel.guestPlayer instanceof HostPlayer) {
+            gameid.setText("Game ID: " + viewModel.guestPlayer.getServerAddress());
             waitingText.setVisible(false);
             numberOfRounds.setVisible(true);
             numberOfRoundsText.setVisible(true);
@@ -77,6 +79,7 @@ public class LobyController implements Initializable {
     @FXML
     protected void onReadyButtonClick(ActionEvent event) {
     }
+
 
     @FXML
     protected void onStartGameButtonClick(ActionEvent event) {

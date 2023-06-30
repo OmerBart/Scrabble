@@ -1,14 +1,24 @@
 package com.example.Scrabble.Model.Game;
 
+
+import com.example.Scrabble.Model.LocalServer.GameManager;
 import java.util.ArrayList;
 
-// singltone class
+/**
+ * The Board class represents the game board in the game of Scrabble.
+ * It contains information about the board boxes and the tiles placed on the board. It also contains
+ * functions to check if a word can be placed on the board and to place a word on the board.
+ */
 public class Board {
     private static Board instance;
     private BoardBox[][] board = new BoardBox[15][15];
     private static boolean isStarBonusHasBeenUsed = false;
     private static ArrayList<Word> allWords = new ArrayList<Word>();
 
+    /**
+     * The Board function creates a new board object.
+     * It sets the board to the default state.
+     */
     private Board() {
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
@@ -29,6 +39,12 @@ public class Board {
         }
     }
 
+    /**
+     * The getBoard function is a static function that returns the instance of the Board class.
+     * If there is no instance, it creates one and then returns it.
+     *
+     * @return The board object
+     */
     public static Board getBoard() {
         if (instance == null) {
             instance = new Board();
@@ -38,6 +54,12 @@ public class Board {
     }
 
     // get tiles
+    /**
+     * The getTiles function returns a 2D array of Tile objects.
+     *
+     * @return A 2d array of tiles
+     *
+     */
     public Tile[][] getTiles() {
         Tile[][] tiles = new Tile[15][15];
         for (int i = 0; i < 15; i++) {
@@ -50,6 +72,17 @@ public class Board {
         return tiles;
     }
 
+    /**
+     * The boardLegal function checks if a word is legal to be placed on the board.
+     * It does this by checking if all tiles are on the board, if placing the word changes other words, and
+     * whether or not it is connected to another word. If any of these conditions are false then it returns false.
+
+     *
+     * @param  word Pass the word that is being checked for legality
+     *
+     * @return True if the word can be placed on the board
+     *
+     */
     public boolean boardLegal(Word word) {
         // check if all tiles are on the board
         if (!allTilesOnBoard(word)) {
@@ -67,15 +100,35 @@ public class Board {
         return true;
     }
 
+    /**
+     * The dictionaryLegal function checks if the word is in the dictionary.
+     *
+     * @param  word Check if the word is legal
+     *
+     * @return True if the word is in the dictionary
+     *
+     */
     public boolean dictionaryLegal(Word word) {
-        // return true for now
-        return true;
-        // GameManager gm = GameManager.get();
-        // return Boolean.parseBoolean(gm.queryIOserver("Q:"+word.toString())); // send
-        // to IO server
+//        // return true for now
+//        return true;
+         GameManager gm = GameManager.get();
+         return Boolean.parseBoolean(gm.queryIOserver("Q:"+word.toString())); // send to IO server
+
     }
 
-    // check if adding the word to the board creates other words
+
+    /**
+     * The getWords function takes in a word and returns an ArrayList of all the words that can be formed by adding
+     * letters to the original word. The function first checks if the board is legal, meaning that there are no
+     * tiles on top of each other or outside of the board. If it is not legal, then it returns an empty ArrayList.
+     * Otherwise, it checks if the word is horizontal or vertical and calls helper functions to check for words above/below/left/right
+     * from each letter in order to form new words with those letters added on. It then adds these new words into an array
+     *
+     * @param  word Determine if the word is vertical or horizontal
+     *
+     * @return An arraylist of all the words that are formed by adding a word to the board
+     *
+     */
     public ArrayList<Word> getWords(Word word) {
         ArrayList<Word> words = new ArrayList<Word>();
         if (!boardLegal(word)) {
@@ -121,6 +174,14 @@ public class Board {
         return words;
     }
 
+    /**
+     * The getScore function takes in a word and returns the score of that word.
+     *
+     * @param  word Get the row, column, and orientation of the word
+     *
+     * @return The score of a word
+     *
+     */
     public int getScore(Word word) {
         int score = 0;
         int multiplier = 1;
@@ -204,6 +265,15 @@ public class Board {
         return score * multiplier;
     }
 
+    /**
+     * The tryPlaceWord function takes a Word object as an argument and returns the score of that word.
+     * If the word is not legal, it returns a score of 0 or -1
+     *
+     * @param  word Pass the word that is being placed on the board
+     *
+     * @return The score of the word placed. If the word is not legal, it returns a score of 0 or -1(-1 for illegal word, 0 for illegal placement)
+     *
+     */
     public int tryPlaceWord(Word word) {
         if (!boardLegal(word)) {
             return 0;
@@ -219,7 +289,7 @@ public class Board {
         words.addAll(getWords(word));
         for (Word w : words) {
             if (!dictionaryLegal(w) || !boardLegal(w)) {
-                return 0;
+                return -1;
             } else {
                 setWordOnTheBoard(w);
                 score += getScore(w);
@@ -229,6 +299,17 @@ public class Board {
         return score;
     }
 
+
+    /**
+     * The getPrintableBoard function returns a string representation of the board.
+     * The string is formatted as follows:
+     * 		The first character in the string represents the letter on BoardBox[0][0] (the top left corner)
+     * 		The second character in the string represents whether or not there is a tile on BoardBox[0][0]. If there is no tile, then it will be represented by an underscore (_). Otherwise, it will be represented by its letter. For example, if Tile('A', 1) was placed on BoardBox[0][0], then 'A' would appear as the second
+     *
+     *
+     * @return A string representation of the board
+     *
+     */
     public String getPrintableBoard() {
         StringBuilder stringBuilder = new StringBuilder();
         Tile t;

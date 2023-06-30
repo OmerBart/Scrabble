@@ -17,7 +17,8 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <Label fx:id="gameid" text="Game ID : 'localhost:65432'" />
+<!--    <Label fx:id="gameid" text="Game ID : 'localhost:65432'" />-->
+    <Label fx:id="gameid" text="Game ID : " />
     <Label fx:id="waitingText" text="Waiting for Host to start the Game.." visible='false' />
     <Label fx:id="nofcontainer" text="Number of Players: " />
     <Label fx:id="numberOfPlayers" text="1" />
