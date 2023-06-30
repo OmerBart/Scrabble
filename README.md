@@ -17,9 +17,12 @@ By Omer, Hadar, and Eilon
 
 <img width="1440" alt="Screenshot 2023-06-30 at 23 01 34" src="https://github.com/OmerBart/Scrabble/assets/112820943/4ea41bd0-cf3f-49d8-aeb6-6fd2d6cc1c08">
 
+# UML
 
 
 
+
+![main](https://github.com/OmerBart/Scrabble/assets/112820943/75a6b235-9a2d-4629-809c-53b30486152c)
 
 
 
