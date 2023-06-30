@@ -120,7 +120,7 @@ public class HostPlayer extends GuestPlayer {
         gameManager.endGame();
     }
     public String getPublicServerAddress() {
-        return publicServerAddress;
+        return publicServerAddress + ":" + hostGameServer.getPort();
     }
 
     private String getPublicIPAddress(){
