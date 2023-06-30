@@ -3,7 +3,11 @@
     -fx-background-color: #6683f9;
 }
 
-.VBox {
+.SplitPane {
+    -fx-background-color: #6683f9;
+}
+
+.AnchorPane{
     -fx-background-color: #6683f9;
 }
 
@@ -26,8 +30,8 @@
 }
 
 .button {
-    -fx-background-color: #3e2982;
-    -fx-text-fill: #000000;
+    -fx-background-color: #412799;
+    -fx-text-fill: #ffffff;
     -fx-border-color: #ffffff;
     -fx-border-width: 1px;
     -fx-border-radius: 10px;
@@ -35,8 +39,8 @@
 }
 
 .button:hover {
-    -fx-background-color: #f2888833;
-    -fx-cursor: pointer;
+    -fx-background-color: #c79d9d5e;
+    -fx-text-fill: #000000;
 }
 
 .ready-button {
@@ -96,6 +100,14 @@
     -fx-arc-width: 5;
     -fx-arc-height: 5;
     -fx-alignment: center;
+}
+
+.left-pane {
+    -fx-background-color: #6683f9;
+}
+
+.right-pane {
+    -fx-background-color: #6683f9;
 }
 
 .star {

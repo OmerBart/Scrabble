@@ -340,7 +340,6 @@ public class GameManager {
         if (score < 1) {
             for (Tile t : wordTiles) {
                 if (t != null) {
-                    System.out.println(t);
                     playerTiles.get(playerName).add(t);
                 }
             }

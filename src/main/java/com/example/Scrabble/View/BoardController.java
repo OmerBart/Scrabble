@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -58,6 +59,15 @@ public class BoardController implements Initializable, Observer {
     VBox playersTable;
 
     @FXML
+    VBox leftPane;
+
+    @FXML
+    AnchorPane boardPane;
+
+    @FXML
+    AnchorPane playersPane;
+
+    @FXML
     private GridPane board;
 
     @FXML
@@ -92,6 +102,7 @@ public class BoardController implements Initializable, Observer {
         wordToCheck = new SimpleStringProperty("");
         wordText.textProperty().bind(wordToCheck);
         numberOfTurnsProperty = new SimpleStringProperty("Turns left: " + viewModel.numberOfTurns);
+        leftPane.getStyleClass().add("left-pane");
 
         boardBuild();
 
@@ -142,7 +153,7 @@ public class BoardController implements Initializable, Observer {
         String[] players = viewModel.players.split(",");
         for (String player : players) {
             String[] playerInfo = player.split(":");
-            Label label = new Label(playerInfo[0] + " - " + playerInfo[1] + " points: " + playerInfo[3]);
+            Label label = new Label(playerInfo[0] + "'s points: " + playerInfo[3]);
             playersTable.getChildren().add(label);
         }
     }
@@ -219,13 +230,9 @@ public class BoardController implements Initializable, Observer {
     }
 
     public void getTile() {
-        String letter = viewModel.getTile();
-        Tile tile = new Tile(letter);
-        tilesList.add(tile);
-        tiles.getChildren().add(tile);
-        tile.setOnMouseClicked(event -> {
-            handleTileClick(event, tile);
-        });
+        viewModel.getTile();
+        setTiles();
+        viewModel.guestPlayer.endTurn();
     }
 
     private void handleTileClick(Event e, Tile tile) {
@@ -311,7 +318,7 @@ public class BoardController implements Initializable, Observer {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText(err);
                 alert.showAndWait();
-               // clear();
+                // clear();
             } else {
                 setTiles();
                 viewModel.guestPlayer.endTurn();
@@ -339,8 +346,6 @@ public class BoardController implements Initializable, Observer {
 
         }
     }
-
-
 
     private boolean isSequenceWord() {
         wordToSet.sort(Comparator.comparing(BoardCell::getRow).thenComparing(BoardCell::getCol));

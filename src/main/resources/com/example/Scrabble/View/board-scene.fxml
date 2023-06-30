@@ -18,7 +18,7 @@
     fx:controller="com.example.Scrabble.View.BoardController">
     <SplitPane dividerPositions="0.2">
         <AnchorPane>
-            <VBox alignment="CENTER" spacing="20.0">
+            <VBox alignment="CENTER" spacing="20.0" fx:id="leftPane">
                 <padding>
                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                 </padding>
@@ -45,17 +45,18 @@
                 </StackPane>
                 <HBox alignment="center" spacing="20.0">
                     <Button fx:id="querryButton" text="Querry" onAction="#onQuerryClick" />
-                    <Button fx:id="challengeButton" text="Challenge (-10)" onAction="#onChallengeClick" />
+                    <Button fx:id="challengeButton" text="Challenge (-10)"
+                        onAction="#onChallengeClick" />
                 </HBox>
             </VBox>
         </AnchorPane>
         <AnchorPane>
             <SplitPane dividerPositions="0.3">
-                <AnchorPane>
+                <AnchorPane fx:id="boardPane">
                     <GridPane fx:id="board" alignment="CENTER" hgap="1" vgap="1">
                     </GridPane>
                 </AnchorPane>
-                <AnchorPane>
+                <AnchorPane fx:id="playersPane">
                     <VBox fx:id="playersTable" alignment="center" spacing="20.0">
                         <padding>
                             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
