@@ -51,7 +51,8 @@ public class LobyController implements Initializable {
         viewModel = ViewModel.get();
         numberOfPlayers.textProperty().bindBidirectional(viewModel.numberOfPlayersProperty);
         if (viewModel.guestPlayer instanceof HostPlayer) {
-            gameid.setText("Game ID: " + ((HostPlayer) viewModel.guestPlayer).getPublicServerAddress());
+            gameid.setText("Game ID: " + ((HostPlayer) viewModel.guestPlayer).getPublicServerAddress() +"\n"
+            + "Local Game ID: " + ((HostPlayer) viewModel.guestPlayer).getLocalServerAddress());
             waitingText.setVisible(false);
             numberOfRounds.setVisible(true);
             numberOfRoundsText.setVisible(true);
