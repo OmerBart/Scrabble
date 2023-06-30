@@ -65,7 +65,7 @@ public class GameManager {
         playerScores = new LinkedHashMap<>();
         playerTiles = new LinkedHashMap<>();
         hasGameStarted = false;
-        gameBooks = new String[] { "search_books/The Matrix.txt", "search_books/test.txt" };
+        //gameBooks = new String[] { "search_books/The Matrix.txt", "search_books/test.txt" };
         turn = 0;
         numOfTurns = 50;
     }
@@ -192,6 +192,8 @@ public class GameManager {
      * @author Omer Bartfeld
      */
     public synchronized String startGame(String playerName) {
+        if(gameBooks.length == 0)
+            return "Please select a book to play with!";
         IOserver.start();
         System.out.println("IO server started successfully at: " + IOserver.getPort());
         System.out.println("Number of players: " + playersList.size());
