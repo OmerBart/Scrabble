@@ -56,7 +56,6 @@ public class ViewModel extends Observable implements Observer {
         if (arg instanceof String) {
             String argString = (String) arg;
             if (argString.startsWith("game started!")) {
-                System.out.println("game started");
                 setGameState(argString.substring(13));
                 try {
                     Parent root = FXMLLoader
