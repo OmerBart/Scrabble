@@ -1,5 +1,14 @@
 .root {
     -fx-font-family: "Comic Sans MS";
+    -fx-background-color: #6683f9;
+}
+
+.SplitPane {
+    -fx-background-color: #6683f9;
+}
+
+.AnchorPane{
+    -fx-background-color: #6683f9;
 }
 
 .hide {
@@ -7,30 +16,31 @@
 }
 
 .label {
-    -fx-text-fill: black;
+    -fx-text-fill: rgb(0, 0, 0);
     -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-alignment: center;
 }
 
 .welcome-text {
-    -fx-text-fill: black;
-    -fx-font-size: 20px;
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-font-size: 50px;
     -fx-font-weight: bold;
     -fx-alignment: center;
 }
 
 .button {
-    -fx-background-color: #4a3e3e;
-    -fx-text-fill: #000000;
-    -fx-border-color: #f28888;
-    -fx-border-width: 2px;
-    -fx-border-radius: 15px;
-    -fx-background-radius: 15px;
+    -fx-background-color: #412799;
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
 }
 
 .button:hover {
-    -fx-background-color: #f2888833;
+    -fx-background-color: #c79d9d5e;
+    -fx-text-fill: #000000;
 }
 
 .ready-button {
@@ -90,6 +100,14 @@
     -fx-arc-width: 5;
     -fx-arc-height: 5;
     -fx-alignment: center;
+}
+
+.left-pane {
+    -fx-background-color: #6683f9;
+}
+
+.right-pane {
+    -fx-background-color: #6683f9;
 }
 
 .star {

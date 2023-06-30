@@ -66,7 +66,7 @@ public class GameManager {
         playerScores = new LinkedHashMap<>();
         playerTiles = new LinkedHashMap<>();
         hasGameStarted = false;
-        //gameBooks = new String[] { "search_books/The Matrix.txt", "search_books/test.txt" };
+        gameBooks = new String[] {};
         turn = 0;
         numOfTurns = 50; //default value for number of turns
     }
@@ -339,8 +339,9 @@ public class GameManager {
         int score = gameBoard.tryPlaceWord(w);
         if (score < 1) {
             for (Tile t : wordTiles) {
-                if (t != null)
+                if (t != null) {
                     playerTiles.get(playerName).add(t);
+                }
             }
             if(score == -1)
                 return "Error word isnt in game dictionary!";
