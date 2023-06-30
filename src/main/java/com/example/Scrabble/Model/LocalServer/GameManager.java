@@ -358,6 +358,10 @@ public class GameManager {
             index++;
         }
         Word w = new Word(wordTiles, x, y, !isHorizontal);
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // copy of wordTiles beacuse board.tryPlaceWord() replaces nulls with board already existing tiles
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         Tile[] wordTilesCopy = new Tile[wordTiles.length];
 
         for (int i = 0; i < wordTiles.length; i++) {
