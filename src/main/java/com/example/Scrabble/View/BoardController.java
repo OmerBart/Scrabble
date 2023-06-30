@@ -359,16 +359,10 @@ public class BoardController implements Initializable, Observer {
     }
 
     public void clear() {
-        for (BoardCell cell : wordToSet) {
-            Tile tile = new Tile(cell.letter);
-            tile.setOnMouseClicked(event -> {
-                handleTileClick(event, tile);
-            });
-            tiles.getChildren().add(tile);
-        }
         wordToSet.clear();
         wordToCheck.setValue("");
         wordPane.getChildren().get(0).setStyle("-fx-fill: white ;");
+        setTiles();
         boardBuild();
     }
 
