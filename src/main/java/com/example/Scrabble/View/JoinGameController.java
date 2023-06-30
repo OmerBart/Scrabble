@@ -32,7 +32,11 @@ public class JoinGameController implements Initializable {
     @FXML
     protected void joinGame(ActionEvent event) {
         try {
-            System.out.println(viewModel.joinGame("localhost:65432"));
+            if (gameId.getText().equals("")) {
+                System.out.println("Please enter a game id");
+                return;
+            }
+            System.out.println(viewModel.joinGame(gameId.getText()));
             Parent root = FXMLLoader.load(getClass().getResource("loby-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root, 1000, 700);
@@ -51,7 +55,7 @@ public class JoinGameController implements Initializable {
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             scene = new Scene(root, 1000, 700);
             scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
- 
+
             stage.setScene(scene);
         } catch (Exception e) {
             System.out.println(e.getMessage());

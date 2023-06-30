@@ -447,6 +447,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      *
      */
     public String startGame() {
+        System.out.println("Starting game from::GuestPlayer");
         if (this instanceof HostPlayer)
             setTurn(true); // Host is the first player and starts the game
         return sendRequestToServer("startGame," + name + ":" + playerID);
