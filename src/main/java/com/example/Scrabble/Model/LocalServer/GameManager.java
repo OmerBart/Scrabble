@@ -67,7 +67,7 @@ public class GameManager {
         hasGameStarted = false;
         //gameBooks = new String[] { "search_books/The Matrix.txt", "search_books/test.txt" };
         turn = 0;
-        numOfTurns = 50;
+        numOfTurns = 50; //default value for number of turns
     }
 
     /**
