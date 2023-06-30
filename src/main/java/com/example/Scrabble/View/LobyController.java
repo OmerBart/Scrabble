@@ -91,7 +91,7 @@ public class LobyController implements Initializable {
             HostPlayer hostPlayer = HostPlayer.get(viewModel.guestPlayer);
             Integer numOfRounds = Integer.parseInt(numberOfRounds.getText() != "" ? numberOfRounds.getText() : "30");
             hostPlayer.setNumOfTurns(numOfRounds);
-            // hostPlayer.setBook(bookSet.getValue());
+            hostPlayer.setBooks(bookSet.getValue());
             viewModel.startGame();
             Parent root = FXMLLoader.load(getClass().getResource("board-scene.fxml"));
             stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();

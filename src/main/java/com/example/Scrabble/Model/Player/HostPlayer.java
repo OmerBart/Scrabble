@@ -4,6 +4,7 @@ import com.example.Scrabble.Model.LocalServer.GameManager;
 import com.example.Scrabble.Model.LocalServer.PlayerHandler;
 import com.example.Scrabble.Model.ServerUtils.MyServer;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -93,6 +94,7 @@ public class HostPlayer extends GuestPlayer {
         for(String book : books)
             booksFullPaths[books.length - 1] = "search_books/" + book+".txt";
 
+        //System.out.println("booksFullPaths: " + Arrays.toString(booksFullPaths));
         gameManager.setGameBooks(booksFullPaths);
     }
 

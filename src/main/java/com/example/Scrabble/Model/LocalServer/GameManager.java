@@ -339,8 +339,10 @@ public class GameManager {
         int score = gameBoard.tryPlaceWord(w);
         if (score < 1) {
             for (Tile t : wordTiles) {
-                if (t != null)
+                if (t != null) {
+                    System.out.println(t);
                     playerTiles.get(playerName).add(t);
+                }
             }
             if(score == -1)
                 return "Error word isnt in game dictionary!";
