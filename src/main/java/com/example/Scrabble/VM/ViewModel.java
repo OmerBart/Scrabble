@@ -56,7 +56,6 @@ public class ViewModel extends Observable implements Observer {
         if (arg instanceof String) {
             String argString = (String) arg;
             if (argString.startsWith("game started!")) {
-                System.out.println("game started");
                 setGameState(argString.substring(13));
                 try {
                     Parent root = FXMLLoader
@@ -106,9 +105,6 @@ public class ViewModel extends Observable implements Observer {
 
     public String tryPlaceWord(Character[] word, int x, int y, boolean isHorizontal) {
         if (guestPlayer.isMyTurn()) {
-            for (Character character : word) {
-                System.out.println(character);
-            }
             String newState = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
             if(newState.split(";").length < 4) {
                 return newState;

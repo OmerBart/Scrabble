@@ -348,9 +348,7 @@ public class GameManager {
         Tile[] wordTiles = new Tile[word.length()];
         int index = 0;
         for (char c : carr) {
-            System.out.println(c + " in gm");
             if (c == '_') {
-                System.out.println("blank");
                 wordTiles[index] = null;
             } else {
                 wordTiles[index] = playerTiles.get(playerName).stream().filter(t -> t.getLetter() == c)
@@ -365,11 +363,10 @@ public class GameManager {
         for (int i = 0; i < wordTiles.length; i++) {
             wordTilesCopy[i] = wordTiles[i];
         }
-        
+
         int score = gameBoard.tryPlaceWord(w);
         if (score < 1) {
             for (Tile t : wordTilesCopy) {
-                System.out.println(t);
                 if (t != null) {
                     playerTiles.get(playerName).add(t);
                 }
