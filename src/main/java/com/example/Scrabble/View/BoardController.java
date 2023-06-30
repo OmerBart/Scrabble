@@ -311,6 +311,7 @@ public class BoardController implements Initializable, Observer {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText(err);
                 alert.showAndWait();
+               // clear();
             } else {
                 setTiles();
                 viewModel.guestPlayer.endTurn();

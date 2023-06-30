@@ -4,13 +4,19 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 
+/**
+ * The LFU (Least Frequently Used) class implements the CacheReplacementPolicy interface and represents a cache
+ * replacement policy based on the least frequently used algorithm.
+ */
 public class LFU implements CacheReplacementPolicy {
-    // ArrayList<WordInfo> wak = new ArrayList<>();
     LinkedHashSet<WordInfo> wak;
     LinkedHashMap<String, Integer> wordHashMap;
     String lastLeaseUsed = null;
     WordInfo leastUsedWord = null;
 
+    /**
+     * Constructs a new LFU object.
+     */
     public LFU() {
         this.wordHashMap = new LinkedHashMap<>();
     }
@@ -53,6 +59,11 @@ public class LFU implements CacheReplacementPolicy {
         }
     }
 
+    /**
+     * Adds a word to the LFU cache.
+     *
+     * @param word the word to add
+     */
     @Override
     public void add(String word) {
         if (!wordHashMap.containsKey(word)) {
@@ -64,13 +75,16 @@ public class LFU implements CacheReplacementPolicy {
                 leastUsedWord = new WordInfo(word, ++a);
             wordHashMap.replace(word, ++a);
         }
-
     }
 
+    /**
+     * Removes the least frequently used word from the LFU cache.
+     *
+     * @return the removed word
+     */
     @Override
     public String remove() {
         wordHashMap.remove(leastUsedWord.getWord());
         return leastUsedWord.getWord();
-
     }
 }

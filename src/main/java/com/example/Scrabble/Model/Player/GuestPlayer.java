@@ -399,8 +399,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
 
     /**
      * The queryDictionaryServer function sends a request to the server and returns
-     * whether or not the word is in the dictionary.
-     *
+     * whether or not the word is in the dictionary. It is also used to challenge a word.
      *
      * @param  request Send a request to the server
      *
@@ -412,9 +411,9 @@ public class GuestPlayer extends java.util.Observable implements Player {
         return Boolean.parseBoolean(sendRequestToServer("Q:" + request));
     }
 
-    public boolean challengeIO(String request) {
-        return Boolean.parseBoolean(sendRequestToServer("C:" + request));
-    }
+//    public boolean challengeIO(String request) {
+//        return Boolean.parseBoolean(sendRequestToServer("C:" + request));
+//    }
 
     /**
      * The setTurn function is used to set the turn of the player.

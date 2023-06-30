@@ -13,6 +13,12 @@ public class BookScrabbleHandler implements ClientHandler {
     private PrintWriter out;
     private DictionaryManager dm;
 
+    /**
+     * Handles the client request by processing the input from the client and sending the corresponding response.
+     *
+     * @param inFromClient  the input stream from the client
+     * @param outToClient   the output stream to the client
+     */
     @Override
     public void handleClient(InputStream inFromClient, OutputStream outToClient) {
         try {
@@ -33,6 +39,9 @@ public class BookScrabbleHandler implements ClientHandler {
         }
     }
 
+    /**
+     * Closes the input and output streams.
+     */
     @Override
     public void close() {
         try {
@@ -43,6 +52,11 @@ public class BookScrabbleHandler implements ClientHandler {
         }
     }
 
+    /**
+     * Sends a message to the client. This method is not implemented in this class.
+     *
+     * @param msg the message to send
+     */
     @Override
     public void sendMsg(String msg) {
         // Not implemented in this class

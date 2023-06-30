@@ -7,13 +7,21 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Objects;
 
+/**
+ * A Bloom filter is a space-efficient probabilistic data structure used to test whether an element is a member of a set.
+ * This implementation uses a BitSet to represent the filter and a list of MessageDigest algorithms to generate hash values.
+ */
 public class BloomFilter {
 
     final BitSet bitSet;
     ArrayList<MessageDigest> md = new ArrayList<>(); // a list to hold the message digest algorithms
 
-    // Constructor to create a new BloomFilter with a given set size and an array of
-    // Strings to add to the filter
+    /**
+     * Constructs a new BloomFilter with the specified set size and adds the given values to the filter.
+     *
+     * @param setSize the size of the Bloom filter set
+     * @param values  the values to add to the filter
+     */
     public BloomFilter(int setSize, String... values) {
         bitSet = new BitSet(setSize); // Initialize a new BitSet of the given size
 
@@ -28,12 +36,18 @@ public class BloomFilter {
         }
     }
 
-    // A method to print the contents of the bitSet to the console
+    /**
+     * Prints the contents of the bitSet to the console.
+     */
     public void printBits() {
         System.out.println(this.toString());
     }
 
-    // A method to add a String to the BloomFilter
+    /**
+     * Adds a String to the BloomFilter.
+     *
+     * @param w the String to add
+     */
     public void add(String w) {
         // For each MessageDigest in the ArrayList, create a new BigInteger from the
         // digest of the input String using that MessageDigest
@@ -45,7 +59,12 @@ public class BloomFilter {
         }
     }
 
-    // A method to check if a given String is in the BloomFilter
+    /**
+     * Checks if a given String is in the BloomFilter.
+     *
+     * @param w the String to check
+     * @return true if the String is possibly in the filter, false otherwise
+     */
     public boolean contains(String w) {
         // For each MessageDigest in the ArrayList, create a new BigInteger from the
         // digest of the input String using that MessageDigest
@@ -61,8 +80,12 @@ public class BloomFilter {
         return true;
     }
 
-    // Override the equals() method to compare the bitSet and ArrayList of message
-    // digests between two BloomFilter objects
+    /**
+     * Compares the current BloomFilter object with another object.
+     *
+     * @param o the object to compare
+     * @return true if the objects are equal, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -73,85 +96,19 @@ public class BloomFilter {
         return Objects.equals(bitSet, that.bitSet) && Objects.equals(md, that.md);
     }
 
-    // Override the toString() method to return a String representation of the
-    // bitSet
+    /**
+     * Returns a string representation of the BitSet.
+     *
+     * @return a string representation of the BitSet
+     */
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < bitSet.length(); i++) {
             s.append(bitSet.get(i) ? 1 : 0); // Append 1 to the StringBuilder if the bit at the current index is set to
-                                             // true, and 0 otherwise
+            // true, and 0 otherwise
         }
         return s.toString();
     }
 
 }
-
-// package test.txt;
-// import java.math.BigInteger;
-// import java.security.MessageDigest;
-// import java.security.NoSuchAlgorithmException;
-// import java.util.ArrayList;
-// import java.util.Arrays;
-// import java.util.BitSet;
-// import java.util.Objects;
-//
-// public class BloomFilter {
-//
-// final BitSet bitSet;
-// ArrayList<MessageDigest> md = new ArrayList<>();
-//
-//
-// public BloomFilter(int setSize, String... values) {
-//
-// bitSet = new BitSet(setSize);
-//
-// for (String s : values) {
-// try {
-// md.add(MessageDigest.getInstance(s));
-// } catch (NoSuchAlgorithmException e) {
-// throw new RuntimeException(e);
-// }
-//
-// }
-//
-//
-// }
-// public void printBits() {
-// System.out.println(this.toString());
-// }
-//
-// public void add(String w) {
-// for(MessageDigest m : md){
-// BigInteger bi = new BigInteger(m.digest(w.getBytes()));
-// bitSet.set((Math.abs(bi.intValue()) % bitSet.size()),true);
-// }
-// }
-//
-// public boolean contains(String w) {
-// for (MessageDigest m : md) {
-// BigInteger bi = new BigInteger(m.digest(w.getBytes()));
-// if (!bitSet.get(Math.abs(bi.intValue()) % bitSet.size()))
-// return false;
-// }
-// return true;
-// }
-//
-// @Override
-// public boolean equals(Object o) {
-// if (this == o) return true;
-// if (o == null || getClass() != o.getClass()) return false;
-// BloomFilter that = (BloomFilter) o;
-// return Objects.equals(bitSet, that.bitSet) && Objects.equals(md, that.md);
-// }
-//
-// @Override
-// public String toString() {
-// StringBuilder s = new StringBuilder();
-// for (int i = 0; i < bitSet.length(); i++) {
-// s.append(bitSet.get(i) ? 1 : 0);
-// }
-// return s.toString();
-// }
-//
-// }
