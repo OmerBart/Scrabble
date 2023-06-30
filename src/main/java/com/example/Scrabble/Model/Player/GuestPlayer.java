@@ -500,4 +500,8 @@ public class GuestPlayer extends java.util.Observable implements Player {
     public void setID(int ID) {
         this.playerID = ID;
     }
+
+    public boolean challengeIOserver(String word) {
+        return Boolean.parseBoolean(sendRequestToServer("C:" + word));
+    }
 }

@@ -172,4 +172,7 @@ public class ViewModel extends Observable implements Observer {
         this.numberOfTurns = numOfTurns;
     }
 
+    public boolean challengeWord(String word) {
+        return guestPlayer.challengeIOserver(word);
+    }
 }
