@@ -234,6 +234,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
         openSocketIfClosed();
         String sWord = "";
         for (Character c : word) {
+            System.out.println(c +" in guest player");
             sWord += c == null ? "_" : c;
         }
 

@@ -106,6 +106,9 @@ public class ViewModel extends Observable implements Observer {
 
     public String tryPlaceWord(Character[] word, int x, int y, boolean isHorizontal) {
         if (guestPlayer.isMyTurn()) {
+            for (Character character : word) {
+                System.out.println(character);
+            }
             String newState = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
             if(newState.split(";").length < 4) {
                 return newState;
