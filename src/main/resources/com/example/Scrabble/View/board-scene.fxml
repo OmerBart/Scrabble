@@ -12,10 +12,10 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
-
+<?import javafx.scene.control.ScrollPane?>
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-    fx:controller="com.example.Scrabble.View.BoardController">
+      fx:controller="com.example.Scrabble.View.BoardController">
     <SplitPane dividerPositions="0.2">
         <AnchorPane>
             <VBox alignment="CENTER" spacing="20.0">
@@ -34,12 +34,16 @@
                 <Label fx:id="numOfTurns" text="Turns: 0" />
                 <Label fx:id="turnText" />
                 <Label text='Tiles:' />
-                <HBox fx:id="tiles" spacing="10" />
+                <ScrollPane fx:id="tilesScrollPane" fitToWidth="true" vbarPolicy="AS_NEEDED">
+                    <content>
+                        <HBox fx:id="tiles" spacing="10" />
+                    </content>
+                </ScrollPane>
                 <Label text="Word:" />
                 <StackPane fx:id="wordPane" prefHeight="50.0" prefWidth="200.0" alignment="center">
                     <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="50.0"
-                            stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                                   stroke="BLACK" strokeType="INSIDE" width="200.0" />
                         <Label fx:id="wordText" text="" />
                     </children>
                 </StackPane>

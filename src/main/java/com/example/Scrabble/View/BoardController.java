@@ -10,10 +10,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
@@ -77,6 +75,10 @@ public class BoardController implements Initializable, Observer {
 
     @FXML
     Button challengeButton;
+    @FXML
+    private ScrollPane tilesScrollPane;
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -92,6 +94,14 @@ public class BoardController implements Initializable, Observer {
         wordToCheck = new SimpleStringProperty("");
         wordText.textProperty().bind(wordToCheck);
         numberOfTurnsProperty = new SimpleStringProperty("Turns left: " + viewModel.numberOfTurns);
+
+        // Set HBox as the content of the ScrollPane
+        tilesScrollPane.setContent(tiles);
+
+        // Set ScrollPane properties
+        tilesScrollPane.setFitToWidth(true);
+        tilesScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        tilesScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
         boardBuild();
 
@@ -131,6 +141,8 @@ public class BoardController implements Initializable, Observer {
             Tile tile = new Tile(letter);
             tilesList.add(tile);
             tiles.getChildren().add(tile);
+            HBox.setHgrow(tile, Priority.NEVER); // Prevent tiles from expanding horizontally
+            VBox.setVgrow(tile, Priority.NEVER); // Prevent tiles from expanding vertically
             tile.setOnMouseClicked(event -> {
                 handleTileClick(event, tile);
             });
@@ -223,10 +235,13 @@ public class BoardController implements Initializable, Observer {
         Tile tile = new Tile(letter);
         tilesList.add(tile);
         tiles.getChildren().add(tile);
+        HBox.setHgrow(tile, Priority.NEVER); // Prevent tiles from expanding horizontally
+        VBox.setVgrow(tile, Priority.NEVER); // Prevent tiles from expanding vertically
         tile.setOnMouseClicked(event -> {
             handleTileClick(event, tile);
         });
     }
+
 
     private void handleTileClick(Event e, Tile tile) {
         if (tile.selected) {
