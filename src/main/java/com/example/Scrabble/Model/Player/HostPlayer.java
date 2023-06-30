@@ -19,12 +19,12 @@ import java.util.Random;
  */
 public class HostPlayer extends GuestPlayer {
     // books to choose from:
-    //alice_in_wonderland.txt
+    //Alice In Wonderland.txt
     //Frank Herbert_Dune.txt
     //Harry Potter.txt
-    //mobydick.txt
-    //pg10.txt
-    //shakespeare.txt
+    //Moby Dick.txt
+    //Pg10.txt
+    //Shakespeare.txt
     //The Matrix.txt
 
     private final MyServer hostGameServer;
@@ -89,7 +89,11 @@ public class HostPlayer extends GuestPlayer {
      *              Must be in the format of "search_books/BookName.txt" or "search_books/BookName.txt search_books/BookName2.txt...etc".
      */
     public void setBooks(String... books) {
-        gameManager.setGameBooks(books);
+        String[] booksFullPaths = new String[books.length];
+        for(String book : books)
+            booksFullPaths[books.length - 1] = "search_books/" + book+".txt";
+
+        gameManager.setGameBooks(booksFullPaths);
     }
 
     /**
