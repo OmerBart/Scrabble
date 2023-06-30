@@ -10,8 +10,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -61,12 +63,6 @@ public class BoardController implements Initializable, Observer {
     VBox leftPane;
 
     @FXML
-    AnchorPane boardPane;
-
-    @FXML
-    AnchorPane playersPane;
-
-    @FXML
     private GridPane board;
 
     @FXML
@@ -87,6 +83,7 @@ public class BoardController implements Initializable, Observer {
     @FXML
     Button challengeButton;
     @FXML
+
     private ScrollPane tilesScrollPane;
 
 
