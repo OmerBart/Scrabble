@@ -7,7 +7,12 @@ By Omer, Hadar, and Eilon
    * Omer
 - View + View Model
    * Eilon
- 
+# features:
+- Multiplayer support ( limited atm to 4 total players but can be changed in GameManager class @ AddPlayer method
+- MultiThreaded server using threadpools to allow multiple clients to work concertently.
+- Implamenting MVVM design using Java and JavaFX allowing for crossplatform fun :)
+- OCP, open-close princable allowing for personal usecase without editing source
+
   
 # How to run:
 - git clone the repo
@@ -17,7 +22,14 @@ By Omer, Hadar, and Eilon
 
 <img width="1440" alt="Screenshot 2023-06-30 at 23 01 34" src="https://github.com/OmerBart/Scrabble/assets/112820943/4ea41bd0-cf3f-49d8-aeb6-6fd2d6cc1c08">
 
+# Demo video ( 2 players ) : 
+https://github.com/OmerBart/Scrabble/assets/112820943/28e3aff3-78b6-4e5b-8102-2ab6c8fb847a
+
 # UML
+
+
+
+
 
 
 
