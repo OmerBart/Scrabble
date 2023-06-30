@@ -43,6 +43,7 @@ public class MyServer {
     private final ClientHandler clientHandler;
     private int count;
     private List<String> playerNames;
+    private String publicIP;
     //private final Map<String, ClientHandler> playerClientMap;
 
     /**    
@@ -60,6 +61,7 @@ public class MyServer {
         this.clients = new ConcurrentHashMap<>();
         this.threadPool = Executors.newCachedThreadPool();
         this.count = 0;
+        this.publicIP = getPublicIPAddress();
         //this.playerClientMap = new ConcurrentHashMap<>();
 
     }
@@ -84,7 +86,7 @@ public class MyServer {
      */
     private void startServer() {
         try (ServerSocket server = new ServerSocket(port)) {
-            server.setSoTimeout(1000);
+            server.setSoTimeout(5*1000);
             while (!stop) {
                 try {
                     Socket client = server.accept();
@@ -107,6 +109,9 @@ public class MyServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public String getPublicIP() {
+        return this.publicIP;
     }
 
     /**    
@@ -265,6 +270,18 @@ public class MyServer {
             e.printStackTrace();
         }
         return "Error getting IP Address";
+    }
+    private String getPublicIPAddress(){
+        try {
+            URL url = new URL("https://api.ipify.org"); // External service to retrieve public IP address
+            BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            String ipAddress = reader.readLine();
+            reader.close();
+            return ipAddress;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "Error getting public IP address";
     }
 
 }

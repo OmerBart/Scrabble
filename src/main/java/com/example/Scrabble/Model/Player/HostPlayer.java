@@ -70,7 +70,7 @@ public class HostPlayer extends GuestPlayer {
         localServerAddress = hostGameServer.getIPAddress() + ":" + port;
         System.out.println("Host IP: " + localServerAddress);
         setServerAddress(localServerAddress, port);
-        publicServerAddress = getPublicIPAddress();
+        publicServerAddress = hostGameServer.getPublicIP();
         hostGameServer.start();
         gameManager = GameManager.get();
         gameManager.setHost(hostGameServer);
@@ -123,19 +123,7 @@ public class HostPlayer extends GuestPlayer {
         return publicServerAddress + ":" + hostGameServer.getPort();
     }
 
-    private String getPublicIPAddress(){
-        try {
-            URL whatismyip = new URL("http://checkip.amazonaws.com");
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    whatismyip.openStream()));
-            String ip = in.readLine(); //you get the IP as a String
-            //System.out.println("Public IP Address: " + ip);
-            return ip;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "Error getting Public IP Address";
-    }
+
 
 
 
