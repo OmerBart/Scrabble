@@ -78,6 +78,7 @@ public class LobyController implements Initializable {
     protected void onReadyButtonClick(ActionEvent event) {
     }
 
+
     @FXML
     protected void onStartGameButtonClick(ActionEvent event) {
         try {
