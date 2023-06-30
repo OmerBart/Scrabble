@@ -202,6 +202,7 @@ public class GameManager {
                 playerTiles.get(p.getName()).add(bag.getRand());
         }
         updatePlayers("game started!" + getGameState());
+        System.out.println("Game Book: " + gameBooks[0]);
 
         hasGameStarted = true;
         return "Started Game!" + getGameState();
