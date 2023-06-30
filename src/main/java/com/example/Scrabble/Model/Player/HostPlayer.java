@@ -16,6 +16,14 @@ import com.example.Scrabble.Model.ServerUtils.MyServer;
  * @version 1.0
  */
 public class HostPlayer extends GuestPlayer {
+    // books to choose from:
+    //alice_in_wonderland.txt
+    //Frank Herbert_Dune.txt
+    //Harry Potter.txt
+    //mobydick.txt
+    //pg10.txt
+    //shakespeare.txt
+    //The Matrix.txt
 
     private final MyServer hostGameServer;
     private GameManager gameManager;
