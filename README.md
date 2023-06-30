@@ -19,6 +19,10 @@ By Omer, Hadar, and Eilon
 
 # UML
 
+https://github.com/OmerBart/Scrabble/assets/112820943/28e3aff3-78b6-4e5b-8102-2ab6c8fb847a
+
+
+
 
 
 
