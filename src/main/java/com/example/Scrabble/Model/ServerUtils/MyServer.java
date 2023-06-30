@@ -246,6 +246,13 @@ public class MyServer {
     public List<String> getPlayerNames() {
         return playerNames;
     }
+    /**
+     * The getIPAddress function returns the IP address of the localhost.
+     *
+     * @return The ip address of the localhost
+     *
+
+     */
     public String getIPAddress(){
         try {
             InetAddress localhost = InetAddress.getLocalHost();
