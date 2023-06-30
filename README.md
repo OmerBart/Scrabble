@@ -7,53 +7,49 @@ By Omer, Hadar, and Eilon
    * Omer
 - View + View Model
    * Eilon
+# features:
+- Multiplayer support ( limited atm to 4 total players but can be changed in GameManager class @ AddPlayer method
+- MultiThreaded server using threadpools to allow multiple clients to work concertently.
+- Implamenting MVVM design using Java and JavaFX allowing for crossplatform fun :)
+- OCP, open-close princable allowing for personal usecase without editing source
 
-
-# GAANT
-![scrabble_2023-05-24_03 28pm](https://github.com/OmerBart/Scrabble/assets/121627693/6c5c61e5-6dff-4862-8587-b3091034f5ed)
-
-# Second MileStone 
-
-# TODO:
-- view 90% done 
-- VM still needs to be implemented
-- model 90% done
-
-How to run: (for now)
+  
+# How to run:
 - git clone the repo
 - open the project in intellij
 - run the ScrabbleGame class in the view package
 - enjoy
 
+<img width="1440" alt="Screenshot 2023-06-30 at 23 01 34" src="https://github.com/OmerBart/Scrabble/assets/112820943/4ea41bd0-cf3f-49d8-aeb6-6fd2d6cc1c08">
+
+# Demo video ( 2 players ) : 
+https://github.com/OmerBart/Scrabble/assets/112820943/28e3aff3-78b6-4e5b-8102-2ab6c8fb847a
+
+# UML
 
 
 
-![image](https://github.com/OmerBart/Scrabble/assets/112820943/aaac6aa7-f0d4-41bd-b62f-edf97034623a)
 
 
 
-# First MileStone 
 
-- Link to GIT of 2 to 4 team-members
 
-- GIT containing the decription of the project and its plan
-    * Division to teams (20%)
-    * GANNT chart of missions (20%)
+![main](https://github.com/OmerBart/Scrabble/assets/112820943/75a6b235-9a2d-4629-809c-53b30486152c)
 
-- Model layer Implementation:
-    * Functionality to communicate with the server (20%)
-    * Functionality to communicate with other guest players(their model) (20%)
-    * Unit testing to test each functionality (20%)
+
+
+
+
+
+
+
+
+
+# GAANT
+![scrabble_2023-05-24_03 28pm](https://github.com/OmerBart/Scrabble/assets/121627693/6c5c61e5-6dff-4862-8587-b3091034f5ed)
+
+
     
-# TODO:
-- set up jira 
-- split responsibilites 
-- decide on workflow 
-- set personal milestones
-- write user stories 
-- build basic uml to understand what needs to be done (optional but reccomended) 
-- build basic first GUI using Figma ( or anything to export to XML(XMAL) (FXML?))
-- kickass and chew bubble gum
 
 
 
