@@ -25,6 +25,11 @@ public class ViewModel extends Observable implements Observer {
     private Stage stage;
     private Scene scene;
 
+    public Boolean turn;
+    public String board;
+    public String players;
+    public String numberOfTurns;
+
     private static ViewModel viewModelInstance = null;
 
     public static ViewModel get() {
@@ -40,15 +45,19 @@ public class ViewModel extends Observable implements Observer {
         boardProperty = new SimpleStringProperty("");
         playersProperty = new SimpleStringProperty("");
         numberOfPlayersProperty = new SimpleStringProperty("");
+        turn = false;
+        board = "";
+        players = "";
     }
 
     @Override
     public void update(java.util.Observable o, Object arg) {
         System.out.println("VM: Game has been updated");
-        System.out.println("VM: " + arg);
         if (arg instanceof String) {
             String argString = (String) arg;
-            if (arg.equals("game started!")) {
+            if (argString.startsWith("game started!")) {
+                System.out.println("game started");
+                setGameState(argString.substring(13));
                 try {
                     Parent root = FXMLLoader
                             .load(getClass().getResource("/com/example/Scrabble/View/board-scene.fxml"));
@@ -62,14 +71,11 @@ public class ViewModel extends Observable implements Observer {
                     System.out.println(e.getMessage());
                 }
             } else if (argString.startsWith("player added")) {
-                // int numberOfPlayers = Integer.parseInt(numberOfPlayersProperty.getValue());
-                // ++numberOfPlayers;
-                // String players = String.valueOf(numberOfPlayers);
                 Platform.runLater(() -> {
                     numberOfPlayersProperty.setValue(String.valueOf(guestPlayer.getNumberOfPlayers()));
-                    // numberOfPlayersProperty.setValue(players);
                 });
-            } else if (argString.startsWith("Board")) {
+            } else {
+                setGameState(argString);
                 setChanged();
                 notifyObservers(argString);
             }
@@ -84,7 +90,7 @@ public class ViewModel extends Observable implements Observer {
     }
 
     public void startGame() {
-        System.out.println(guestPlayer.startGame());
+        setGameState(guestPlayer.startGame().substring(13));
     }
 
     public String joinGame(String gameId) {
@@ -100,12 +106,16 @@ public class ViewModel extends Observable implements Observer {
 
     public String tryPlaceWord(Character[] word, int x, int y, boolean isHorizontal) {
         if (guestPlayer.isMyTurn()) {
-            String result = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
-            int score = Integer.parseInt(result);
-            score += Integer.parseInt(scoreProperty.getValue());
-            scoreProperty.setValue(String.valueOf(score));
-            guestPlayer.endTurn();
-            return result;
+            String newState = guestPlayer.placeWord(word, x - 1, y - 1, isHorizontal);
+            if(newState.split(";").length < 4) {
+                return newState;
+            }
+            // int score = Integer.parseInt(result);
+            // score += Integer.parseInt(scoreProperty.getValue());
+            // scoreProperty.setValue(String.valueOf(score));
+            setGameState(newState);
+            scoreProperty.setValue(String.valueOf(guestPlayer.getScore()));
+            return "";
         } else {
             System.out.println("not my turn");
             return scoreProperty.getValue();
@@ -114,8 +124,7 @@ public class ViewModel extends Observable implements Observer {
 
     public String[][] getBoard() {
         String[][] board = new String[15][15];
-        String result = guestPlayer.getCurrentBoard();
-        String[] rows = result.split(",");
+        String[] rows = this.board.split(",");
         for (int i = 0; i < rows.length; i++) {
             String[] row = rows[i].split(" ");
             for (int j = 0; j < row.length; j++) {
@@ -126,7 +135,7 @@ public class ViewModel extends Observable implements Observer {
     }
 
     public void printBoard() {
-        String result = guestPlayer.getCurrentBoard();
+        String result = this.board;
         String[] rows = result.split(",");
         for (int i = 0; i < rows.length; i++) {
             System.out.println(rows[i]);
@@ -148,7 +157,19 @@ public class ViewModel extends Observable implements Observer {
 
     public Boolean querryWord(String word) {
         // return true;
-        return guestPlayer.queryIO(word);
+        return guestPlayer.queryDictionaryServer(word);
+    }
+
+    public void setGameState(String gameState) {
+        String turn = gameState.split(";")[0];
+        String board = gameState.split(";")[1];
+        String players = gameState.split(";")[2];
+        String numOfTurns = gameState.split(";")[3];
+
+        this.board = board;
+        this.players = players;
+        this.turn = turn.equals(guestPlayer.getName()) ? true : false;
+        this.numberOfTurns = numOfTurns;
     }
 
 }

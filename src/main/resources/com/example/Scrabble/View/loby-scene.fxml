@@ -17,14 +17,15 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <Label fx:id="gameid" text="Game ID : 'localhost:65432'" />
+    <!--    <Label fx:id="gameid" text="Game ID : 'localhost:65432'" />-->
+    <Label fx:id="gameid" text="Game ID : " />
     <Label fx:id="waitingText" text="Waiting for Host to start the Game.." visible='false' />
     <Label fx:id="nofcontainer" text="Number of Players: " />
     <Label fx:id="numberOfPlayers" text="1" />
-    <!-- number of rounds -->
-    <Label text="Number of Rounds: " />
-    <ComboBox fx:id="numberOfRounds" prefWidth="150.0" visible="false" />
-
+    <Label fx:id="numberOfRoundsText" text="Number of Rounds: " visible="false" />
+    <TextField fx:id="numberOfRounds" promptText="How Many Rounds ?" focusTraversable="false"
+        visible="false" />
+    <ComboBox fx:id="bookSet" prefWidth="150.0" visible="false" />
     <Button fx:id="startGameButton" text="Start Game" onAction="#onStartGameButtonClick" />
     <Button text="Back" onAction="#onBackButtonClick" />
 </VBox>

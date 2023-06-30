@@ -8,10 +8,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
 import java.net.URL;
@@ -20,6 +24,7 @@ import java.util.Comparator;
 import java.util.Observer;
 import java.util.ResourceBundle;
 
+import com.example.Scrabble.Model.Player.HostPlayer;
 import com.example.Scrabble.VM.ViewModel;
 
 public class BoardController implements Initializable, Observer {
@@ -30,6 +35,8 @@ public class BoardController implements Initializable, Observer {
     ViewModel viewModel;
     StringProperty wordToCheck;
     StringProperty boardString = new SimpleStringProperty("");
+    boolean turn = false;
+    public StringProperty numberOfTurnsProperty;
 
     @FXML
     StackPane wordPane;
@@ -44,6 +51,18 @@ public class BoardController implements Initializable, Observer {
     Label wordText;
 
     @FXML
+    Label turnText;
+
+    @FXML
+    Label numOfTurns;
+
+    @FXML
+    VBox playersTable;
+
+    @FXML
+    VBox leftPane;
+
+    @FXML
     private GridPane board;
 
     @FXML
@@ -52,25 +71,75 @@ public class BoardController implements Initializable, Observer {
     @FXML
     private Label welcomeText;
 
+    @FXML
+    Button placeWordButton;
+
+    @FXML
+    Button getTileButton;
+
+    @FXML
+    Button querryButton;
+
+    @FXML
+    Button challengeButton;
+    @FXML
+
+    private ScrollPane tilesScrollPane;
+
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Get ViewModel instance
         viewModel = ViewModel.get();
         viewModel.addObserver(this);
 
+        turn = viewModel.turn;
+
         // Set welcome text and build board
         welcomeText.setText("Welcome to Scrabble!");
         welcomeText.getStyleClass().add("welcome-text");
         wordToCheck = new SimpleStringProperty("");
         wordText.textProperty().bind(wordToCheck);
+        numberOfTurnsProperty = new SimpleStringProperty("Turns left: " + viewModel.numberOfTurns);
+        leftPane.getStyleClass().add("left-pane");
+
+        // Set HBox as the content of the ScrollPane
+        tilesScrollPane.setContent(tiles);
+
+        // Set ScrollPane properties
+        tilesScrollPane.setFitToWidth(true);
+        tilesScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        tilesScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
         boardBuild();
 
         // Bindings
         nameText.textProperty().bind(viewModel.playerNameProperty);
         scoreText.textProperty().bind(viewModel.scoreProperty);
+        numOfTurns.textProperty().bind(numberOfTurnsProperty);
 
         // Set first 7 tiles
         setTiles();
+
+        // Set TableView
+        setTableView();
+
+        // Set buttons
+        setButtons();
+
+        // Set turn text
+        setTurnText();
+    }
+
+    public void setTurnText() {
+        if (turn) {
+            turnText.setText("It's your turn!");
+            turnText.setStyle("-fx-text-fill: green;");
+        } else {
+            turnText.setText("wait for your turn!");
+            turnText.setStyle("-fx-text-fill: red;");
+        }
     }
 
     public void setTiles() {
@@ -81,18 +150,48 @@ public class BoardController implements Initializable, Observer {
             Tile tile = new Tile(letter);
             tilesList.add(tile);
             tiles.getChildren().add(tile);
+            HBox.setHgrow(tile, Priority.NEVER); // Prevent tiles from expanding horizontally
+            VBox.setVgrow(tile, Priority.NEVER); // Prevent tiles from expanding vertically
             tile.setOnMouseClicked(event -> {
                 handleTileClick(event, tile);
             });
         }
     }
 
+    public void setTableView() {
+        playersTable.getChildren().clear();
+        String[] players = viewModel.players.split(",");
+        for (String player : players) {
+            String[] playerInfo = player.split(":");
+            Label label = new Label(playerInfo[0] + "'s points: " + playerInfo[3]);
+            playersTable.getChildren().add(label);
+        }
+    }
+
+    public void setButtons() {
+        if (turn) {
+            placeWordButton.setDisable(false);
+            getTileButton.setDisable(false);
+            querryButton.setDisable(false);
+            challengeButton.setDisable(false);
+        } else {
+            placeWordButton.setDisable(true);
+            getTileButton.setDisable(true);
+            querryButton.setDisable(true);
+            challengeButton.setDisable(true);
+        }
+    }
+
     @Override
     public void update(java.util.Observable o, Object arg) {
-        System.out.println("View: Game has been updated");
-        System.out.println("View: " + arg);
         Platform.runLater(() -> {
+            System.out.println("View: Game has been updated");
+            turn = viewModel.turn;
             boardBuild();
+            setTableView();
+            setButtons();
+            setTurnText();
+            numberOfTurnsProperty.setValue("Turns left: " + viewModel.numberOfTurns);
         });
     }
 
@@ -149,6 +248,7 @@ public class BoardController implements Initializable, Observer {
             handleTileClick(event, tile);
         });
     }
+
 
     private void handleTileClick(Event e, Tile tile) {
         if (tile.selected) {
@@ -227,12 +327,24 @@ public class BoardController implements Initializable, Observer {
                 alert.showAndWait();
                 return;
             }
-            Boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row ? true : false;
-            viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
-            boardBuild();
-            setTiles();
-            wordToSet.clear();
-            wordToCheck.setValue("");
+            boolean isHorizontal = wordToSet.get(0).row == wordToSet.get(1).row;
+            String err = viewModel.tryPlaceWord(wordArr, wordToSet.get(0).row, wordToSet.get(0).col, isHorizontal);
+            if (err.contains("Error")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText(err);
+                alert.showAndWait();
+                // clear();
+            } else {
+                setTiles();
+                viewModel.guestPlayer.endTurn();
+                turn = viewModel.turn;
+                boardBuild();
+                setTableView();
+                setTurnText();
+
+                wordToSet.clear();
+                wordToCheck.setValue("");
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Word is not a sequence");
@@ -246,6 +358,7 @@ public class BoardController implements Initializable, Observer {
                 tiles.getChildren().add(tile);
             }
             wordToSet.clear();
+
         }
     }
 
@@ -276,16 +389,10 @@ public class BoardController implements Initializable, Observer {
     }
 
     public void clear() {
-        for (BoardCell cell : wordToSet) {
-            Tile tile = new Tile(cell.letter);
-            tile.setOnMouseClicked(event -> {
-                handleTileClick(event, tile);
-            });
-            tiles.getChildren().add(tile);
-        }
         wordToSet.clear();
         wordToCheck.setValue("");
         wordPane.getChildren().get(0).setStyle("-fx-fill: white ;");
+        setTiles();
         boardBuild();
     }
 

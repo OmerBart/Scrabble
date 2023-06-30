@@ -4,25 +4,31 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * The IOSearcher class provides utility methods for searching words in files.
+ */
 public class IOSearcher {
 
-    public IOSearcher() {
-    }
-
+    /**
+     * Searches for a given word in the specified files.
+     *
+     * @param word      the word to search for
+     * @param fileNames the filenames of the files to search in
+     * @return true if the word is found in any of the files, false otherwise
+     */
     public static boolean search(String word, String... fileNames) {
-        // Returns true if contains word
         for (String s : fileNames) {
             File file = new File(s);
 
             try {
                 Scanner scanner = new Scanner(file);
 
-                // now read the file line by line...
                 int lineNum = 0;
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
-                    lineNum = lineNum + 1;
+                    lineNum++;
                     if (line.contains(word)) {
+                        scanner.close();
                         return true;
                     }
                 }
@@ -33,5 +39,4 @@ public class IOSearcher {
         }
         return false;
     }
-
 }

@@ -31,6 +31,7 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         viewModel = ViewModel.get();
         viewModel.playerNameProperty.bind(nameInput.textProperty());
+        welcomeText.getStyleClass().add("welcome-text");
     }
 
     @FXML
