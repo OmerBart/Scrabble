@@ -1,5 +1,6 @@
 .root {
     -fx-font-family: "Comic Sans MS";
+    -fx-background-color: #6683f9;
 }
 
 .hide {
@@ -21,16 +22,17 @@
 }
 
 .button {
-    -fx-background-color: #4a3e3e;
+    -fx-background-color: #3e2982;
     -fx-text-fill: #000000;
-    -fx-border-color: #f28888;
-    -fx-border-width: 2px;
-    -fx-border-radius: 15px;
-    -fx-background-radius: 15px;
+    -fx-border-color: #000000;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
 }
 
 .button:hover {
     -fx-background-color: #f2888833;
+    -fx-cursor: pointer;
 }
 
 .ready-button {
