@@ -423,13 +423,5 @@ public class BoardController implements Initializable, Observer {
 
     public void onChallengeClick() {
         System.out.println("Challenge");
-        String word = wordToCheck.getValue();
-        if (word.length() > 0) {
-            if (viewModel.challengeWord(word)) {
-                wordPane.getChildren().get(0).setStyle("-fx-fill: green ;");
-            } else {
-                wordPane.getChildren().get(0).setStyle("-fx-fill: red;");
-            }
-        }
     }
 }
