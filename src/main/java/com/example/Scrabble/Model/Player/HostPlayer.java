@@ -32,6 +32,7 @@ public class HostPlayer extends GuestPlayer {
     private static HostPlayer hostPlayerInstance = null;
     private final String serverAddress;
 
+
     /**
      * Retrieves the instance of the HostPlayer.
      *
@@ -106,6 +107,7 @@ public class HostPlayer extends GuestPlayer {
     public void stopGame() {
         gameManager.endGame();
     }
+
 
 
 

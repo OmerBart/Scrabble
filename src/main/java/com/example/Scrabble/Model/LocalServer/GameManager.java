@@ -28,6 +28,7 @@ public class GameManager {
     private MyServer hostServer;
     private MyServer IOserver;
     private Board gameBoard;
+    private final String DEFAULT_BOOK = "search_books/The Matrix.txt";
     private Tile.Bag bag;
     private int turn;
     private boolean hasGameStarted;
@@ -180,20 +181,18 @@ public class GameManager {
     }
 
     /**
-     * The startGame function is called when the first player joins the game.
-     * It starts a new thread for IOserver, which will be used to run Dictionary/IO actions in this game.
-     * The function also initializes each player's tiles and sends them an update of their current state.
-
+     * The `startGame` function is called when the first player joins the game. It starts a new thread for IOserver,
+     * which will be used to run Dictionary/IO actions in this game. The function also initializes each player's tiles
+     * and sends them an update of their current state.
      *
-     * @param  playerName Identify the player who is starting the game
-     *
-     * @return A String indicating if the game started successfully, followed by the game state.
-     *
+     * @param playerName The name of the player who is starting the game.
+     * @return A string indicating if the game started successfully, followed by the game state.
      * @author Omer Bartfeld
      */
     public synchronized String startGame(String playerName) {
-        if(gameBooks.length == 0)
-            return "Please select a book to play with!";
+        if (gameBooks.length == 0)
+            setGameBooks(DEFAULT_BOOK);
+        //return "Please select a book to play with!";
         IOserver.start();
         System.out.println("IO server started successfully at: " + IOserver.getPort());
         System.out.println("Number of players: " + playersList.size());
@@ -207,6 +206,7 @@ public class GameManager {
         hasGameStarted = true;
         return "Started Game!" + getGameState();
     }
+
 
     /**
      * The getTilefromBag function is used to get a random tile from the bag and add it to the player's hand.
