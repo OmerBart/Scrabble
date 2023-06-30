@@ -117,7 +117,7 @@ public class GuestPlayer extends java.util.Observable implements Player {
      * @return The serveraddress variable
      * @author Omer Bartfeld
      */
-    public String getServerAddress() {
+    public String getLocalServerAddress() {
         return serverAddress;
     }
 

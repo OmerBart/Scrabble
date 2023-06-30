@@ -4,7 +4,10 @@ import com.example.Scrabble.Model.LocalServer.GameManager;
 import com.example.Scrabble.Model.LocalServer.PlayerHandler;
 import com.example.Scrabble.Model.ServerUtils.MyServer;
 
-import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Random;
 
 /**
@@ -31,7 +34,9 @@ public class HostPlayer extends GuestPlayer {
     private final MyServer hostGameServer;
     private GameManager gameManager;
     private static HostPlayer hostPlayerInstance = null;
-    private final String serverAddress;
+    private final String localServerAddress;
+    private final String publicServerAddress;
+
 
 
     /**
@@ -62,9 +67,10 @@ public class HostPlayer extends GuestPlayer {
         //int port = 65432;
         int port = 6000 + r.nextInt(6000);
         hostGameServer = new MyServer(port, new PlayerHandler());
-        serverAddress = hostGameServer.getIPAddress() + ":" + port;
-        System.out.println("Host IP: " + serverAddress);
-        setServerAddress(serverAddress, port);
+        localServerAddress = hostGameServer.getIPAddress() + ":" + port;
+        System.out.println("Host IP: " + localServerAddress);
+        setServerAddress(localServerAddress, port);
+        publicServerAddress = getPublicIPAddress();
         hostGameServer.start();
         gameManager = GameManager.get();
         gameManager.setHost(hostGameServer);
@@ -79,8 +85,8 @@ public class HostPlayer extends GuestPlayer {
     public void setNumOfTurns(int numOfTurns) {
         gameManager.setNumOfTurns(numOfTurns);
     }
-    public String getServerAddress() {
-        return serverAddress;
+    public String getLocalServerAddress() {
+        return localServerAddress;
     }
 
     /**
@@ -112,6 +118,23 @@ public class HostPlayer extends GuestPlayer {
      */
     public void stopGame() {
         gameManager.endGame();
+    }
+    public String getPublicServerAddress() {
+        return publicServerAddress;
+    }
+
+    private String getPublicIPAddress(){
+        try {
+            URL whatismyip = new URL("http://checkip.amazonaws.com");
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    whatismyip.openStream()));
+            String ip = in.readLine(); //you get the IP as a String
+            //System.out.println("Public IP Address: " + ip);
+            return ip;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "Error getting Public IP Address";
     }
 
 
