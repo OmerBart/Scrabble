@@ -240,13 +240,9 @@ public class BoardController implements Initializable, Observer {
     }
 
     public void getTile() {
-        String letter = viewModel.getTile();
-        Tile tile = new Tile(letter);
-        tilesList.add(tile);
-        tiles.getChildren().add(tile);
-        tile.setOnMouseClicked(event -> {
-            handleTileClick(event, tile);
-        });
+        viewModel.getTile();
+        setTiles();
+        viewModel.guestPlayer.endTurn();
     }
 
 
