@@ -22,7 +22,7 @@ By Omer, Hadar, and Eilon
 
 <img width="1440" alt="Screenshot 2023-06-30 at 23 01 34" src="https://github.com/OmerBart/Scrabble/assets/112820943/4ea41bd0-cf3f-49d8-aeb6-6fd2d6cc1c08">
 
-# Demo video ( 2 players ) : 
+# Demo video ( 2 players but works with up to 4 in total) : 
 https://github.com/OmerBart/Scrabble/assets/112820943/28e3aff3-78b6-4e5b-8102-2ab6c8fb847a
 
 # UML
